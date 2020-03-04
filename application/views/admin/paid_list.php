@@ -9,12 +9,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0 text-dark">Welcome</h1>
+            <h1 class="m-0 text-dark">Paid List</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">GP List</li>
+              <li class="breadcrumb-item active">Paid List</li>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
@@ -24,8 +24,7 @@
     <section class="content" >
     	<div class="container-fluid">
 		    <div class="row">
-		        <!-- <div class="col"></div> -->
-		        <div class= "col">
+		        <div class= "col-md-3">
 		            <div class="form-group">
 		                <label>Select Year</label>
 		                <select class="form-control" id="sel_year">
@@ -42,9 +41,6 @@
 		                </select>
 		            </div>
 		        </div>
-
-		        
-		        <div class="col"></div>
 		    </div>
     
     		<div class="card p-3" style="display: none" id="payment_table">      
@@ -80,43 +76,36 @@
 
 <script>
   base_url = '<?= base_url() ?>';
-  $('#sel_year').click(function(){
+  $('#sel_year').change(function(){
     year = $('#sel_year').val();
-    console.log(year);
     if(year != ''){
-      $('#payment_table').show(1000);
-      var table_paid_list = $('#example').DataTable({
-          'ajax' : base_url + 'Admin/fetch_paid_list/'+year,
-          // 'order': [[1, 'asc']],
-          'order': [],
-          responsive : true,
+		if(typeof table_paid === 'undefined'){
+			$('#payment_table').show(1000);
+			table_paid = $('#example').DataTable({
+				'ajax' : base_url + 'Admin/fetch_paid_list/'+year,
+				'responsive' : true,
+				dom: "<'row'<'col-md-2'l><'col-md-6'B><'col-md-4'f>><'row'<'col-md-12'rt>><'row'<'col-md-6'i><'col-md-6'p>>",
+          		buttons: [
+					{extend: 'excel',
+						title: table_title('Paid List'),
+						exportOptions: {columns: [ 0,1,2,3,5 ]},
+						footer: true,
 
-          dom: "<'row'<'col-md-2'l><'col-md-6'B><'col-md-4'f>><'row'<'col-md-12'rt>><'row'<'col-md-6'i><'col-md-6'p>>",
-          
-          buttons: [
-          	{extend: 'excel',
-          		title: title('Paid List'),
-          	   exportOptions: {columns: [ 0,1,2,3,5 ]},
-          	   footer: true,
-
-          	},
-          	{extend: 'pdf',
-          	   exportOptions: {columns: [ 0,1,2,3,5 ]}
-          	}, 'copy','colvis'],
-          // buttons.excel.exportOptions : {columns: [ 0, 1, 5 ]},
-          
-        });
-      
-    }
-    function title(title){
-        var d = new Date();
-        var n = d.getDate()+'-'+d.getMonth()+'-'+d.getFullYear();
-        return title+' '+ n;
+					},
+					{extend: 'pdf',
+					exportOptions: {columns: [ 0,1,2,3,5 ]}
+					}, 'copy','colvis'],
+			});
+		}
+		else{
+			table_paid.ajax.url(base_url + 'Admin/fetch_paid_list/'+year).load();
+		}
     }
   });
 </script>
 <script>
-	function print_pdf(id){
-		window.open(base_url+"Admin/receiptPDF/"+id, "_blank", "directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,top=20,left=400,width=600,height=700");
+	function print_pdf(code){
+		code = btoa_return(code);
+		window.open(base_url+"Admin/receiptPDF/"+code, "_blank", "directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,top=20,left=400,width=600,height=700");
 	}
 </script>

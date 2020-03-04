@@ -82,7 +82,14 @@
 							            			<div class="col-sm-6">
 							            				<div class="form-group">
 							            					<label>Course</label>
-							            					<input type="text" class="form-control" name="course" id="course" value="">
+															<select class="form-control select2" style="width: 100%;" id="course">
+																<?php
+																	foreach ($courses as $course) {?>
+																		<option value="<?=$course->course_name?>"><?=$course->course_name?></option>
+																	<?php }
+																?>
+															</select>
+							            					<!-- <input type="text" class="form-control" name="course" id="course" value=""> -->
 							            				</div>
 							            			</div>
 							            		</div>
@@ -410,7 +417,7 @@
 							            				<div class="col-sm-4">
 							            					<div class="form-group">
 							            				    
-								            				    <select class="form-control" name="study_break" id="study_break">
+								            				    <select class="form-control" name="study_break" id="study_break" onchange="valueChanged()">
 								            				      <option>Select</option>
 																  <option value="yes">Yes</option>
 																  <option value="no">No</option>							            				      
@@ -463,9 +470,9 @@
 							            
 								            <div id="form-step-1" role="form" data-toggle="validator">
 								            	<div class="form-group">
-								            		<label>Total Admission Fee: Rs. <span id="tot_fees">xxxx</span></label>
-								            		<input type="hidden" name="tot_pay" id="tot_fee">
+								            		<label>Total Admission Fee: Rs. 3750</label>
 								            		<input type="text" class="form-control" name="paid_amt"  id="paid_amt" required="">
+								            		
 								            	</div>
 								            </div>
 								        
@@ -503,7 +510,7 @@
 							            	    Admission for <span id="s_name">STUDENT NAME</span> <br /> has successfully Completed <br />
 							            	    <small>Course Name: <span id="s_course">Course</span> <br> Payment: Rs. <span id="pay_amt">xxxx</span> </small>
 							            	    <br>
-							            	    <a href="" target="_blank" class="btn btn-primary btn-sm" id="pay_receipt">Print Form</a>
+							            	    <a href="" target="_blank" class="btn btn-primary btn-sm" id="pay_receipt">Print Receipt</a>
 							            	  </div>
 							            	</div>
 
@@ -566,7 +573,6 @@
 
 <script>
 	function admit(key){
-		console.log(key);
 		$('#admit-modal').modal('toggle');
 		$.ajax({
 			type: "GET",
@@ -574,15 +580,15 @@
 			dataType: 'json',
 			cache: false,
 			success: function (data) {
-				console.log(data); 
+				console.log(data);
+				
 				var x;
+				$('#course').val(data.course);
 				if(data.study_break == "yes")
 					$('#gap_reason').show();
 				for (x in data) {
-					// console.log(x+' -> '+data[x]);
 					$('#'+x).val(data[x]);
 				}
-				$('#tot_fees').text(data.tot_fee);
 				$('#image').attr('src', base_url+'upload/'+data.image_path);
 				$('#signature').attr('src', base_url+'upload/'+data.sign_path);
 				
@@ -594,6 +600,13 @@
 			}
 		});
 
+	}
+	function valueChanged() {
+		if ($('#study_break').val() == "yes") {
+			$("#gap_reason").show();
+			$('#gap_reason_text').required = true;
+		} else
+			$("#gap_reason").hide();
 	}
 </script>
 
@@ -638,7 +651,7 @@
 				processData: false,
 				contentType: false,
 				success: function (result) {
-					// console.log(name+course+paid_amt); return false;
+					console.log(result);
 					if (result.class == "success") {
 						spinnerOff();
 						// feedback_msg(result, 1500);

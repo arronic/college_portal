@@ -25,10 +25,11 @@
 					<thead>
 						<tr>
 							<th>Sl no.</th>
-							<th>Date of issue</th>
 							<th>Name</th>
 							<th>Course</th>
-                            <th>Code</th>
+							<th>Code</th>
+							<th>Date of issue</th>
+							<th>Status</th>
                             <th>Action</th>
 						</tr>
 					</thead>
@@ -96,6 +97,7 @@
 
 <script>
 	function print_pdf(key){
+		key = btoa_return(key);
 		window.open(base_url+"Admin/print_pdf/"+key, "_blank", "directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,top=20,left=400,width=600,height=700");
 	}
 	function delete_id(key){

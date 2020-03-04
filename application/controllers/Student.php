@@ -1,20 +1,30 @@
 <?php
 class Student extends CI_Controller{
     public function index(){
+        $this->load->view('auth/student');
+        // $heading = "Requested Page is not Found!";
+        // $message = "The page you are requesting is not built for now!";
+        // $this->load->view('errors/html/error_404',compact('heading','message'));
     }
 // ajax function starts
     public function getform(){
         $code = $this->input->post('key');
-        $student = $this->db->where('unique_code',$code)->get('form_sold');
-        if($student->num_rows()>0){
-            echo "TRUE";
+        $student = $this->genModel->fetch_by_where('form_sold',['unique_code'=>$code]);
+        if($student){
+            $student = $this->genModel->fetch_by_where('form_submitted',['code'=>$code]);
+            if($student){
+                echo "NONE";
+            }
+            else{
+                echo "TRUE";
+            }
         }
         else{
             echo "FALSE";
         }
     }
     public function getdetails($key){
-        $sd = $this->genModel->fetch_by_col('form_submitted', ['code'=>$key]);
+        $sd = $this->genModel->fetch_by_col('form_submitted', ['id'=>$key]);
         echo json_encode($sd[0]);
     }
 // ajax function ends
@@ -24,6 +34,7 @@ class Student extends CI_Controller{
         $this->load->view('student/thankyou',['code'=>$code]);
     }
     public function fillform($key){
+        $key = base64_decode($key);
         $sold_form = $this->db->where('unique_code',$key)->get('form_sold');
         $sold_form = $sold_form->row();
         $this->load->view('student/form',['form_details'=>$sold_form]);
@@ -50,89 +61,41 @@ class Student extends CI_Controller{
     public function submit_form(){
         $path = './upload/';
         $type = 'jpg|png|jpeg';
-        $_FILES['userfile']['name'] = $_FILES['file']['name'][0];
-        $_FILES['userfile']['type'] = $_FILES['file']['type'][0];
-        $_FILES['userfile']['tmp_name'] = $_FILES['file']['tmp_name'][0];
-        $_FILES['userfile']['error'] = $_FILES['file']['error'][0];
-        $_FILES['userfile']['size'] = $_FILES['file']['size'][0];
-        $pic_name = $this->arronic->uniqName($_FILES['userfile']['name']);
-        $this->_file_upload($path,$pic_name,$type);
-        $this->_image_resize('./upload/'.$pic_name,143,143);
-
-        $_FILES['userfile']['name'] = $_FILES['file']['name'][1];
-        $_FILES['userfile']['type'] = $_FILES['file']['type'][1];
-        $_FILES['userfile']['tmp_name'] = $_FILES['file']['tmp_name'][1];
-        $_FILES['userfile']['error'] = $_FILES['file']['error'][1];
-        $_FILES['userfile']['size'] = $_FILES['file']['size'][1];
-        $sign_name = $this->arronic->uniqName($_FILES['userfile']['name']);
-        $this->_file_upload($path,$sign_name,$type);
-        $this->_image_resize('./upload/'.$sign_name,80,200);
-        
-        $data = array(
-            'name' => $this->input->post('student_name'),
-            'code'=> $this->input->post('student_code'),
-            'course'=> $this->input->post('student_course'),
-            'father'=> $this->input->post('father'),
-            'mother'=> $this->input->post('mother'),
-            'g_name'=> $this->input->post('g_name'),
-            'g_occupation'=> $this->input->post('g_occupation'),
-            'g_relation'=> $this->input->post('g_relation'),
-            'g_village'=> $this->input->post('g_vill'),
-            'g_po'=> $this->input->post('g_PO'),
-            'g_district'=> $this->input->post('g_district'),
-            'g_pin'=> $this->input->post('g_pin'),
-            'g_phone'=> $this->input->post('g_phone'),
-            'nationality' => $this->input->post('nationality'),
-            'religion'=> $this->input->post('religion'),
-            'cast'=> $this->input->post('cast'),
-            'dob'=> $this->input->post('dob'),
-            'gender'=> $this->input->post('gender'),
-            'last_institute'=> $this->input->post('l_institute'),
-            'last_exam'=> $this->input->post('l_exam'),
-            'last_exam_roll'=> $this->input->post('e_roll'),
-            'last_exam_no'=> $this->input->post('e_no'),
-            'last_exam_year'=> $this->input->post('e_year'),
-            'last_exam_center'=> $this->input->post('e_center'),
-            'sub1'=> $this->input->post('sub1'),
-            'sub2'=> $this->input->post('sub2'),
-            'sub3'=> $this->input->post('sub3'),
-            'sub4'=> $this->input->post('sub4'),
-            'sub5'=> $this->input->post('sub5'),
-            'sub6'=> $this->input->post('sub6'),
-            'sub1_max'=> $this->input->post('sub1_max'),
-            'sub2_max'=> $this->input->post('sub2_max'),
-            'sub3_max'=> $this->input->post('sub3_max'),
-            'sub4_max'=> $this->input->post('sub4_max'),
-            'sub5_max'=> $this->input->post('sub5_max'),
-            'sub6_max'=> $this->input->post('sub6_max'),
-            'sub1_obt'=> $this->input->post('sub1_obt'),
-            'sub2_obt'=> $this->input->post('sub2_obt'),
-            'sub3_obt'=> $this->input->post('sub3_obt'),
-            'sub4_obt'=> $this->input->post('sub4_obt'),
-            'sub5_obt'=> $this->input->post('sub5_obt'),
-            'sub6_obt'=> $this->input->post('sub6_obt'),
-            'other_sub'=> $this->input->post('o_sub'),
-            'last_exam_div'=> $this->input->post('division'),
-            'last_exam_total'=> $this->input->post('total'),
-            'last_exam_obtained'=> $this->input->post('obtained'),
-            'gu_reg'=> $this->input->post('gu_reg_no'),
-            'gu_year'=> $this->input->post('gu_year'),
-            'apl_bpl'=> $this->input->post('apl'),
-            'study_break'=> $this->input->post('gap'),
-            'break_reason'=> $this->input->post('gap_reason'),
-            'image_path'=> $pic_name,
-            'sign_path'=> $sign_name,
-            'date'=>date('Y-m-d')
-        );
-        $this->genModel->insert_data('form_submitted',$data);
-        redirect(base_url().'student/thankyou/'.$this->input->post('student_code'));
+        for ($i=0; $i <= 1; $i++) { 
+            $_FILES['userfile']['name'] = $_FILES['file']['name'][$i];
+            $_FILES['userfile']['type'] = $_FILES['file']['type'][$i];
+            $_FILES['userfile']['tmp_name'] = $_FILES['file']['tmp_name'][$i];
+            $_FILES['userfile']['error'] = $_FILES['file']['error'][$i];
+            $_FILES['userfile']['size'] = $_FILES['file']['size'][$i];
+            if($i == 0){
+                $pic_name = $this->arronic->uniqName($_FILES['userfile']['name']);
+                $this->_file_upload($path,$pic_name,$type);
+                $this->_image_resize('./upload/'.$pic_name,143,143);
+            }else{
+                $sign_name = $this->arronic->uniqName($_FILES['userfile']['name']);
+                $this->_file_upload($path,$sign_name,$type);
+                $this->_image_resize('./upload/'.$sign_name,50,180);
+            }
+        }
+        $data = $this->input->post();
+        $data['image_path'] = $pic_name;
+        $data['sign_path']= $sign_name;
+        $data['date'] = date('Y-m-d');
+         
+        if($this->genModel->insert_data('form_submitted',$data)){
+            $this->genModel->update_by_where('form_sold', ['status'=>1], ['unique_code'=>$data['code']]);
+            redirect(base_url().'student/thankyou/'.$data['code']);
+        }
+            
+        else
+            redirect(base_url());
     }
 
     // pdf generate
     function myform($code){
+        $code = base64_decode($code);
         $this->load->library('pdf');
         $view = $this->htmltopdfmodel->getformpdf($code);
-        // echo $view; exit;
         $this->pdf->loadHtml($view);
         $this->pdf->render();    
         $this->pdf->stream("Form.pdf",array("Attachment"=>0));
@@ -142,13 +105,10 @@ class Student extends CI_Controller{
 			
         $configi['image_library']  = 'gd2';
         $configi['source_image']   = $source;
-        // $configi['max_size']       = '0';
         $configi['create_thumb']   = FALSE;
         $configi['maintain_ratio'] = FALSE;
         $configi['overwrite'] 	   = TRUE;
         $configi['file_permissions'] = 0644;
-        // $configi['max_width']          = 3000;
-        // $configi['max_height']         = 3000;
         $configi['width']          = $width;
         $configi['height']         = $height;
         if($copy)

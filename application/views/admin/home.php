@@ -15,15 +15,14 @@
 						<!-- <li class="breadcrumb-item"><a href="#">Home</a></li>
 						<li class="breadcrumb-item active">Enrollment Form</li> -->
 
-                    <button class="btn btn-primary" onclick="enrol_new()">Enroll New</button>
+                    <button class="btn btn-primary" onclick="enrol_new()"><i class="fas fa-pen">  Enroll New</i></button>
 					</ol>
 				</div>
 			</div>
 		</div><!-- /.container-fluid -->
 	</section>
     <div class="row">
-        <div class="col"></div>
-        <div class="col-md-8">
+        <div class="col-md-8 offset-md-2">
                 <section class="content">
                     <div class="container-fluid">
                         <div id="success_info"></div>
@@ -75,7 +74,6 @@
                     </div>
                 </section> 
         </div>
-        <div class="col"></div>
     </div>
     <!-- modal starts -->
     <style>
@@ -183,9 +181,8 @@
 </script>
 
 <script type="text/javascript">
+var base_url = '<?= base_url(); ?>'
 $(document).ready(function(){
-    var base_url = '<?= base_url(); ?>'
-
     $('#genKey_form').submit(function(e){
         e.preventDefault();
         var student_name = $('#name').val();
@@ -218,9 +215,9 @@ $(document).ready(function(){
                                             <h3 class="card-title">Enrollment Details</h3>
                                         </div>
                                         <div class="card-body">
-                                            <p>Student form ohas been successfully created</P>
+                                            <p>Student form has been successfully created</P>
                                             <h4 class="text-center">Student Unique Id: `+uniquekey+`</h4>
-                                            <a href="`+base_url+"admin/print_pdf/"+uniquekey+`" class="btn btn-primary float-right" target="_bank">Print Form</a>
+                                            <button onclick="print_pdf(`+"'"+uniquekey+"'"+`)" class="btn btn-success float-right"><i class="fas fa-print">  Print Form</i></a>
                                         </div>
                                         </div>`).slideDown();
                                 // $('#generate_btn').preventDefaultop('disabled', true);
@@ -243,11 +240,10 @@ $(document).ready(function(){
             console.log('fill it first')
         }
         return false;
-        
-        
-        
     });
 });
+</script>
+<script>
 function makeid(characters,length) {
    var result = '';
    var d = new Date();
@@ -258,6 +254,12 @@ function makeid(characters,length) {
    }
    return result.replace(/ /g,'');
    // return result;
+}
+</script>
+<script>
+function print_pdf(key){
+    key = btoa_return(key);
+    window.open(base_url+"Admin/print_pdf/"+key, "_blank", "directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,top=20,left=400,width=600,height=700");
 }
 </script>
 

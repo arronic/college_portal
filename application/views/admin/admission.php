@@ -4,12 +4,12 @@
 		<div class="container-fluid">
 			<div class="row mb-2">
 				<div class="col-sm-6">
-					<h1>Filled Forms</h1>
+					<h1>Admission List</h1>
 				</div>
 				<div class="col-sm-6">
 					<ol class="breadcrumb float-sm-right">
 						<li class="breadcrumb-item"><a href="#">Home</a></li>
-						<li class="breadcrumb-item active">Filled Form</li>
+						<li class="breadcrumb-item active">Admission List</li>
 					</ol>
 				</div>
 			</div>
@@ -23,7 +23,9 @@
 						<tr>
 							<th>Sl no.</th>
 							<th>Name</th>
+							<th>Course</th>
 							<th>Student Code</th>
+							<th>Admission Date</th>
 							<th>Action</th>
 						</tr>
 					</thead>
@@ -38,7 +40,7 @@
 						<div class="modal-header">
 							<h5 class="modal-title" id="admitModalLabel">Admission</h5>
 							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-								<span aria-hidden="true"></span>
+								<span aria-hidden="true">x</span>
 							</button>
 						</div>
 						<div class="modal-body">
@@ -106,7 +108,7 @@
 					<div class="modal-header">
 						<h5 class="modal-title" id="editModalLabel">Edit</h5>
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true"></span>
+							<span aria-hidden="true">x</span>
 						</button>
 					</div>
 					<div class="modal-body">
@@ -114,15 +116,15 @@
 							<div class="row">
 								<div class="col-sm-6">
 									<div class="form-group">
-										<input type="hidden" name="id">
+										<input type="hidden" name="id" id="id">
 										<label>Name</label>
-										<input type="text" class="form-control" name="student_name" value="" disabled>
+										<input type="text" class="form-control" id="name" name="name" value="" disabled>
 									</div>
 								</div>
 								<div class="col-sm-6">
 									<div class="form-group">
 										<label>Course</label>
-										<input type="text" class="form-control" name="student_course" value="" disabled>
+										<input type="text" class="form-control" id="course" name="course" value="" disabled>
 									</div>
 								</div>
 							</div>
@@ -130,13 +132,13 @@
 								<div class="col-sm-6">
 									<div class="form-group">
 										<label>Father's Name</label>
-										<input type="text" class="form-control" name="father">
+										<input type="text" class="form-control" id="father" name="father">
 									</div>
 								</div>
 								<div class="col-sm-6">
 									<div class="form-group">
 										<label>Mother's Name</label>
-										<input type="text" class="form-control" name="mother">
+										<input type="text" class="form-control" id="mother" name="mother">
 									</div>
 								</div>
 							</div>
@@ -144,19 +146,19 @@
 								<div class="col-sm-4">
 									<div class="form-group">
 										<label>Guardian's Name</label>
-										<input type="text" class="form-control" name="g_name">
+										<input type="text" class="form-control" id="g_name" name="g_name">
 									</div>
 								</div>
 								<div class="col-sm-4">
 									<div class="form-group">
 										<label>Guardian's Occupation</label>
-										<input type="text" class="form-control" name="g_occupation">
+										<input type="text" class="form-control" id="g_occupation" name="g_occupation">
 									</div>
 								</div>
 								<div class="col-sm-4">
 									<div class="form-group">
 										<label>Guardian's Relation</label>
-										<input type="text" class="form-control" name="g_relation">
+										<input type="text" class="form-control" id="g_relation" name="g_relation">
 									</div>
 								</div>
 							</div>
@@ -164,13 +166,13 @@
 								<div class="col-sm-6">
 									<div class="form-group">
 										<label>Guardian's Village</label>
-										<input type="text" class="form-control" name="g_village">
+										<input type="text" class="form-control" id="g_village" name="g_village">
 									</div>
 								</div>
 								<div class="col-sm-6">
 									<div class="form-group">
 										<label>Guardian's P.O.</label>
-										<input type="text" class="form-control" name="g_po">
+										<input type="text" class="form-control" id="g_po" name="g_po">
 									</div>
 								</div>
 							</div>
@@ -178,19 +180,19 @@
 								<div class="col-sm-4">
 									<div class="form-group">
 										<label>Guardian's District</label>
-										<input type="text" class="form-control" name="g_district">
+										<input type="text" class="form-control" id="g_district" name="g_district">
 									</div>
 								</div>
 								<div class="col-sm-4">
 									<div class="form-group">
 										<label>Guardian's Pin</label>
-										<input type="text" class="form-control" name="g_pin">
+										<input type="text" class="form-control" id="g_pin" name="g_pin">
 									</div>
 								</div>
 								<div class="col-sm-4">
 									<div class="form-group">
 										<label>Guardian's Phone</label>
-										<input type="text" class="form-control" name="g_phone">
+										<input type="text" class="form-control" id="g_phone" name="g_phone">
 									</div>
 								</div>
 							</div>
@@ -199,13 +201,13 @@
 								<div class="col-sm-6">
 									<div class="form-group">
 										<label>Nationality</label>
-										<input type="text" class="form-control" name="nationality">
+										<input type="text" class="form-control" id="nationality" name="nationality">
 									</div>
 								</div>
 								<div class="col-sm-6">
 									<div class="form-group">
 										<label>Religion</label>
-										<input type="text" class="form-control" name="religion">
+										<input type="text" class="form-control" id="religion" name="religion">
 									</div>
 								</div>
 							</div>
@@ -213,19 +215,19 @@
 								<div class="col-sm-4">
 									<div class="form-group">
 										<label>Cast</label>
-										<input type="text" class="form-control" name="cast">
+										<input type="text" class="form-control" id="cast" name="cast">
 									</div>
 								</div>
 								<div class="col-sm-4">
 									<div class="form-group">
 										<label>DOB</label>
-										<input type="date" class="form-control" name="dob">
+										<input type="date" class="form-control" id="dob" name="dob">
 									</div>
 								</div>
 								<div class="col-sm-4">
 									<div class="form-group">
 										<label>Gender</label>
-										<select name="gender" id="" class="form-control">
+										<select name="gender" id="gender" class="form-control">
 											<option value="male">Male</option>
 											<option value="female">Female</option>
 											<option value="transgender">Transgender</option>
@@ -238,7 +240,7 @@
 								<div class="col-sm-12">
 									<div class="form-group">
 										<label>Name of the institute last studied</label>
-										<input type="text" class="form-control" name="last_institute">
+										<input type="text" class="form-control" id="last_institute" name="last_institute">
 									</div>
 								</div>
 							</div>
@@ -246,7 +248,7 @@
 								<div class="col-sm-12">
 									<div class="form-group">
 										<label>Name of the last examination passed</label>
-										<input type="text" class="form-control" name="last_exam">
+										<input type="text" class="form-control" id="last_exam" name="last_exam">
 									</div>
 								</div>
 							</div>
@@ -254,25 +256,25 @@
 								<div class="col-sm-3">
 									<div class="form-group">
 										<label>Last examination roll</label>
-										<input type="text" class="form-control" name="last_exam_roll">
+										<input type="text" class="form-control" id="last_exam_roll" name="last_exam_roll">
 									</div>
 								</div>
 								<div class="col-sm-3">
 									<div class="form-group">
 										<label>Last examination no.</label>
-										<input type="text" class="form-control" name="last_exam_no">
+										<input type="text" class="form-control" id="last_exam_no" name="last_exam_no">
 									</div>
 								</div>
 								<div class="col-sm-3">
 									<div class="form-group">
 										<label>Last examination year</label>
-										<input type="text" class="form-control" name="last_exam_year">
+										<input type="text" class="form-control" id="last_exam_year" name="last_exam_year">
 									</div>
 								</div>
 								<div class="col-sm-3">
 									<div class="form-group">
 										<label>Last examination center</label>
-										<input type="text" class="form-control" name="last_exam_center">
+										<input type="text" class="form-control" id="last_exam_center" name="last_exam_center"> 
 									</div>
 								</div>
 							</div>
@@ -282,19 +284,19 @@
 								<div class="col-sm-4">
 									<div class="form-group">
 										<label for="">Subjects</label>
-										<input type="text" class="form-control" name="sub1">
+										<input type="text" class="form-control" id="sub1"name="sub1">
 									</div>
 								</div>
 								<div class="col-sm-4">
 									<div class="form-group">
 										<label for="">Max Marks</label>
-										<input type="text" class="form-control" name="sub1_max">
+										<input type="text" class="form-control" id="sub1_max"name="sub1_max">
 									</div>
 								</div>
 								<div class="col-sm-4">
 									<div class="form-group">
 										<label for="">Marks Obtained</label>
-										<input type="text" class="form-control" name="sub1_obt">
+										<input type="text" class="form-control" id="sub1_obt" name="sub1_obt">
 									</div>
 								</div>
 							</div>
@@ -302,19 +304,19 @@
 								<div class="col-sm-4">
 									<div class="form-group">
 
-										<input type="text" class="form-control" name="sub2">
+										<input type="text" class="form-control" id="sub2" name="sub2">
 									</div>
 								</div>
 								<div class="col-sm-4">
 									<div class="form-group">
 
-										<input type="text" class="form-control" name="sub2_max">
+										<input type="text" class="form-control" id="sub2_max" name="sub2_max">
 									</div>
 								</div>
 								<div class="col-sm-4">
 									<div class="form-group">
 
-										<input type="text" class="form-control" name="sub2_obt">
+										<input type="text" class="form-control" id="sub2_obt" name="sub2_obt">
 									</div>
 								</div>
 							</div>
@@ -322,69 +324,69 @@
 								<div class="col-sm-4">
 									<div class="form-group">
 
-										<input type="text" class="form-control" name="sub3">
+										<input type="text" class="form-control" id="sub3" name="sub3">
 									</div>
 								</div>
 								<div class="col-sm-4">
 									<div class="form-group">
-										<input type="text" class="form-control" name="sub3_max">
+										<input type="text" class="form-control" id="sub3_max" name="sub3_max">
 									</div>
 								</div>
 								<div class="col-sm-4">
 									<div class="form-group">
 
-										<input type="text" class="form-control" name="sub3_obt">
+										<input type="text" class="form-control" id="sub3_obt" name="sub3_obt">
 									</div>
 								</div>
 							</div>
 							<div class="row">
 								<div class="col-sm-4">
 									<div class="form-group">
-										<input type="text" class="form-control" name="sub4">
+										<input type="text" class="form-control" id="sub4" name="sub4">
 									</div>
 								</div>
 								<div class="col-sm-4">
 									<div class="form-group">
-										<input type="text" class="form-control" name="sub4_max">
+										<input type="text" class="form-control" id="sub4_max" name="sub4_max">
 									</div>
 								</div>
 								<div class="col-sm-4">
 									<div class="form-group">
-										<input type="text" class="form-control" name="sub4_obt">
-									</div>
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-sm-4">
-									<div class="form-group">
-										<input type="text" class="form-control" name="sub5">
-									</div>
-								</div>
-								<div class="col-sm-4">
-									<div class="form-group">
-										<input type="text" class="form-control" name="sub5_max">
-									</div>
-								</div>
-								<div class="col-sm-4">
-									<div class="form-group">
-										<input type="text" class="form-control" name="sub5_obt">
+										<input type="text" class="form-control" id="sub4_obt" name="sub4_obt">
 									</div>
 								</div>
 							</div>
 							<div class="row">
 								<div class="col-sm-4">
 									<div class="form-group">
-										<input type="text" class="form-control" name="sub6">
+										<input type="text" class="form-control" id="sub5" name="sub5">
 									</div>
 								</div>
 								<div class="col-sm-4">
 									<div class="form-group">
-										<input type="text" class="form-control" name="sub6_max">
+										<input type="text" class="form-control" id="sub5_max" name="sub5_max">
 									</div>
 								</div>
 								<div class="col-sm-4">
 									<div class="form-group">
-										<input type="text" class="form-control" name="sub6_obt">
+										<input type="text" class="form-control" id="sub5_obt" name="sub5_obt">
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-4">
+									<div class="form-group">
+										<input type="text" class="form-control" id="sub6" name="sub6">
+									</div>
+								</div>
+								<div class="col-sm-4">
+									<div class="form-group">
+										<input type="text" class="form-control" id="sub6_max" name="sub6_max">
+									</div>
+								</div>
+								<div class="col-sm-4">
+									<div class="form-group">
+										<input type="text" class="form-control" id="sub6_obt" name="sub6_obt">
 									</div>
 								</div>
 							</div>
@@ -392,7 +394,7 @@
 								<div class="col-sm-6">
 									<label>Other, if any (use comma(,) between subjects)</label>
 									<div class="form-group">
-										<input type="text" class="form-control" name="other_sub">
+										<input type="text" class="form-control" id="other_sub" name="other_sub">
 									</div>
 								</div>
 							</div>
@@ -401,19 +403,19 @@
 								<div class="col-sm-4">
 									<div class="form-group">
 										<label>Last exam division</label>
-										<input type="text" class="form-control" name="last_exam_div">
+										<input type="text" class="form-control" id="last_exam_div" name="last_exam_div">
 									</div>
 								</div>
 								<div class="col-sm-4">
 									<label>Last exam total marks</label>
 									<div class="form-group">
-										<input type="text" class="form-control" name="last_exam_total">
+										<input type="text" class="form-control" id="last_exam_total" name="last_exam_total">
 									</div>
 								</div>
 								<div class="col-sm-4">
 									<div class="form-group">
 										<label>Last exam marks obained</label>
-										<input type="text" class="form-control" name="last_exam_obtained">
+										<input type="text" class="form-control" id="last_exam_obtained" name="last_exam_obtained">
 									</div>
 								</div>
 							</div>
@@ -422,13 +424,13 @@
 								<div class="col-sm-6">
 									<div class="form-group">
 										<label>G.U./AHSEC Registration No.</label>
-										<input type="text" class="form-control" name="gu_reg">
+										<input type="text" class="form-control" id="gu_reg" name="gu_reg">
 									</div>
 								</div>
 								<div class="col-sm-6">
 									<div class="form-group">
 										<label>Year</label>
-										<input type="text" class="form-control" name="gu_year">
+										<input type="text" class="form-control" id="gu_year" name="gu_year">
 									</div>
 								</div>
 							</div>
@@ -437,26 +439,19 @@
 								<div class="col-sm-4">
 									<label>Where do you fall under?</label>
 									<div class="form-group">
-										<div class="custom-control custom-radio">
-											<input class="custom-control-input" type="radio" id="customRadio1"
-												name="apl_bpl" value="apl">
-											<label for="customRadio1" class="custom-control-label">APL</label>
-										</div>
-										<div class="custom-control custom-radio">
-											<input class="custom-control-input" type="radio" id="customRadio2"
-												name="apl_bpl" value="bpl">
-											<label for="customRadio2" class="custom-control-label">BPL</label>
-										</div>
+										<select class="form-control select2" name="apl_bpl" id="apl_bpl" style="width: 100%;">
+											<option value="apl">APL</option>
+											<option value="bpl">BPL</option>
+										</select>
 									</div>
 								</div>
 								<div class="col-sm-8">
 									<label>Is there any break of your studies?</label>
-									<div class="form-group">
-										<div class="custom-control custom-checkbox">
-											<input class="custom-control-input" type="checkbox" name="study_break"
-												id="gap_checkbox" value="1" onchange="valueChanged()">
-											<label for="gap_checkbox" class="custom-control-label">Yes</label>
-										</div>
+									<div class="form-group col-sm-4">
+										<select class="form-control select2" name="study_break" id="study_break" style="width: 100%;" onchange="valueChanged()">
+											<option value="yes">YES</option>
+											<option value="no">NO</option>
+										</select>
 									</div>
 									<div class="form-group" id="gap_reason" style="display: none;">
 										<label>Please provide reason</label>
@@ -503,9 +498,8 @@
 <?php include('script.php');?>
 <script type="text/javascript">
 	base_url = '<?= base_url() ?>'
-
 	function valueChanged() {
-		if ($('#gap_checkbox').is(":checked")) {
+		if ($('#study_break').val() == "yes") {
 			$("#gap_reason").show();
 			$('#gap_reason_text').required = true;
 		} else
@@ -514,81 +508,30 @@
 	$(document).ready(function () {
 		var myTable = $('#my-table').DataTable({
 			"ajax": base_url + "Admin/admitted",
-			// "table": "#my-table",
-			
 		});
 		$('#edit-modal').on('show.bs.modal', function (e) {
 			$('#image_file').val('');
 			$('#sign_file').val('');
 			var studentID = $(e.relatedTarget).data('student-id');
+			spinnerOn();
 			$.ajax({
 				type: "GET",
 				url: base_url + "student/getdetails/" + studentID,
 				cache: false,
-				success: function (data, status) {
-					data = JSON.parse(data);
-					if (data.study_break == 1) {
-						$(e.currentTarget).find('#gap_checkbox').prop('checked', true);
+				dataType: 'json',
+				success: function (data) {
+					spinnerOff();
+					$('#id').val(data.id);
+					var x;
+					if (data.study_break == "yes") {
+						$("#gap_reason").show();
 						$('#gap_reason_text').val(data.break_reason);
 					} else {
-						$(e.currentTarget).find('#gap_checkbox').prop('checked', false);
+						$("#gap_reason").hide();
 					}
-					if ($(e.currentTarget).find('#gap_checkbox').is(":checked")) {
-						$(e.currentTarget).find("#gap_reason").show();
-						$(e.currentTarget).find('#gap_reason_text').required = true;
-					} else {
-						$(e.currentTarget).find("#gap_reason").hide();
+					for(x in data){
+						$('#'+x).val(data[x]);
 					}
-					$(e.currentTarget).find('[name="id"]').val(data.id);
-					$(e.currentTarget).find('[name="student_name"]').val(data.name);
-					$(e.currentTarget).find('[name="student_course"]').val(data.course);
-					$(e.currentTarget).find('[name="father"]').val(data.father);
-					$(e.currentTarget).find('[name="mother"]').val(data.mother);
-					$(e.currentTarget).find('[name="g_name"]').val(data.g_name);
-					$(e.currentTarget).find('[name="g_occupation"]').val(data.g_occupation);
-					$(e.currentTarget).find('[name="g_relation"]').val(data.g_relation);
-					$(e.currentTarget).find('[name="g_village"]').val(data.g_village);
-					$(e.currentTarget).find('[name="g_po"]').val(data.g_po);
-					$(e.currentTarget).find('[name="g_district"]').val(data.g_district);
-					$(e.currentTarget).find('[name="g_pin"]').val(data.g_pin);
-					$(e.currentTarget).find('[name="g_phone"]').val(data.g_phone);
-					$(e.currentTarget).find('[name="nationality"]').val(data.nationality);
-					$(e.currentTarget).find('[name="religion"]').val(data.religion);
-					$(e.currentTarget).find('[name="cast"]').val(data.cast);
-					$(e.currentTarget).find('[name="dob"]').val(data.dob);
-					$(e.currentTarget).find('[name="gender"]').val(data.gender);
-					$(e.currentTarget).find('[name="last_institute"]').val(data.last_institute);
-					$(e.currentTarget).find('[name="last_exam"]').val(data.last_exam);
-					$(e.currentTarget).find('[name="last_exam_roll"]').val(data.last_exam_roll);
-					$(e.currentTarget).find('[name="last_exam_no"]').val(data.last_exam_no);
-					$(e.currentTarget).find('[name="last_exam_year"]').val(data.last_exam_year);
-					$(e.currentTarget).find('[name="last_exam_center"]').val(data.last_exam_center);
-					$(e.currentTarget).find('[name="sub1"]').val(data.sub1);
-					$(e.currentTarget).find('[name="sub2"]').val(data.sub2);
-					$(e.currentTarget).find('[name="sub3"]').val(data.sub3);
-					$(e.currentTarget).find('[name="sub4"]').val(data.sub4);
-					$(e.currentTarget).find('[name="sub5"]').val(data.sub5);
-					$(e.currentTarget).find('[name="sub6"]').val(data.sub6);
-					$(e.currentTarget).find('[name="sub1_max"]').val(data.sub1_max);
-					$(e.currentTarget).find('[name="sub2_max"]').val(data.sub2_max);
-					$(e.currentTarget).find('[name="sub3_max"]').val(data.sub3_max);
-					$(e.currentTarget).find('[name="sub4_max"]').val(data.sub4_max);
-					$(e.currentTarget).find('[name="sub5_max"]').val(data.sub5_max);
-					$(e.currentTarget).find('[name="sub6_max"]').val(data.sub6_max);
-					$(e.currentTarget).find('[name="sub1_obt"]').val(data.sub1_obt);
-					$(e.currentTarget).find('[name="sub2_obt"]').val(data.sub2_obt);
-					$(e.currentTarget).find('[name="sub3_obt"]').val(data.sub3_obt);
-					$(e.currentTarget).find('[name="sub4_obt"]').val(data.sub4_obt);
-					$(e.currentTarget).find('[name="sub5_obt"]').val(data.sub5_obt);
-					$(e.currentTarget).find('[name="sub6_obt"]').val(data.sub6_obt);
-					$(e.currentTarget).find('[name="other_sub"]').val(data.other_sub);
-					$(e.currentTarget).find('[name="last_exam_div"]').val(data.last_exam_div);
-					$(e.currentTarget).find('[name="last_exam_total"]').val(data.last_exam_total);
-					$(e.currentTarget).find('[name="last_exam_obtained"]').val(data.last_exam_obtained);
-					$(e.currentTarget).find('[name="gu_reg"]').val(data.gu_reg);
-					$(e.currentTarget).find('[name="gu_year"]').val(data.gu_year);
-					$(e.currentTarget).find("input[name=apl_bpl][value=" + data.apl_bpl + "]")
-						.prop('checked', true);
 					$('#image').attr('src', base_url + 'upload/' + data.image_path);
 					$('#signature').attr('src', base_url + 'upload/' + data.sign_path);
 				},
@@ -599,18 +542,22 @@
 		});
 		$('#editForm').on('submit', function (e) {
 			e.preventDefault();
+			spinnerOn();
 			$.ajax({
 				url: base_url + "Admin/update_student",
 				type: "POST",
 				data:  new FormData(this),
+				dataType: 'json',
 				contentType: false,
 				cache: false,
 				processData:false,
 				processData: false,
 				contentType: false,
-				success: function (data, status) {
-					if (data == "TRUE") {
+				success: function (data) {
+					spinnerOff();
+					if (data.class == "success") {
 						$('#edit-modal').modal('hide');
+						feedback_msg(data, 10000);
 						myTable.ajax.reload();
 					} else {
 						$('.container').before(

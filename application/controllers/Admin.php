@@ -16,7 +16,8 @@ class Admin extends CI_Controller{
         $this->load->view('admin/soldform');    
     }
     public function filled_form(){
-        $this->load->view('admin/filledform');
+        $courses = $this->genModel->fetch_by_all('course');
+        $this->load->view('admin/filledform',compact('courses'));
     }
     public function admission_list(){
         $this->load->view('admin/admission');
@@ -34,7 +35,7 @@ class Admin extends CI_Controller{
     // view function ends
 
     // logic function starts
-   public function getformdetails(){
+    public function getformdetails(){
         if($code = $this->input->post('key')){
             $student =  $this->genModel->fetch_by_col('form_submitted', ['code'=>$code]);
             if($student[0]->name != null){
@@ -98,9 +99,6 @@ class Admin extends CI_Controller{
     }
     public function getDetails($key){
         $sd = $this->genModel->fetch_by_col('form_submitted', ['code'=>$key]);
-        $total_fee = $this->model->total_fee($sd[0]->course);
-        $sd[0]->tot_fee = $total_fee[0]->tot;
-        // echo "<pre>"; print_r($sd[0]); exit;
         echo json_encode($sd[0]);
     }
 
@@ -131,7 +129,7 @@ class Admin extends CI_Controller{
         echo json_encode($response);      
     }
     public function admitted(){
-        $select = 'id, name, code, status';
+        $select = 'id, name, course, code, adm_date, status';
         $all_student = $this->genModel->fetch_by_col_select($select, 'form_submitted', ['status'=>1]);
         $response['data'] = [];
         if(isset($all_student[0]->status) && $all_student[0]->status == 1){
@@ -139,8 +137,10 @@ class Admin extends CI_Controller{
                 $response['data'][$key] = array(
                     $key+1,
                     $value->name,
+                    $value->course,
                     $value->code,
-                    '<button type="button" data-toggle="modal" data-student-id="'.$value->id.'" data-target="#edit-modal" class="btn btn-primary">edit</button>',
+                    $value->adm_date,
+                    '<button type="button" data-toggle="modal" data-student-id="'.$value->id.'" data-target="#edit-modal" class="btn btn-primary">Edit</button>',
                 );
             }
         }
@@ -152,13 +152,14 @@ class Admin extends CI_Controller{
         if($all_student){
             foreach ($all_student as $key => $value) {
                 $uniq = "'".$value->unique_code."'";
-                $btn = '<button class="btn btn-success mr-2" onclick="print_pdf('.$uniq.')"><i class="fas fa-print"></i> Print</button><button class="btn btn-danger" onclick="delete_id('.$uniq.')"><i class="fas fa-trash"></i> Delete</button>';
+                $btn = '<button class="btn btn-success mr-3" onclick="print_pdf('.$uniq.')"><i class="fas fa-print"></i> Print</button><button class="btn btn-danger" onclick="delete_id('.$uniq.')"><i class="fas fa-trash"></i> Delete</button>';
                 $response['data'][$key]=array(
                     $key+1,
-                    date('d-m-Y', strtotime($value->date)),
                     $value->student_name,
                     $value->student_course,
                     $value->unique_code,
+                    date('d-m-Y', strtotime($value->date)),
+                    ($value->status) ? 'Filled' : 'Not Filled',
                     $btn
 
                 );
@@ -180,15 +181,17 @@ class Admin extends CI_Controller{
 
     }
     public function print_pdf($code){
+        $code  = (base64_decode($code));
         $this->load->library('pdf');
         $view = $this->htmltopdfmodel->gethtml($code);
         $this->pdf->loadHtml($view);
         $this->pdf->render();    
         $this->pdf->stream("Enrollment.pdf",array("Attachment"=>0));
     }
-    public function receiptPDF($id){
+    public function receiptPDF($code){
+        $code = base64_decode($code);
         $this->load->library('pdf');
-        $view = $this->htmltopdfmodel->getreceiptPDF($id);
+        $view = $this->htmltopdfmodel->getreceiptPDF($code);
         $this->pdf->loadHtml($view);
         $this->pdf->render();    
         $this->pdf->stream("Receipt.pdf",array("Attachment"=>0));
@@ -206,7 +209,6 @@ class Admin extends CI_Controller{
         $data = $this->input->post();
         $id = $data['id'];
         $student_details = $this->genModel->fetch_by_col_select('image_path, sign_path', 'form_submitted', ['id'=>$id]);
-        // echo "<pre>"; print_r($student_details[0]); exit;
         $path = './upload/';
         $type = 'jpg|png|jpeg';
         unset($data['id']);
@@ -240,29 +242,42 @@ class Admin extends CI_Controller{
         $data['adm_date'] = date('Y-m-d');
         $data['adm_year'] = date('Y');
         $data['paid'] = 'paid';
-        // echo "<pre>"; print_r($data); exit;
         $this->arronic->perform_fed($this->genModel->update_by_id('form_submitted',$data,$id), 'Form Has been Succesfully Updated', 'Error. Please check again');
-        // if($this->genModel->update_by_id('form_submitted',$data,$id)){
-        //     echo "TRUE";
-        // }
-        // else{
-        //     echo "FALSE";
-        // }
-
-
     }
     public function fee_paid($id){
         $post = array(
             'paid' => "paid"
         );
         $where = [ 'id' =>  $id];
-
-
         if($this->genModel->update_by_where('form_submitted',$post,$where)){
             echo "TRUE";
         }else{
             echo "FALSE";
         }
+    }
+    public function fetch_paid_list($year){
+        $sel = 'id, name, code, course, adm_date, paid_amt';
+        $pay_data = $this->genModel->fetch_by_col_select($sel,'form_submitted', ['adm_year'=>$year]);
+        $result['data'] = [];
+        if($pay_data){
+            foreach ($pay_data as $key => $value) {
+                $uniq = "'".$value->code."'";
+                $btn = '<button class="btn btn-success" onclick="print_pdf('.$uniq.')"><i class="fas fa-print"></i> Print</button>';
+                $result['data'][$key]=array(
+                    $key+1,
+                    $value->name,
+                    $value->code,
+                    $value->course,
+                    date('d-m-Y', strtotime($value->adm_date)),
+                    $value->paid_amt,
+                    $btn
+
+                );
+            }  
+            // $result['data']=$json;
+        }
+        echo json_encode($result);
+
     }
     public function fetch_fee_structure(){
         $data = $this->genModel->fetch_by_all('fee_structure');
@@ -291,35 +306,10 @@ class Admin extends CI_Controller{
 
         echo json_encode($result);
     }
-
-    public function fetch_paid_list($year){
-        $sel = 'id, name, code, course, adm_date, paid_amt';
-        $pay_data = $this->genModel->fetch_by_col_select($sel,'form_submitted', ['adm_year'=>$year]);
-        // echo "<pre>"; print_r($pay_data); exit;
-        $result['data'] = [];
-        if($pay_data){
-            foreach ($pay_data as $key => $value) {
-                $uniq = "'".$value->id."'";
-                $btn = '<button class="btn btn-success" onclick="print_pdf('.$uniq.')"><i class="fas fa-print"></i> Print</button>';
-                $result['data'][$key]=array(
-                    $key+1,
-                    $value->name,
-                    $value->code,
-                    $value->course,
-                    date('d-m-Y', strtotime($value->adm_date)),
-                    $value->paid_amt,
-                    $btn
-
-                );
-            }  
-            // $result['data']=$json;
-        }
-        echo json_encode($result);
-
-    }
     public function print_payment_recipt($key){
 
     }
+
 
     // logic function ends
 // helper function starts
@@ -342,13 +332,10 @@ class Admin extends CI_Controller{
 			
         $configi['image_library']  = 'gd2';
         $configi['source_image']   = $source;
-        // $configi['max_size']       = '0';
         $configi['create_thumb']   = FALSE;
         $configi['maintain_ratio'] = FALSE;
         $configi['overwrite'] 	   = TRUE;
         $configi['file_permissions'] = 0644;
-        // $configi['max_width']          = 3000;
-        // $configi['max_height']         = 3000;
         $configi['width']          = $width;
         $configi['height']         = $height;
         if($copy)
@@ -364,10 +351,17 @@ class Admin extends CI_Controller{
             return TRUE;
         }
     }
-    // helper function ends
+    function student_form($code){
+        $code = base64_decode($code);
+        $this->load->library('pdf');
+        $view = $this->htmltopdfmodel->getformpdf($code);
+        $this->pdf->loadHtml($view);
+        $this->pdf->render();
+        $this->pdf->stream("Form.pdf",array("Attachment"=>0));
+    }
     public function __construct(){
         parent::__construct();
-        $this->load->model('AdminModel','model');
+        $this->load->model('soldformmodel');
         $this->load->model('htmltopdfmodel');
         $this->load->model('GeneralModel','genModel');
         $this->load->library('arronic_lib1',null,'arronic');

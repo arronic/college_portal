@@ -19,15 +19,23 @@
 			</div>
 			<div class="card-body">
 				<p class="text-center">
-					Your form is submitted successfully. Kiindly print out a copy for future reference.
+					Your form is submitted successfully. Kindly print out a copy for future reference.
 					Thank you.
 				</p>
 				<a href="<?= base_url()?>" class="btn btn-primary float-left">Home</a>
-				<a target="_blank" href="<?= base_url('/student/myform/'.$code)?>" class="btn btn-primary float-right">print pdf</a>
+				<button onclick="print_pdf('<?= $code ?>')" class="btn btn-primary float-right"> print pdf</a>
 
 			</div>
 		</div>
 	</div>
 </body>
-
+<script>
+base_url = '<?= base_url() ?>';
+function print_pdf(key){
+    window.open(base_url+"student/myform/"+btoa_return(key), "_blank", "directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,top=20,left=400,width=600,height=700");
+}
+function btoa_return(string){
+	return window.btoa(string);
+}
+</script>
 </html>

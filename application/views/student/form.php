@@ -20,27 +20,23 @@
 			</div>
 			<!-- /.card-header -->
 			<div class="card-body">
-				<form role="form" method="POST" action="<?= base_url('student/submit_form')?>"
+				<form role="form" method="POST" action="<?= base_url('Student/submit_form')?>"
 					enctype="multipart/form-data">
-					<input type="hidden" class="form-control" name="student_code"
-						value="<?= $form_details->unique_code ?>">
-					<input type="hidden" class="form-control" name="student_name"
-						value="<?= $form_details->student_name ?>">
-					<input type="hidden" class="form-control" name="student_course"
-						value="<?= $form_details->student_course ?>">
+					<input type="hidden" name="code" value="<?= $form_details->unique_code ?>">
+					
 					<div class="row">
 						<div class="col-sm-6">
 							<div class="form-group">
 								<label>Name</label>
-								<input type="text" class="form-control" name="student_name"
-									value="<?= $form_details->student_name ?>" disabled>
+								<input type="text" class="form-control" name="name"
+									value="<?= $form_details->student_name ?>" readonly="" style="cursor:not-allowed;">
 							</div>
 						</div>
 						<div class="col-sm-6">
 							<div class="form-group">
 								<label>Course</label>
-								<input type="text" class="form-control" name="student_course"
-									value="<?= $form_details->student_course ?>" disabled>
+								<input type="text" class="form-control" name="course"
+									value="<?= $form_details->student_course ?>" readonly="" style="cursor:not-allowed;">
 							</div>
 						</div>
 					</div>
@@ -82,13 +78,13 @@
 						<div class="col-sm-6">
 							<div class="form-group">
 								<label>Guardian's Village</label>
-								<input type="text" class="form-control" name="g_vill" required>
+								<input type="text" class="form-control" name="g_village" required>
 							</div>
 						</div>
 						<div class="col-sm-6">
 							<div class="form-group">
 								<label>Guardian's P.O.</label>
-								<input type="text" class="form-control" name="g_PO" required>
+								<input type="text" class="form-control" name="g_po" required>
 							</div>
 						</div>
 					</div>
@@ -143,7 +139,8 @@
 						<div class="col-sm-4">
 							<div class="form-group">
 								<label>Gender</label>
-								<select name="gender" id="" class="form-control">
+								<select name="gender" id="" class="form-control" required>
+									<option>Select gender</option>
 									<option value="male">Male</option>
 									<option value="female">Female</option>
 									<option value="transgender">Transgender</option>
@@ -156,7 +153,7 @@
 						<div class="col-sm-12">
 							<div class="form-group">
 								<label>Name of the institute last studied</label>
-								<input type="text" class="form-control" name="l_institute" required>
+								<input type="text" class="form-control" name="last_institute"required >
 							</div>
 						</div>
 					</div>
@@ -164,7 +161,7 @@
 						<div class="col-sm-12">
 							<div class="form-group">
 								<label>Name of the last examination passed</label>
-								<input type="text" class="form-control" name="l_exam" required>
+								<input type="text" class="form-control" name="last_exam" required>
 							</div>
 						</div>
 					</div>
@@ -172,25 +169,25 @@
 						<div class="col-sm-3">
 							<div class="form-group">
 								<label>Last examination roll</label>
-								<input type="text" class="form-control" name="e_roll" required>
+								<input type="text" class="form-control" name="last_exam_roll" required>
 							</div>
 						</div>
 						<div class="col-sm-3">
 							<div class="form-group">
 								<label>Last examination no.</label>
-								<input type="text" class="form-control" name="e_no" required>
+								<input type="text" class="form-control" name="last_exam_no" required>
 							</div>
 						</div>
 						<div class="col-sm-3">
 							<div class="form-group">
 								<label>Last examination year</label>
-								<input type="number" class="form-control" name="e_year" required>
+								<input type="number" class="form-control" name="last_exam_year" required>
 							</div>
 						</div>
 						<div class="col-sm-3">
 							<div class="form-group">
 								<label>Last examination center</label>
-								<input type="text" class="form-control" name="e_center" required>
+								<input type="text" class="form-control" name="last_exam_center" required>
 							</div>
 						</div>
 					</div>
@@ -200,21 +197,19 @@
 						<div class="col-sm-4">
 							<div class="form-group">
 								<label for="">Subjects</label>
-								<input type="text" class="form-control" name="sub1" placeholder="subject 1" required>
+								<input type="text" class="form-control" name="sub1" placeholder="subject 1"required >
 							</div>
 						</div>
 						<div class="col-sm-4">
 							<div class="form-group">
 								<label for="">Max Marks</label>
-								<input type="number" class="form-control" name="sub1_max" placeholder="max marks"
-									required>
+								<input type="number" class="form-control" name="sub1_max" placeholder="max marks" required>
 							</div>
 						</div>
 						<div class="col-sm-4">
 							<div class="form-group">
 								<label for="">Marks Obtained</label>
-								<input type="number" class="form-control" name="sub1_obt" placeholder="marks obtained"
-									required>
+								<input type="number" class="form-control" name="sub1_obt" placeholder="marks obtained" required>
 							</div>
 						</div>
 					</div>
@@ -228,15 +223,13 @@
 						<div class="col-sm-4">
 							<div class="form-group">
 
-								<input type="number" class="form-control" name="sub2_max" placeholder="max marks"
-									required>
+								<input type="number" class="form-control" name="sub2_max" placeholder="max marks" required>
 							</div>
 						</div>
 						<div class="col-sm-4">
 							<div class="form-group">
 
-								<input type="number" class="form-control" name="sub2_obt" placeholder="marks obtained"
-									required>
+								<input type="number" class="form-control" name="sub2_obt" placeholder="marks obtained" required>
 							</div>
 						</div>
 					</div>
@@ -249,15 +242,13 @@
 						</div>
 						<div class="col-sm-4">
 							<div class="form-group">
-								<input type="number" class="form-control" name="sub3_max" placeholder="max marks"
-									required>
+								<input type="number" class="form-control" name="sub3_max" placeholder="max marks" required>
 							</div>
 						</div>
 						<div class="col-sm-4">
 							<div class="form-group">
 
-								<input type="number" class="form-control" name="sub3_obt" placeholder="marks obtained"
-									required>
+								<input type="number" class="form-control" name="sub3_obt" placeholder="marks obtained" required>
 							</div>
 						</div>
 					</div>
@@ -269,14 +260,12 @@
 						</div>
 						<div class="col-sm-4">
 							<div class="form-group">
-								<input type="number" class="form-control" name="sub4_max" placeholder="max marks"
-									required>
+								<input type="number" class="form-control" name="sub4_max" placeholder="max marks"required>
 							</div>
 						</div>
 						<div class="col-sm-4">
 							<div class="form-group">
-								<input type="number" class="form-control" name="sub4_obt" placeholder="marks obtained"
-									required>
+								<input type="number" class="form-control" name="sub4_obt" placeholder="marks obtained" required>
 							</div>
 						</div>
 					</div>
@@ -288,14 +277,12 @@
 						</div>
 						<div class="col-sm-4">
 							<div class="form-group">
-								<input type="number" class="form-control" name="sub5_max" placeholder="max marks"
-									required>
+								<input type="number" class="form-control" name="sub5_max" placeholder="max marks" required>
 							</div>
 						</div>
 						<div class="col-sm-4">
 							<div class="form-group">
-								<input type="number" class="form-control" name="sub5_obt" placeholder="marks obtained"
-									required>
+								<input type="number" class="form-control" name="sub5_obt" placeholder="marks obtained" required>
 							</div>
 						</div>
 					</div>
@@ -307,14 +294,12 @@
 						</div>
 						<div class="col-sm-4">
 							<div class="form-group">
-								<input type="number" class="form-control" name="sub6_max" placeholder="max marks"
-									required>
+								<input type="number" class="form-control" name="sub6_max" placeholder="max marks" required>
 							</div>
 						</div>
 						<div class="col-sm-4">
 							<div class="form-group">
-								<input type="number" class="form-control" name="sub6_obt" placeholder="marks obtained"
-									required>
+								<input type="number" class="form-control" name="sub6_obt" placeholder="marks obtained" required>
 							</div>
 						</div>
 					</div>
@@ -322,7 +307,7 @@
 						<div class="col-sm-6">
 							<label>Other, if any (use comma(,) between subjects)</label>
 							<div class="form-group">
-								<input type="text" class="form-control" name="o_sub">
+								<input type="text" class="form-control" name="other_sub">
 							</div>
 						</div>
 					</div>
@@ -330,20 +315,20 @@
 					<div class="row">
 						<div class="col-sm-4">
 							<div class="form-group">
-								<label>Last exam division</label>
-								<input type="text" class="form-control" name="division" required>
+								<label>Last exam division (eg. 1st, 2nd etc.)</label>
+								<input type="text" class="form-control" name="last_exam_div" placeholder="eg. 1st" required>
 							</div>
 						</div>
 						<div class="col-sm-4">
 							<label>Last exam total marks</label>
 							<div class="form-group">
-								<input type="number" class="form-control" name="total" required>
+								<input type="number" class="form-control" name="last_exam_total" required>
 							</div>
 						</div>
 						<div class="col-sm-4">
 							<div class="form-group">
 								<label>Last exam marks obained</label>
-								<input type="number" class="form-control" name="obtained" required>
+								<input type="number" class="form-control" name="last_exam_obtained" required>
 							</div>
 						</div>
 					</div>
@@ -352,7 +337,7 @@
 						<div class="col-sm-6">
 							<div class="form-group">
 								<label>G.U./AHSEC Registration No.</label>
-								<input type="text" class="form-control" name="gu_reg_no" required>
+								<input type="text" class="form-control" name="gu_reg" required>
 							</div>
 						</div>
 						<div class="col-sm-6">
@@ -368,12 +353,12 @@
 							<label>Where do you fall under?</label>
 							<div class="form-group">
 								<div class="custom-control custom-radio">
-									<input class="custom-control-input" type="radio" id="customRadio1" name="apl"
+									<input class="custom-control-input" type="radio" id="customRadio1" name="apl_bpl"
 										value="apl" required>
 									<label for="customRadio1" class="custom-control-label">APL</label>
 								</div>
 								<div class="custom-control custom-radio">
-									<input class="custom-control-input" type="radio" id="customRadio2" name="apl"
+									<input class="custom-control-input" type="radio" id="customRadio2" name="apl_bpl"
 										value="bpl">
 									<label for="customRadio2" class="custom-control-label">BPL</label>
 								</div>
@@ -383,18 +368,18 @@
 							<label>Is there any break of your studies?</label>
 							<div class="form-group">
 								<div class="custom-control custom-radio">
-									<input class="custom-control-input" type="radio" id="cr1" name="gap" value="yes"
-										required>
+									<input class="custom-control-input" type="radio" id="cr1" name="study_break" value="yes"
+									required>
 									<label for="cr1" class="custom-control-label">Yes</label>
 								</div>
 								<div class="custom-control custom-radio">
-									<input class="custom-control-input" type="radio" id="cr2" name="gap" value="no">
+									<input class="custom-control-input" type="radio" id="cr2" name="study_break" value="no">
 									<label for="cr2" class="custom-control-label">No</label>
 								</div>
 							</div>
 							<div class="form-group" id="gap_reason" style="display: none;">
 								<label>Please provide reason</label>
-								<textarea name="gap_reason" class="form-control" rows="3" placeholder="describe here"
+								<textarea name="break_reason" class="form-control" rows="3" placeholder="describe here"
 									id="gap_reason_text"></textarea>
 							</div>
 						</div>
@@ -404,7 +389,7 @@
 						<div class="col-sm-6">
 							<div class="form-group">
 								<label>Upload Image</label>
-								<input type="file" class="form-control" id="image_file" name="file[]" required>
+								<input type="file" class="form-control" id="image_file" name="file[]"required >
 							</div>
 						</div>
 						<div class="col-sm-6">
@@ -422,7 +407,7 @@
 	</div>
 	<script type="text/javascript">
 		$(document).ready(function () {
-			$('input[name="gap"]').click(function () {
+			$('input[name="study_break"]').click(function () {
 				if ($(this).attr('id') == 'cr1') {
 					$('#gap_reason').show();
 					$('#gap_reason_text').required = true;

@@ -9,7 +9,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0 text-dark">Welcome</h1>
+            <h1 class="m-0 text-dark">Fee Structure</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -56,22 +56,9 @@
   
       var table_fee_structure = $('#example').DataTable({
           'ajax' : base_url + 'Admin/fetch_fee_structure/',
-          // 'order': [[1, 'asc']],
           'order': [],
           responsive : true,
 
           dom: "<'row'<'col-md-2'l><'col-md-6'B><'col-md-4'f>><'row'<'col-md-12'rt>><'row'<'col-md-6'i><'col-md-6'p>>",
-          
-          buttons: [
-          	{extend: 'excel',
-          	 title: table_title('Fee Structure'),
-          	 exportOptions: {columns: [ 0,1,2,3,5 ]},
-          	 footer: true,
-          	},
-          	{extend: 'pdf',
-          	 exportOptions: {columns: [ 0,1,2,3,5 ]}
-          	},'copy','colvis'
-          ],
-          // buttons.excel.exportOptions : {columns: [ 0, 1, 5 ]},
         });
 </script>
