@@ -67,9 +67,6 @@
 							    <div>
 							        <div id="step-1" class="">
 							            <h3 class="border-bottom border-gray pb-2">View Application Form</h3>
-							            
-							            	
-												
 												<div id="form-step-0" role="form" data-toggle="validator">
 							            		<div class="row">
 							            			<div class="col-sm-6">
@@ -580,7 +577,7 @@
 			dataType: 'json',
 			cache: false,
 			success: function (data) {
-				console.log(data);
+				// console.log(data);
 				
 				var x;
 				$('#course').val(data.course);
@@ -592,7 +589,7 @@
 				$('#image').attr('src', base_url+'upload/'+data.image_path);
 				$('#signature').attr('src', base_url+'upload/'+data.sign_path);
 				
-				return false;
+				// return false;
 				
 			},
 			error: function (error) {

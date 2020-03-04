@@ -56,11 +56,8 @@
 	        <button type="button" class="btn btn-danger" id="yes_del">Yes</button>
 	      </div>
 	    </div>
-	    <!-- /.modal-content -->
 	  </div>
-	  <!-- /.modal-dialog -->
 	</div>
-	<!-- /.modal -->
 
 
 </div>

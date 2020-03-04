@@ -143,6 +143,14 @@
 							</a>
 						</li>
 						<li class="nav-item">
+							<a href="<?= base_url().'Admin/notice'?>" class="nav-link">
+								<i class="nav-icon fas fa-list"></i>
+								<p>
+									Notice
+								</p>
+							</a>
+						</li>
+						<li class="nav-item">
 							<a href="<?=base_url()."login/logout"?>" class="nav-link">
 								<!-- <i class="nav-icon fas fa-sign-out"></i> -->
 								<i class="nav-icon fas fa-sign-out-alt"></i>

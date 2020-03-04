@@ -32,6 +32,9 @@ class Admin extends CI_Controller{
     public function fee_structure(){
         $this->load->view('admin/fee_structure');
     }
+    public function notice(){
+        $this->load->view('admin/notice_list');
+    }
     // view function ends
 
     // logic function starts
@@ -103,7 +106,6 @@ class Admin extends CI_Controller{
     }
 
     public function notAdmitted(){
-        // $all_student = $this->db->where('status',0)->get('form_submitted');
         $select = 'id, name, code, course, apl_bpl, paid, status';
 
         $all_student = $this->genModel->fetch_by_col_select($select, 'form_submitted', ['status'=>0]);
@@ -112,7 +114,6 @@ class Admin extends CI_Controller{
 
         if(!empty($all_student[0])){
             foreach ($all_student as $key => $value) {
-                
                 $uniq_key = "'".$value->code."'";
                 $admit = '<button type="button" class="btn btn-primary" onclick="admit('.$uniq_key.')" data-student-apl="'.$value->apl_bpl.'" data-target="#payment-modal" style="margin-right: 4px;">Admit</button>';
                 $response['data'][$key]=array(
@@ -306,10 +307,59 @@ class Admin extends CI_Controller{
 
         echo json_encode($result);
     }
-    public function print_payment_recipt($key){
+    public function get_notice_list(){
+        $result = $this->genModel->fetch_by_all('notice');
+        $response['data'] = [];
+        if($result){
+            foreach ($result as $key => $value) {
+                $id = "'".$value->id."'";
+                $btn = '<button class="btn btn-primary mr-3" onclick="edit_notice('.$id.')"><i class="fas fa-pen"></i> Edit</button><button class="btn btn-danger" onclick="delete_notice('.$id.')"><i class="fas fa-trash"></i> Delete</button>';
+                $response['data'][$key]=array(
+                    $key+1,
+                    $value->notice,
+                    $value->date_time,
+                    ($value->status) ? '<button class="btn btn-success mr-3" onclick="change_status('.$id.')">Active</button>' : '<button class="btn btn-warning mr-3" onclick="change_status('.$id.')">Inactive</button>',
+                    $btn
 
+                );
+            }  
+        }
+        echo json_encode($response);
     }
-
+    public function add_notice(){
+        $data = $this->input->post();
+        $this->arronic->perform_fed($this->genModel->insert_data('notice',$data), 'Notice has been added successfully', 'Error. Please check again');
+    }
+    public function get_notice_detail($id){
+        $result = $this->genModel->fetch_by_id('notice',$id);
+        echo json_encode($result);
+    }
+    public function update_notice(){
+        $data = $this->input->post();
+        $id = $data['id'];
+        unset($data['id']);
+        $this->arronic->perform_fed($this->genModel->update_by_id('notice', $data, $id),'Notice has been updated successfully', 'Error. Please check again');
+    }
+    public function delete_notice(){
+        if($id = $this->input->post('id')){
+            $this->arronic->perform_fed($this->genModel->delete_by_id('notice', $id), 'Notice Has been Succesfully Deleted', 'Error. Please check again');
+        }
+    }
+    public function change_status(){
+        $id = $this->input->post('id');
+        $select = 'status';
+        $notice = $this->genModel->fetch_by_id('notice',$id);
+        if($notice->status == 1){
+            $data = array(
+                'status' => 0
+            );
+        }else{
+            $data = array(
+                'status' => 1
+            );
+        }
+        $this->arronic->perform_fed($this->genModel->update_by_id('notice', $data, $id),'Notice status has been updated successfully', 'Error. Please check again');
+    }
 
     // logic function ends
 // helper function starts
