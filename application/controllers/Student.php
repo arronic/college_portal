@@ -92,13 +92,23 @@ class Student extends CI_Controller{
     }
 
     // pdf generate
-    function myform($code){
-        $code = base64_decode($code);
-        $this->load->library('pdf');
-        $view = $this->htmltopdfmodel->getformpdf($code);
-        $this->pdf->loadHtml($view);
-        $this->pdf->render();    
-        $this->pdf->stream("Form.pdf",array("Attachment"=>0));
+    function myform($code = null){
+        if($code){
+            $code = base64_decode($code);
+            if($student_details = $this->genModel->fetch_by_col('form_submitted',['code'=>$code])){
+                $sd = $student_details[0];
+                $this->load->library('pdf');
+                $view = $this->htmltopdfmodel->getformpdf($sd);
+                $this->pdf->loadHtml($view);
+                $this->pdf->render();    
+                $this->pdf->stream("Form.pdf",array("Attachment"=>0));
+            }
+            else{
+                redirect('Student');
+            }
+        }
+        else
+            redirect('PageNotFound');
     }
     // image resize
     public function _image_resize($source, $height, $width, $copy=null, $destination=null){
