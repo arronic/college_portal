@@ -1,133 +1,64 @@
 <?php
 class Htmltopdfmodel extends CI_Model{
     public function gethtml($code){
-        
         $student_details = $this->db->where('unique_code',$code)->get('form_sold');
         $student_details = $student_details->row();
         $output = '<html>
-
-        <head>
-            <style>
-                h1,h2,h3,h5 {
-                    text-align: center;
-                }
-                h4 {
-                    text-align: left;
-                }
-                table {
-                    font-family: arial, sans-serif;
-                    border-collapse: collapse;
-                    width: 100%;
-                }
-                td,th {
-                    border: 1px solid #dddddd;
-                    text-align: left;
-                    padding: 4px;
-                }
-                .container {
-                    margin: 50px;
-                }
-                .bold {
-                    font-weight: bold;
-                }
-                .underline {
-                    text-decoration: underline;
-                }
-                .text-center {
-                    text-align: center;
-                }
-                .text-right {
-                    text-align: right;
-                }
-                .text-left {
-                    text-align: left;
-                }
-                .float-right {
-                    float: right;
-                }
-                .italic {
-                    font-style: italic;
-                }
-                span.a {
-                    display: inline;
-                    padding: 5px;
-                }
-                .narrow {
-                    float: right;
-                    width: 50%;
-                }
-                .wide {
-                    float: left;
-                    width: 50%;
-                }
-                .font-large {
-                    font-size: 18px;
-                }
-                .split {
-                    height: 100%;
-                    width: 40%;
-                    position: fixed;
-                    z-index: 1;
-                    top: 0;
-                    overflow-x: hidden;
-                    // padding-top: 20px;
-                }
-                .left {
-                    left: 0;
-                    // background-color: #111;
-                }
-                .right {
-                    right: 0;
-                    // background-color: red;
-                }
-            </style>
-        </head>
-        
-        <body>
-            <div>
-                <div class="custom-header text-center">
-                    <div class="bold font-large">College Name, Address</div>
-                    <div class="bold text-center">ESTD:1947</div>
-                    <div class="bold text-center">P.O.: Post Office, DIST: District</div>
-                    <div class="bold text-center">PIN: 123456</div>
-                </div>
-            </div>
-            <hr>
-            <div>
-                <div>
-                 <span><strong>Student Name:</strong>  '.$student_details->student_name.'</span>
-                 <span class="float-right"><strong>Code:</strong>  '.$student_details->unique_code.'</span>
-                </div>
-                <br>
-                <div>
-                    <table>
-                        <tr>
-                            <th>Opted Course</th>
-                            <th>Date</th>
-                        </tr>
-                        <tr>
-                            <td>'.$student_details->student_course.'</td>
-                            <td>'.$student_details->date.'</td>
-                        </tr>
-                    </table>
+                    <head>
+                    <style>
+                        h1{
+                            text-align:center;
+                        }
+                        h2{
+                            text-align:left;
+                        }
+                        table{
+                            font-family: arial, sans-serif;
+                            border-collapse: collapse;
+                            width: 100%;
+                        }
+                        td, th {
+                            border: 1px solid #dddddd;
+                            text-align: left;
+                            padding: 8px;
+                        }
+                    </style>
+                    </head>
+                    <body>
                     <div>
+                        <h1>Enrollment Details</h1>
+                    </div>
+                    <hr>
+                    <div style="margin-top:50px;">
+                    <h2>Student Name:'.$student_details->student_name.'</h2>
+                    <hr>
+                        <div>
+                            <table>
+                            <tr>
+                                <th>Unique Code</th>
+                                <th>Opted Course</th>
+                                <th>Date</th>
+                            </tr>
+                            <tr>
+                                <td>'.$student_details->unique_code.'</td>
+                                <td>'.$student_details->student_course.'</td>
+                                <td>'.$student_details->date.'</td>
+                            </tr>
+                            </table>
+                        <div>
                         <div style="margin-top:50px;">
-                            <hr>
-                            <p><span style="font-weight:bold;">Date</span><span
-                                    style="float:right; font-weight:bold;">Signature</span></p>
-                            <p><span>...............................</span> <span
-                                    style="margin-left:550px;">.............................................</span></p>
+                        <hr>
+                            <p><span style="font-weight:bold;">Date</span><span style="float:right; font-weight:bold;">Signature</span></p>
+                            <p><span>...............................</span> <span style="margin-left:550px;">.............................................</span></p>
                         </div>
                     </div>
-        </body>
-        
-        </html>
-        '; 
+                    </body>
+                </html>'; 
         return $output;
     }
-    public function getformpdf($code){
-        $student_details = $this->db->where('code',$code)->get('form_submitted');
-        $sd = $student_details->row();
+    public function getformpdf($sd){
+        // $student_details = $this->db->where('code',$code)->get('form_submitted');
+        // $sd = $student_details->row();
         if($sd->apl_bpl =="apl"){
             $bpl = "No";
             $bpl_enlosed = "";
@@ -146,116 +77,87 @@ class Htmltopdfmodel extends CI_Model{
         $sign = base64_encode( $sign );
 
         $output = '<html>
-
         <head>
-            <style>
-                h1,
-                h2,
-                h3,
-                h5 {
-                    text-align: center;
-                }
-        
-                h4 {
-                    text-align: left;
-                }
-        
-                table {
-                    font-family: arial, sans-serif;
-                    border-collapse: collapse;
-                    width: 100%;
-                }
-        
-                td,
-                th {
-                    border: 1px solid #dddddd;
-                    text-align: left;
-                    padding: 8px;
-                }
-        
-                .container {
-                    margin: 10px;
-                }
-        
-                .bold {
-                    font-weight: bold;
-                }
-        
-                .underline {
-                    // text-decoration: underline;
-                }
-        
-                .text-center {
-                    text-align: center;
-                }
-        
-                .text-right {
-                    text-align: right;
-                }
-        
-                .text-left {
-                    text-align: left;
-                }
-        
-                .float-right {
-                    float: right;
-                }
-        
-                .italic {
-                    font-style: italic;
-                }
-        
-        
-                div.a, span.a {
-                    display: inline;
-                    padding: 5px;
-                }
-        
-                .narrow {
-                    float: right;
-                    width: 50%;
-                }
-        
-                .wide {
-                    float: left;
-                    width: 50%;
-                }
-                p{
-                    margin: 7px 0px;
-                }
-        
-            </style>
+        <style>
+        h1,h2,h3,h5{
+            text-align:center;
+        }
+        h4{
+            text-align:left;
+        }
+        table{
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+        td, th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+        .container{
+            margin:50px;
+        }
+        .bold{
+            font-weight:bold;
+        }
+        .underline{
+            text-decoration:underline;
+        }
+        .text-center{
+            text-align:center;
+        }
+        .text-right{
+            text-align:right;
+        }
+        .text-left{
+            text-align:left;
+        }
+        .float-right{
+            float:right;
+        }
+        .italic {
+            font-style: italic;
+        }          
+        span.a {
+            display: inline;
+            padding: 5px;
+        }
+        .narrow {
+            float: right;
+            width: 50%;
+        }
+        .wide {
+            float: left;
+            width: 50%;
+        }      
+        </style>
             <title>Admission Form</title>
         </head>
-        
         <body>
+            <p>
+            <h1>College Name, Address</h1>
+            <h5>ESTD:1947</h5>
+            <h3>P.O.: Post Office, DIST: District</h3>
+            <h3>PIN: 123456</h3>
+            </p>
+            <h2>Admission Form for '.$sd->course.'</h2>
+            <p class="text-center"><span class="a bold">Student Code</span><span class="a">'.$sd->code.'</span></p>
             <div class="container">
-            <div class="text-center">
-                <div class="bold font-large">College Name, Address</div>
-                <div class="bold text-center">ESTD:1947</div>
-                <div class="bold text-center">P.O.: Post Office, DIST: District</div>
-                <div class="bold text-center">PIN: 123456</div>
-            </div>
-            <div class="a float-left"><span class="bold">Admission Form for </span>'.$sd->course.'</div>
-            <div class="a float-right"><span class="a bold">Student Code</span><span class="a">'.$sd->code.'</span></div>
-            </div>
-            <div class="container">
-                <table>
-                    <tr>
-                        <td width="33%" valign="top">ROLL NO.</td>
-                        <td width="33%" rowspan="3" valign="top">FOR OFFICE USE ONLY</td>
-                        <td width="33%" rowspan="3" class="text-center">
-                            <img src="data:image/png;base64,'.$photo.'" height="100px;" width="100px;" alt="" srcset="">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td rowspan="2" valign="top">
-                            <p class="text-center">
-                                <h4>Total Marks obtained in H.S.</h4>
-                            </p>
-                        </td>
-                    </tr>
-                </table>
+            <table>
+                <tr>
+                <td width="33%" valign="top">ROLL NO.</td>
+                <td width="33%" rowspan="3" valign="top">FOR OFFICE USE ONLY</td>
+                <td width="33%" rowspan="3"><p class="text-right">
+                <img src="data:image/png;base64,'.$photo.'" alt="" srcset="">
+                </p></td>
+                </tr>
+                <tr>
+                <td rowspan="2" valign="top">
+                    <p class="text-center" ><h4>Total Marks obtained in H.S.</h4></p>
+                </td>
+                </tr>
+            </table>
                 <p><span class="bold">1.Name: </span><span class="underline">'.$sd->name.'</span></p>
                 <p><span class="bold">2.Fathers Name: </span><span class="underline">'.$sd->father.'</span></p>
                 <p><span class="bold">3.Mothers Name: </span><span class="underline">'.$sd->mother.'</span></p>
@@ -287,12 +189,10 @@ class Htmltopdfmodel extends CI_Model{
                     <span class="bold a">6.Do you fall under BPL:</span><span class="a underline">'.$bpl.'</span>
                 </p>
                 <p>
-                    <span class="bold a">7.Name of the Institution last attended:</span><span
-                        class="a underline">'.$sd->last_institute.'</span>
+                    <span class="bold a">7.Name of the Institution last attended:</span><span class="a underline">'.$sd->last_institute.'</span>
                 </p>
                 <p>
-                    <span class="bold a">8.Name of the last Examination passed:</span><span
-                        class="a underline">'.$sd->last_exam.'</span>
+                    <span class="bold a">8.Name of the last Examination passed:</span><span class="a underline">'.$sd->last_exam.'</span>
                 </p>
                 <p>
                     <span class="bold a">Roll: </span><span class="a underline">'.$sd->last_exam_roll.'</span>
@@ -334,52 +234,45 @@ class Htmltopdfmodel extends CI_Model{
                         <td>'.$sd->last_exam_obtained.'</td>
                     </tr>
                 </table>
-                <p>
-                    <span class="bold a">9.G.U./AHSEC Registration No </span><span class="a underline">'.$sd->gu_reg.'</span>
-                    <span class="bold a">Year: </span><span class="a underline">'.$sd->gu_year.'</span>
-                </p>
-                <p><span class="bold a">10.Is there any break of your studies?:</span><span
-                        class="a underline">'.$sd->study_break.'</span></p>
-                <p><span class="bold a">Reason:</span><span class="a underline">'.$sd->break_reason.'</span></p>
-                <hr>
-                <p class="bold">11. Name of Subject taken as Honours (Earlier known as Major) in the following subject -</p>
-                <p>(i) English (ii) MIL (Assamese) (iii) History (iv) Political Science (v) Economics (vi) Philosophy
+                    <p>
+                        <span class="bold a">9.G.U./AHSEC Registration No </span><span class="a underline">'.$sd->gu_reg.'</span>
+                        <span class="bold a">Year: </span><span class="a underline">'.$sd->gu_year.'</span>
+                    </p>
+                    <p><span class="bold a">10.Is there any break of your studies?:</span><span class="a underline">'.$sd->study_break.'</span></p>
+                    <p><span class="bold a">Reason:</span><span class="a underline">'.$sd->break_reason.'</span></p>
+                    <hr>
+                    <p class="bold">11. Name of Subject taken as Honours (Earlier known as Major) in the following subject -</p>
+                    <p>(i) English (ii) MIL (Assamese) (iii) History (iv) Political Science (v) Economics (vi) Philosophy
                     (vii) Arabic and (viii) Mathematics</p>
-                <p class="bold">12. Subject available in the college for Regular Course.</p>
-                <p>(i) History (ii) Political Science (iii) Economics (iv) Education (v) Philosophy (vi) Elective Assamese
+                    <p class="bold">12. Subject available in the college for Regular Course.</p>
+                    <p>(i) History (ii) Political Science (iii) Economics (iv) Education (v) Philosophy (vi) Elective Assamese
                     (vii) Elective Hindi (viii) Arabic (ix) Mathematics (x) Linguistics</p>
                 <div class="parent" style="overflow:auto;">
-                    <h3 class="underline">DECLARATION OF THE APPLICANT</h3>
-                    <p class="text-center italic">I do hereby declare that the above information is correct and I agree to abide
-                        by all
-                        the rules and regulations of the college and also liable to punished for the violation of rules.</p>
+                    <h1 class="underline">DECLARATION OF THE APPLICANT</h1>
+                    <p class="text-center italic">I do hereby declare that the above information is correct and I agree to abide by all
+                    the rules and regulations of the college and also liable to punished for the violation of rules.</p>
                     <div class="wide">
                         <p class="italic text-center">Place..........................................</p>
                         <p class="italic text-center">Date: '.$sd->date.'</p>
                     </div>
                     <div class="narrow">
-                        <p class="italic text-center"><img src="data:image/png;base64,'.$sign.'" alt="Signeture" srcset="" height="50px;" width="180px;"></p>
+                        <p class="italic text-center"><img src="data:image/png;base64,'.$sign.'" alt="" srcset=""></p>
                         <p class="italic text-center">Signature of Applicant</p>
                     </div>
                 </div>
                 <div>
-
-                <div style="margin: 130px; overflow: auto;"></div>
-
-                    <h3 class="underline">DECLARATION OF THE PARENTS/GUARDIAN</h3>
-                        <p class="text-center italic">I, Mr./
-                            Mrs.............................................................................do hereby declare
-                            that
-                            in the event of his/her being admitted to College Name,Address I shall be responsible
-                            for his/her conduct and regular payment of the college fees and attendance of classes.</p>
-                        <div class="wide">
-                            <p class="italic text-center">Place: ............................</p>
-                            <p class="italic text-center">Date: .............................</p>
-                        </div>
-                        <div class="narrow">
-                            <p class="italic text-center">...............................</p>
-                            <p class="italic text-center">Signature of Parent/Guardian</p>
-                        </div>
+                    <h3 class="underline">DECLARATION OF THE PARENTS/GUARDIAN</h1>
+                    <p class="text-center italic">I, Mr./ Mrs.............................................................................do hereby declare that
+                    in the event of his/her being admitted to College Name,Address I shall be responsible
+                    for his/her conduct and regular payment of the college fees and attendance of classes.</p>
+                    <div class="wide">
+                        <p class="italic text-center">Place: ............................</p>
+                        <p class="italic text-center">Date: .............................</p>
+                    </div>
+                    <div class="narrow">
+                    <p class="italic text-center">...............................</p>
+                    <p class="italic text-center">Signature of Parent/Guardian</p>
+                    </div>
                 </div>
                 <div>
                     <h4 class="italic bold underline">Documents enclosed ( True copy) H.S.L.C. Onward</h4>
@@ -409,14 +302,12 @@ class Htmltopdfmodel extends CI_Model{
                 </div>
             </div>
         </body>
-        
         </html>
-          
         ';
         return $output;
     }
-    public function getreceiptPDF($code){
-        $student_details = $this->db->where('code',$code)->get('form_submitted');
+    public function getreceiptPDF($student_id){
+        $student_details = $this->db->where('id',$student_id)->get('form_submitted');
         $sd = $student_details->row();
         $output = '<html>
 
@@ -488,7 +379,6 @@ class Htmltopdfmodel extends CI_Model{
                     float: right;
                     width: 50%;
                 }
-        
                 .wide {
                     float: left;
                     width: 50%;
@@ -503,32 +393,34 @@ class Htmltopdfmodel extends CI_Model{
                   z-index: 1;
                   top: 0;
                   overflow-x: hidden;
+                  // padding-top: 20px;
                 }
 
                 .left {
                   left: 0;
+                  // background-color: #111;
                 }
 
                 .right {
                   right: 0;
+                  // background-color: red;
                 }
             </style>
         </head>
         
         <body>
         <div class="split left">
-            <div class="text-center">
-                <div class="bold">College Name, Address</div>
+            <div class="custom-header text-center">
+                <div class="bold font-large">College Name, Address</div>
                 <div class="bold text-center">ESTD:1947</div>
                 <div class="bold text-center">P.O.: Post Office, DIST: District</div>
                 <div class="bold text-center">PIN: 123456</div>
             </div>
-            <div class="text-center">Payment Receipt &nbsp;(Office copy)</div>
-            <br>
+            <div class="text-center">Payment Receipt</div>
             <div class="">
                 <span><strong>Name:</strong>'.$sd->name.'</span>
                 <span class="float-right"><strong>Course:</strong>'.$sd->course.'</span>
-                <hr>
+
                 <table style="width:100%; font-size: 10px; margin: 15px 0px 25px 0px;">
                 <tr>
                     <th>Sl No.</th>
@@ -643,24 +535,23 @@ class Htmltopdfmodel extends CI_Model{
             </table>
                 </p>
             </div>
-                <span style="font-size: 10px;">Date:'.date('d-m-Y').'</span>
-                <span style="font-size: 10px; padding-left:110px;">Receiving Officer: ..........................</span>
+            
+                <span class="a float-right" style="font-size: 10px">Receiving Officer: ..........................</span>
+                <span class="a" style="font-size: 10px">Date:'.date('d-m-Y').'</span>
             </div>
             </div>
             <div class="split right">
-            <div class="text-center">
-                <div class="bold">College Name, Address</div>
+            <div class="custom-header text-center">
+                <div class="bold font-large">College Name, Address</div>
                 <div class="bold text-center">ESTD:1947</div>
                 <div class="bold text-center">P.O.: Post Office, DIST: District</div>
                 <div class="bold text-center">PIN: 123456</div>
-                <div class="text-center">Payment Receipt &nbsp;(Student Copy)</div>
             </div>
-            <br>
+            <div class="text-center">Payment Receipt</div>
+            <div class="">
                 <span><strong>Name:</strong>'.$sd->name.'</span>
-                <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>
-                <span><strong>Course:</strong>'.$sd->course.'</span>
-                <div class="">
-                <hr>
+                <span class="float-right"><strong>Course:</strong>'.$sd->course.'</span>
+
                 <table style="width:100%; font-size: 10px; margin: 15px 0px 25px 0px;">
                 <tr>
                     <th>Sl No.</th>
@@ -775,8 +666,9 @@ class Htmltopdfmodel extends CI_Model{
             </table>
                 </p>
             </div>
-                <span style="font-size: 10px;">Date:'.date('d-m-Y').'</span>
-                <span style="font-size: 10px; padding-left:110px;">Receiving Officer: ..........................</span>
+            
+                <span class="a float-right" style="font-size: 10px">Receiving Officer: ..........................</span>
+                <span class="a" style="font-size: 10px">Date:'.date('d-m-Y').'</span>
             </div>
             </div>
         </body>
