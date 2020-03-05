@@ -102,7 +102,7 @@ class Student extends CI_Controller{
             if($student_details = $this->genModel->fetch_by_col('form_submitted',['code'=>$code])){
                 $sd = $student_details[0];
                 $this->load->library('pdf');
-                $view = $this->htmltopdfmodel->getformpdf($sd);
+                $view = $this->Htmltopdfmodel->getformpdf($sd);
                 $this->pdf->loadHtml($view);
                 $this->pdf->render();    
                 $this->pdf->stream("Form.pdf",array("Attachment"=>0));
@@ -142,7 +142,7 @@ class Student extends CI_Controller{
     public function __construct(){
         parent::__construct();
         $this->load->model('GeneralModel','genModel');
-        $this->load->model('htmltopdfmodel');
+        $this->load->model('Htmltopdfmodel');
         $this->load->library('arronic_lib1',null,'arronic');
         date_default_timezone_set('Asia/Calcutta');
     }

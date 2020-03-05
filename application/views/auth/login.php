@@ -53,7 +53,7 @@
 					success: function (data, status) {
 
 						if (data == "TRUE") {
-							window.location = base_url + "admin";
+							window.location = base_url + "Admin";
 						} else {
 							$('#error-credential').show();
 						}

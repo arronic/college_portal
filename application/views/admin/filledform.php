@@ -66,7 +66,7 @@
 
 							    <div>
 							        <div id="step-1" class="">
-							            <h3 class="border-bottom border-gray pb-2">View Application Form</h3>
+							            <h3 class="border-bottom border-gray pb-2">View Application Form <span class="float-right">Unique Code: <i id="u_code"></i></span></h3>
 												<div id="form-step-0" role="form" data-toggle="validator">
 							            		<div class="row">
 							            			<div class="col-sm-6">
@@ -588,6 +588,7 @@
 				}
 				$('#image').attr('src', base_url+'upload/'+data.image_path);
 				$('#signature').attr('src', base_url+'upload/'+data.sign_path);
+				$('#u_code').text(data.code);
 				
 				// return false;
 				
@@ -629,12 +630,11 @@
 
 		$('#updateForm').on('submit', function (e) {
 			e.preventDefault();
-			// console.log('hello'); return false;
 			id 		= $('#id').val();
 			name 	= $('#name').val();
 			course 	= $('#course').val();
 			paid_amt =$('#paid_amt').val();
-
+			code = btoa_return($('#u_code').text());
 
 			spinnerOn();
 			$.ajax({
@@ -657,7 +657,7 @@
 						$('#s_name').text(name);
 						$('#s_course').text(course);
 						$('#pay_amt').text(paid_amt);
-						$('#pay_receipt').attr('href', base_url+'Admin/receiptPDF/'+id);
+						$('#pay_receipt').attr('href', base_url+'Admin/receiptPDF/'+code);
 						myTable.ajax.reload();
 
 					}

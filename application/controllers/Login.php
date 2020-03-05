@@ -2,7 +2,11 @@
 class Login extends CI_Controller{
     // view functions start
     public function index(){
-        $this->load->view('auth/login');
+        if ($this->session->userdata('user_id')) {
+            return redirect('Admin');
+        }else {
+            $this->load->view('auth/login');
+        }
     }
     // view function ends
 
@@ -23,7 +27,10 @@ class Login extends CI_Controller{
     }
     public function logout(){
         $this->session->unset_userdata('user_id');
-        return redirect('login');
+        return redirect('Login');
+    }
+    public function __construct(){
+        parent::__construct();
     }
     // logic function ends
 }

@@ -184,7 +184,7 @@ class Admin extends CI_Controller{
     public function print_pdf($code){
         $code  = (base64_decode($code));
         $this->load->library('pdf');
-        $view = $this->htmltopdfmodel->gethtml($code);
+        $view = $this->Htmltopdfmodel->gethtml($code);
         $this->pdf->loadHtml($view);
         $this->pdf->render();    
         $this->pdf->stream("Enrollment.pdf",array("Attachment"=>0));
@@ -195,7 +195,7 @@ class Admin extends CI_Controller{
             if($student_details = $this->genModel->fetch_by_col('form_submitted',['code'=>$code])){
                 $sd = $student_details[0];
                 $this->load->library('pdf');
-                $view = $this->htmltopdfmodel->getreceiptPDF($sd);
+                $view = $this->Htmltopdfmodel->getreceiptPDF($sd);
                 $this->pdf->loadHtml($view);
                 $this->pdf->render();    
                 $this->pdf->stream("Receipt.pdf",array("Attachment"=>0));
@@ -208,7 +208,7 @@ class Admin extends CI_Controller{
         }
         // $code = base64_decode($code);
         // $this->load->library('pdf');
-        // $view = $this->htmltopdfmodel->getreceiptPDF($code);
+        // $view = $this->Htmltopdfmodel->getreceiptPDF($code);
         // $this->pdf->loadHtml($view);
         // $this->pdf->render();    
         // $this->pdf->stream("Receipt.pdf",array("Attachment"=>0));
@@ -423,7 +423,7 @@ class Admin extends CI_Controller{
             if($student_details = $this->genModel->fetch_by_col('form_submitted',['code'=>$code])){
                 $sd = $student_details[0];
                 $this->load->library('pdf');
-                $view = $this->htmltopdfmodel->getformpdf($sd);
+                $view = $this->Htmltopdfmodel->getformpdf($sd);
                 $this->pdf->loadHtml($view);
                 $this->pdf->render();    
                 $this->pdf->stream("Form.pdf",array("Attachment"=>0));
@@ -436,7 +436,7 @@ class Admin extends CI_Controller{
             redirect('PageNotFound');
         // $code = base64_decode($code);
         // $this->load->library('pdf');
-        // $view = $this->htmltopdfmodel->getformpdf($code);
+        // $view = $this->Htmltopdfmodel->getformpdf($code);
         // $this->pdf->loadHtml($view);
         // $this->pdf->render();
         // $this->pdf->stream("Form.pdf",array("Attachment"=>0));
@@ -444,12 +444,12 @@ class Admin extends CI_Controller{
     public function __construct(){
         parent::__construct();
         $this->load->model('soldformmodel');
-        $this->load->model('htmltopdfmodel');
+        $this->load->model('Htmltopdfmodel');
         $this->load->model('GeneralModel','genModel');
         $this->load->library('arronic_lib1',null,'arronic');
         date_default_timezone_set('Asia/Calcutta');
         if (!$this->session->userdata('user_id')) {
-            return redirect('login');
+            return redirect('Login');
         }
     }
 }
