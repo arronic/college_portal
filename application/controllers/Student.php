@@ -36,8 +36,12 @@ class Student extends CI_Controller{
     public function fillform($key){
         $key = base64_decode($key);
         $sold_form = $this->db->where('unique_code',$key)->get('form_sold');
-        $sold_form = $sold_form->row();
-        $this->load->view('student/form',['form_details'=>$sold_form]);
+        if($sold_form->row()){
+            $sold_form = $sold_form->row();
+            $this->load->view('student/form',['form_details'=>$sold_form]);
+        }else{
+            return redirect('/student');
+        }
     }
 
     // logic functions

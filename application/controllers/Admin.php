@@ -189,13 +189,29 @@ class Admin extends CI_Controller{
         $this->pdf->render();    
         $this->pdf->stream("Enrollment.pdf",array("Attachment"=>0));
     }
-    public function receiptPDF($code){
-        $code = base64_decode($code);
-        $this->load->library('pdf');
-        $view = $this->htmltopdfmodel->getreceiptPDF($code);
-        $this->pdf->loadHtml($view);
-        $this->pdf->render();    
-        $this->pdf->stream("Receipt.pdf",array("Attachment"=>0));
+    public function receiptPDF($code = null){
+        if($code){
+            $code = base64_decode($code);
+            if($student_details = $this->genModel->fetch_by_col('form_submitted',['code'=>$code])){
+                $sd = $student_details[0];
+                $this->load->library('pdf');
+                $view = $this->htmltopdfmodel->getreceiptPDF($sd);
+                $this->pdf->loadHtml($view);
+                $this->pdf->render();    
+                $this->pdf->stream("Receipt.pdf",array("Attachment"=>0));
+            }else {
+                return redirect('Admin/paid_list');
+            }
+        }
+        else{
+            return redirect('NotFound');
+        }
+        // $code = base64_decode($code);
+        // $this->load->library('pdf');
+        // $view = $this->htmltopdfmodel->getreceiptPDF($code);
+        // $this->pdf->loadHtml($view);
+        // $this->pdf->render();    
+        // $this->pdf->stream("Receipt.pdf",array("Attachment"=>0));
     }
     public function student_admit(){
         $student_id = $this->input->post('student_id');
@@ -401,13 +417,29 @@ class Admin extends CI_Controller{
             return TRUE;
         }
     }
-    function student_form($code){
-        $code = base64_decode($code);
-        $this->load->library('pdf');
-        $view = $this->htmltopdfmodel->getformpdf($code);
-        $this->pdf->loadHtml($view);
-        $this->pdf->render();
-        $this->pdf->stream("Form.pdf",array("Attachment"=>0));
+    function student_form($code = null){
+        if($code){
+            $code = base64_decode($code);
+            if($student_details = $this->genModel->fetch_by_col('form_submitted',['code'=>$code])){
+                $sd = $student_details[0];
+                $this->load->library('pdf');
+                $view = $this->htmltopdfmodel->getformpdf($sd);
+                $this->pdf->loadHtml($view);
+                $this->pdf->render();    
+                $this->pdf->stream("Form.pdf",array("Attachment"=>0));
+            }
+            else{
+                redirect('Admin/generate_form');
+            }
+        }
+        else
+            redirect('PageNotFound');
+        // $code = base64_decode($code);
+        // $this->load->library('pdf');
+        // $view = $this->htmltopdfmodel->getformpdf($code);
+        // $this->pdf->loadHtml($view);
+        // $this->pdf->render();
+        // $this->pdf->stream("Form.pdf",array("Attachment"=>0));
     }
     public function __construct(){
         parent::__construct();

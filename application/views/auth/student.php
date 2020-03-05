@@ -7,7 +7,7 @@
 	<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<?= link_tag('/assets/css/style.css') ?>
-	<title>Document</title>
+	<title>College Portal</title>
 </head>
 <body>
 	<div class="container">
@@ -59,7 +59,7 @@
 					$('#print').html('');
 					$('#print').append(
 						`<button class="btn btn-success float-left" style="margin-left:20px;" onclick="print_pdf('` +
-						unique_key + `')"><i>Print Form</i></button>`);
+						unique_key + `')"><i class="fas fa-print"></i> Print Form</button>`);
 				} else {
 					$('#error-submitted').hide();
 					$('#error-invalid').show();
