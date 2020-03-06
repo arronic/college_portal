@@ -112,13 +112,10 @@ class Htmltopdfmodel extends CI_Model{
                     </table>
                     <br>
                     <div>
-                        <strong>Amount to be paid:</strong>  Rs 5000
-                    </div>
-                    <div>
                         <div style="margin-top:10px;">
                             <hr>
                             <div><span style="font-weight:bold;">Date</span><span
-                                    style="float:right; font-weight:bold;">Collector\'s Signature</span></div>
+                                    style="float:right; font-weight:bold;">Signature</span></div>
                             <div><span>...............................</span> <span
                                     style="margin-left:550px;">.............................................</span></div>
                         </div>
@@ -416,7 +413,7 @@ class Htmltopdfmodel extends CI_Model{
         ';
         return $output;
     }
-    public function getreceiptPDF($sd){
+    public function getreceiptPDF($sd,$fd,$total,$total_in_words){
         // $code = base64_decode($code);
         // $student_details = $this->db->where('code',$code)->get('form_submitted');
         // $sd = $student_details->row();
@@ -541,113 +538,116 @@ class Htmltopdfmodel extends CI_Model{
                 <tr>
                     <td>1</td>
                     <td>Admission Fee</td>
-                    <td>400</td>
+                    <td>'.$fd->adm.'</td>
                 </tr>
                 <tr>
                     <td>2</td>
                     <td>Tuition fee</td>
-                    <td>1860</td>
+                    <td>'.$fd->tution.'</td>
                 </tr>
                 <tr>
                     <td>3</td>
                     <td>Establishment</td>
-                    <td>600</td>
+                    <td>'.$fd->estd.'</td>
                 </tr>
                 <tr>
                     <td>4</td>
                     <td>Electricity</td>
-                    <td>200</td>
+                    <td>'.$fd->elect.'</td>
                 </tr>
                 <tr>
                     <td>5</td>
                     <td>Contingency</td>
-                    <td>200</td>
+                    <td>'.$fd->cont.'</td>
                 </tr>
                 <tr>
                     <td>6</td>
                     <td>University Fee</td>
-                    <td>620</td>
+                    <td>'.$fd->univ.'</td>
                 </tr>
                 <tr>
                     <td>7</td>
                     <td>ID Card Fee</td>
-                    <td>50</td>
+                    <td>'.$fd->icard.'</td>
                 </tr>
                 <tr>
                     <td>8</td>
                     <td>Development Fee</td>
-                    <td>500</td>
+                    <td>'.$fd->dev.'</td>
                 </tr>
                 <tr>
                     <td>9</td>
                     <td>Library Fee</td>
-                    <td>200</td>
+                    <td>'.$fd->lib.'</td>
                 </tr>
                 <tr>
                     <td>10</td>
                     <td>Internal Exam. Fee</td>
-                    <td>200</td>
+                    <td>'.$fd->exam.'</td>
                 </tr>
                 <tr>
                     <td>11</td>
                     <td>Magazine Fee</td>
-                    <td>150</td>
+                    <td>'.$fd->megazine.'</td>
                 </tr>
                 <tr>
                     <td>12</td>
                     <td>Student Union Fee</td>
-                    <td>100</td>
+                    <td>'.$fd->stud.'</td>
                 </tr>
                 <tr>
                     <td>13</td>
                     <td>Games and Sports Fee</td>
-                    <td>100</td>
+                    <td>'.$fd->game.'</td>
                 </tr>
                 <tr>
                     <td>14</td>
                     <td>Festive Fee</td>
-                    <td>100</td>
+                    <td>'.$fd->fest.'</td>
                 </tr>
                 <tr>
                     <td>15</td>
                     <td>Co-Curricular Fee</td>
-                    <td>50</td>
+                    <td>'.$fd->curri.'</td>
                 </tr>
                 <tr>
                     <td>16</td>
                     <td>Cultural/Music Fee</td>
-                    <td>50</td>
+                    <td>'.$fd->cult.'</td>
                 </tr>
                 <tr>
                     <td>17</td>
                     <td>Debating/Literature Fee</td>
-                    <td>50</td>
+                    <td>'.$fd->lite.'</td>
                 </tr>
                 <tr>
                     <td>18</td>
                     <td>Student Welfare Fee</td>
-                    <td>50</td>
+                    <td>'.$fd->welf.'</td>
                 </tr>
                 <tr>
                     <td>19</td>
                     <td>ICT</td>
-                    <td>100</td>
+                    <td>'.$fd->ict.'</td>
                 </tr>
                 <tr>
                     <td></td>
                     <td>Total</td>
-                    <td>4610</td>
+                    <td>'.$total.'</td>
                 </tr>
                 <tr>
                     <td></td>
                     <td>Amount Paid</td>
-                    <td>4610</td>
+                    <td>'.$sd->paid_amt.'</td>
                 </tr>
             </table>
-                </p>
+            <div>
+                <strong>Amount paid:  </strong>  '.$total_in_words.'
+            </div>
+            <hr>
             </div>
                 <span style="font-size: 10px;">Date:'.date('d-m-Y').'</span>
-                <span style="font-size: 10px; padding-left:110px;">Receiving Officer: ..........................</span>
+                <span style="font-size: 10px; padding-left:110px;">Collecting Officer: ..........................</span>
             </div>
             </div>
             <div class="split right">
@@ -674,113 +674,116 @@ class Htmltopdfmodel extends CI_Model{
                 <tr>
                     <td>1</td>
                     <td>Admission Fee</td>
-                    <td>400</td>
+                    <td>'.$fd->adm.'</td>
                 </tr>
                 <tr>
                     <td>2</td>
                     <td>Tuition fee</td>
-                    <td>1860</td>
+                    <td>'.$fd->tution.'</td>
                 </tr>
                 <tr>
                     <td>3</td>
                     <td>Establishment</td>
-                    <td>600</td>
+                    <td>'.$fd->estd.'</td>
                 </tr>
                 <tr>
                     <td>4</td>
                     <td>Electricity</td>
-                    <td>200</td>
+                    <td>'.$fd->elect.'</td>
                 </tr>
                 <tr>
                     <td>5</td>
                     <td>Contingency</td>
-                    <td>200</td>
+                    <td>'.$fd->cont.'</td>
                 </tr>
                 <tr>
                     <td>6</td>
                     <td>University Fee</td>
-                    <td>620</td>
+                    <td>'.$fd->univ.'</td>
                 </tr>
                 <tr>
                     <td>7</td>
                     <td>ID Card Fee</td>
-                    <td>50</td>
+                    <td>'.$fd->icard.'</td>
                 </tr>
                 <tr>
                     <td>8</td>
                     <td>Development Fee</td>
-                    <td>500</td>
+                    <td>'.$fd->dev.'</td>
                 </tr>
                 <tr>
                     <td>9</td>
                     <td>Library Fee</td>
-                    <td>200</td>
+                    <td>'.$fd->lib.'</td>
                 </tr>
                 <tr>
                     <td>10</td>
                     <td>Internal Exam. Fee</td>
-                    <td>200</td>
+                    <td>'.$fd->exam.'</td>
                 </tr>
                 <tr>
                     <td>11</td>
                     <td>Magazine Fee</td>
-                    <td>150</td>
+                    <td>'.$fd->megazine.'</td>
                 </tr>
                 <tr>
                     <td>12</td>
                     <td>Student Union Fee</td>
-                    <td>100</td>
+                    <td>'.$fd->stud.'</td>
                 </tr>
                 <tr>
                     <td>13</td>
                     <td>Games and Sports Fee</td>
-                    <td>100</td>
+                    <td>'.$fd->game.'</td>
                 </tr>
                 <tr>
                     <td>14</td>
                     <td>Festive Fee</td>
-                    <td>100</td>
+                    <td>'.$fd->fest.'</td>
                 </tr>
                 <tr>
                     <td>15</td>
                     <td>Co-Curricular Fee</td>
-                    <td>50</td>
+                    <td>'.$fd->curri.'</td>
                 </tr>
                 <tr>
                     <td>16</td>
                     <td>Cultural/Music Fee</td>
-                    <td>50</td>
+                    <td>'.$fd->cult.'</td>
                 </tr>
                 <tr>
                     <td>17</td>
                     <td>Debating/Literature Fee</td>
-                    <td>50</td>
+                    <td>'.$fd->lite.'</td>
                 </tr>
                 <tr>
                     <td>18</td>
                     <td>Student Welfare Fee</td>
-                    <td>50</td>
+                    <td>'.$fd->welf.'</td>
                 </tr>
                 <tr>
                     <td>19</td>
                     <td>ICT</td>
-                    <td>100</td>
+                    <td>'.$fd->ict.'</td>
                 </tr>
                 <tr>
                     <td></td>
                     <td>Total</td>
-                    <td>4610</td>
+                    <td>'.$total.'</td>
                 </tr>
                 <tr>
                     <td></td>
                     <td>Amount Paid</td>
-                    <td>4610</td>
+                    <td>'.$sd->paid_amt.'</td>
                 </tr>
             </table>
-                </p>
+            <div>
+                <strong>Amount paid:  </strong>  '.$total_in_words.'
+            </div>
+            <hr>
             </div>
                 <span style="font-size: 10px;">Date:'.date('d-m-Y').'</span>
-                <span style="font-size: 10px; padding-left:110px;">Receiving Officer: ..........................</span>
+                <span style="font-size: 10px; padding-left:110px;">Collecting Officer: ..........................</span>
             </div>
             </div>
         </body>
