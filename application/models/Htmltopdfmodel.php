@@ -4,8 +4,8 @@ class Htmltopdfmodel extends CI_Model{
         $student_details = $this->db->where('unique_code',$code)->get('form_sold');
         $student_details = $student_details->row();
         $output = '<html>
-
         <head>
+        <title>Donation Coupon</title>
             <style>
                 h1,h2,h3,h5 {
                     text-align: center;
@@ -83,6 +83,7 @@ class Htmltopdfmodel extends CI_Model{
         </head>
         
         <body>
+        <div class="text-center bold" style="background-color:grey; color:white;">DONATION COUPON</div>
             <div>
             <span>Sl No.: '.$student_details->sl_no.'</span>
                 <div class="custom-header text-center">
@@ -95,7 +96,7 @@ class Htmltopdfmodel extends CI_Model{
             <hr>
             <div>
                 <div>
-                 <span><strong>Student Name:</strong>  '.$student_details->student_name.'</span>
+                 <span><strong>Student Name:</strong>  '.ucwords($student_details->student_name).'</span>
                  <span class="float-right"><strong>Code:</strong>  '.$student_details->unique_code.'</span>
                 </div>
                 <br>
@@ -115,7 +116,7 @@ class Htmltopdfmodel extends CI_Model{
                         <div style="margin-top:10px;">
                             <hr>
                             <div><span style="font-weight:bold;">Date</span><span
-                                    style="float:right; font-weight:bold;">Signature</span></div>
+                                    style="float:right; font-weight:bold;">Collector\'s Sign</span></div>
                             <div><span>...............................</span> <span
                                     style="margin-left:550px;">.............................................</span></div>
                         </div>
