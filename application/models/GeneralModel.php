@@ -17,7 +17,6 @@ class GeneralModel extends CI_Model{
 		$qry = $this->db->get($table);
 		return $qry->result();
 	}
-	
 	public function fetch_by_all_select($select, $table, $order=null, $limit=null){
 		$this->db->select($select);
 		if(gettype($order) == 'integer')
@@ -64,6 +63,9 @@ class GeneralModel extends CI_Model{
 
 		$qry = $this->db->get($table);
 		return $qry->result();
+	}
+	public function fetch_last_entry($table){
+		return $this->db->order_by('id','desc')->limit(1)->get($table)->row();
 	}
 	public function update_by_id($table, $post, $id){
 		return $this->db

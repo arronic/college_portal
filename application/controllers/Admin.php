@@ -22,6 +22,9 @@ class Admin extends CI_Controller{
     public function admission_list(){
         $this->load->view('admin/admission');
     }
+    public function enrolled_list(){
+        $this->load->view('admin/enrolled');
+    }
     public function fill_form(){
         $this->load->view('admin/fillform');
     }
@@ -147,6 +150,23 @@ class Admin extends CI_Controller{
         }
         echo json_encode($response);
     }
+    public function enrolled(){
+        $select = 'id, name, course, code, adm_date, status';
+        $all_student = $this->genModel->fetch_by_col_select($select, 'form_submitted', ['status'=>1]);
+        $response['data'] = [];
+        if(isset($all_student[0]->status) && $all_student[0]->status == 1){
+            foreach ($all_student as $key => $value){
+                $response['data'][$key] = array(
+                    $key+1,
+                    $value->name,
+                    $value->course,
+                    $value->code,
+                    $value->adm_date
+                );
+            }
+        }
+        echo json_encode($response);
+    }
     public function getSoldForms(){
         $all_student = $this->genModel->fetch_by_all('form_sold');
         $response['data'] = [];
@@ -176,8 +196,13 @@ class Admin extends CI_Controller{
     }
     public function store_enrollment(){
         $data = $this->input->post();
+        $last_entry = $this->genModel->fetch_last_entry('form_sold');
         $data['date'] =  date('Y-m-d', strtotime($data['date']));
-
+        if ($last_entry) {
+            $data['sl_no'] = $last_entry->sl_no+1;
+        }else{
+            $data['sl_no'] = 1;
+        }
         $this->arronic->perform_fed($this->genModel->insert_data('form_sold' , $data), 'Form Has been Succesfully Created', 'Error. Please check again');
 
     }

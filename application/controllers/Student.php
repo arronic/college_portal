@@ -85,7 +85,12 @@ class Student extends CI_Controller{
         $data['image_path'] = $pic_name;
         $data['sign_path']= $sign_name;
         $data['date'] = date('Y-m-d');
-         
+        $last_entry = $this->genModel->fetch_last_entry('form_submitted');
+        if ($last_entry) {
+            $data['sl_no'] = $last_entry->sl_no+1;
+        }else{
+            $data['sl_no'] = 1;
+        }
         if($this->genModel->insert_data('form_submitted',$data)){
             $this->genModel->update_by_where('form_sold', ['status'=>1], ['unique_code'=>$data['code']]);
             redirect(base_url().'student/thankyou/'.$data['code']);

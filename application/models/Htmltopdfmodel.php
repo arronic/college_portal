@@ -84,6 +84,7 @@ class Htmltopdfmodel extends CI_Model{
         
         <body>
             <div>
+            <span>Sl No.: '.$student_details->sl_no.'</span>
                 <div class="custom-header text-center">
                     <div class="bold font-large">College Name, Address</div>
                     <div class="bold text-center">ESTD:1947</div>
@@ -109,15 +110,20 @@ class Htmltopdfmodel extends CI_Model{
                             <td>'.$student_details->date.'</td>
                         </tr>
                     </table>
+                    <br>
                     <div>
-                        <div style="margin-top:50px;">
+                        <strong>Amount to be paid:</strong>  Rs 5000
+                    </div>
+                    <div>
+                        <div style="margin-top:10px;">
                             <hr>
-                            <p><span style="font-weight:bold;">Date</span><span
-                                    style="float:right; font-weight:bold;">Signature</span></p>
-                            <p><span>...............................</span> <span
-                                    style="margin-left:550px;">.............................................</span></p>
+                            <div><span style="font-weight:bold;">Date</span><span
+                                    style="float:right; font-weight:bold;">Collector\'s Signature</span></div>
+                            <div><span>...............................</span> <span
+                                    style="margin-left:550px;">.............................................</span></div>
                         </div>
                     </div>
+                </div>
         </body>
         
         </html>'; 
@@ -225,6 +231,7 @@ class Htmltopdfmodel extends CI_Model{
         
         <body>
             <div class="container">
+            <span>Sl No.: '.$sd->sl_no.'</span>
             <div class="text-center">
                 <div class="bold font-large">College Name, Address</div>
                 <div class="bold text-center">ESTD:1947</div>
@@ -512,6 +519,7 @@ class Htmltopdfmodel extends CI_Model{
         
         <body>
         <div class="split left">
+        <span>Sl No.: '.$sd->sl_no.'</span>
             <div class="text-center">
                 <div class="bold">College Name, Address</div>
                 <div class="bold text-center">ESTD:1947</div>
@@ -643,6 +651,7 @@ class Htmltopdfmodel extends CI_Model{
             </div>
             </div>
             <div class="split right">
+            <span>Sl No.: '.$sd->sl_no.'</span>
             <div class="text-center">
                 <div class="bold">College Name, Address</div>
                 <div class="bold text-center">ESTD:1947</div>
@@ -652,7 +661,7 @@ class Htmltopdfmodel extends CI_Model{
             </div>
             <br>
                 <span><strong>Name:</strong>'.$sd->name.'</span>
-                <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>
+                <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>
                 <span><strong>Course:</strong>'.$sd->course.'</span>
                 <div class="">
                 <hr>
