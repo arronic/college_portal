@@ -55,53 +55,57 @@ class Admin extends CI_Controller{
             redirect('pageNotFound');
     }
     public function formdetails(){
-        $code = $this->input->post('code');
-        $sd = $this->db->where('code',$code)->get('form_submitted');
-        if($sd->num_rows()>0){
-            echo "FALSE";
-        }
-        else{
-            $sd = $this->db->where('unique_code',$code)->get('form_sold');
+        if($code = $this->input->post('code')){
+            $sd = $this->db->where('code',$code)->get('form_submitted');
             if($sd->num_rows()>0){
-                echo json_encode($sd->row());
+                echo "FALSE";
             }
             else{
-                echo "NONE";
+                $sd = $this->db->where('unique_code',$code)->get('form_sold');
+                if($sd->num_rows()>0){
+                    echo json_encode($sd->row());
+                }
+                else{
+                    echo "NONE";
+                }
             }
+        }else{
+            return redirect('pageNotFound');
         }
+        
     }
     public function store_student(){
         $data = $this->input->post();
-        $path = './upload/';
-        $type = 'jpg|png|jpeg';
-        if($_FILES['file']['name'][0]){
-            $_FILES['userfile']['name'] = $_FILES['file']['name'][0];
-            $_FILES['userfile']['type'] = $_FILES['file']['type'][0];
-            $_FILES['userfile']['tmp_name'] = $_FILES['file']['tmp_name'][0];
-            $_FILES['userfile']['error'] = $_FILES['file']['error'][0];
-            $_FILES['userfile']['size'] = $_FILES['file']['size'][0];
-            $pic_name = $this->arronic->uniqName($_FILES['userfile']['name']);
-            $this->_file_upload($path,$pic_name,$type);
-            $this->_image_resize('./upload/'.$pic_name,143,143);
-            $data['image_path'] = $pic_name;
-        };
-        if($_FILES['file']['name'][1]){
-            $_FILES['userfile']['name'] = $_FILES['file']['name'][1];
-            $_FILES['userfile']['type'] = $_FILES['file']['type'][1];
-            $_FILES['userfile']['tmp_name'] = $_FILES['file']['tmp_name'][1];
-            $_FILES['userfile']['error'] = $_FILES['file']['error'][1];
-            $_FILES['userfile']['size'] = $_FILES['file']['size'][1];
-            $sign_name = $this->arronic->uniqName($_FILES['userfile']['name']);
-            $this->_file_upload($path,$sign_name,$type);
-            $this->_image_resize('./upload/'.$sign_name,80,200);
-            $data['sign_path'] = $sign_name;
-        };
-        if($this->genModel->insert_data('form_submitted',$data)){
-            echo "TRUE";
-        }
-        else{
-            echo "FALSE";
-        }
+            $path = './upload/';
+            $type = 'jpg|png|jpeg';
+            if($_FILES['file']['name'][0]){
+                $_FILES['userfile']['name'] = $_FILES['file']['name'][0];
+                $_FILES['userfile']['type'] = $_FILES['file']['type'][0];
+                $_FILES['userfile']['tmp_name'] = $_FILES['file']['tmp_name'][0];
+                $_FILES['userfile']['error'] = $_FILES['file']['error'][0];
+                $_FILES['userfile']['size'] = $_FILES['file']['size'][0];
+                $pic_name = $this->arronic->uniqName($_FILES['userfile']['name']);
+                $this->_file_upload($path,$pic_name,$type);
+                $this->_image_resize('./upload/'.$pic_name,143,143);
+                $data['image_path'] = $pic_name;
+            };
+            if($_FILES['file']['name'][1]){
+                $_FILES['userfile']['name'] = $_FILES['file']['name'][1];
+                $_FILES['userfile']['type'] = $_FILES['file']['type'][1];
+                $_FILES['userfile']['tmp_name'] = $_FILES['file']['tmp_name'][1];
+                $_FILES['userfile']['error'] = $_FILES['file']['error'][1];
+                $_FILES['userfile']['size'] = $_FILES['file']['size'][1];
+                $sign_name = $this->arronic->uniqName($_FILES['userfile']['name']);
+                $this->_file_upload($path,$sign_name,$type);
+                $this->_image_resize('./upload/'.$sign_name,80,200);
+                $data['sign_path'] = $sign_name;
+            };
+            if($this->genModel->insert_data('form_submitted',$data)){
+                echo "TRUE";
+            }
+            else{
+                echo "FALSE";
+            }
     }
     public function getDetails($key){
         $sd = $this->genModel->fetch_by_col('form_submitted', ['code'=>$key]);
@@ -151,7 +155,7 @@ class Admin extends CI_Controller{
         echo json_encode($response);
     }
     public function enrolled(){
-        $select = 'id, name, course, code, adm_date, status';
+        $select = 'id, name, faather, mother, dob, gender, cast, apl_bpl,g_village, g_po, g_district, g_pin, phone, bpl_no, major, regular';
         $all_student = $this->genModel->fetch_by_col_select($select, 'form_submitted', ['status'=>1]);
         $response['data'] = [];
         if(isset($all_student[0]->status) && $all_student[0]->status == 1){
@@ -288,6 +292,16 @@ class Admin extends CI_Controller{
             $this->_image_resize('./upload/'.$sign_name,80,200);
             $data['sign_path'] = $sign_name;
         };
+        if ($data['major'] == null) {
+            array_push($data['regular'],'English');
+        }
+        array_push($data['regular'],'AECC');
+        $result = '';
+        foreach ($data['regular'] as $key => $value) {
+            $result .= "$value,";
+        }
+        rtrim($result, ",");
+        $data['regular'] = $result;
         $data['status'] = 1;
         $data['adm_date'] = date('Y-m-d');
         $data['adm_year'] = date('Y');

@@ -8,6 +8,8 @@
 	<script src="https://code.jquery.com/jquery-3.4.1.min.js"
 		integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 	<script src="<?= base_url('assets/js/bootstrap.min.js'); ?>"></script>
+	<link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
+	<script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
 	<title>College Portal</title>
 	<style>
 		body{
@@ -55,13 +57,19 @@
 								</div>
 							</div>
 							<div class="row">
-								<div class="col-sm-6">
+								<div class="col-sm-4">
+									<div class="form-group">
+										<label>Phone</label>
+										<input type="number" class="form-control" name="phone" required>
+									</div>
+								</div>
+								<div class="col-sm-4">
 									<div class="form-group">
 										<label>Father's Name</label>
 										<input type="text" class="form-control" name="father" required>
 									</div>
 								</div>
-								<div class="col-sm-6">
+								<div class="col-sm-4">
 									<div class="form-group">
 										<label>Mother's Name</label>
 										<input type="text" class="form-control" name="mother" required>
@@ -394,6 +402,48 @@
 					</div>
 					<div class="card mt-5">
 						<div class="card-header bg-info text-white">
+							<h3 class="card-title">Subject Selection</h3>
+						</div>
+						<div class="card-body">
+							<div class="row">
+								<div class="col-sm-6">
+									<label> Name of Subject taken as Honours (Earlier known as Major) in the following subject -</label>
+									<div class="form-group">
+										<select class="form-control" name="major" id="major">
+											<option value="">Select one</option>
+											<option value="English">English</option>
+											<option value="MIL (Assamese)">MIL (Assamese)</option>
+											<option value="History">History</option>
+											<option value="Political Science">Political Science</option>
+											<option value="Economics">Economics</option>
+											<option value="Philosophy">Philosophy</option>
+											<option value="Arabic">Arabic</option>
+											<option value="Mathematics">Mathematics</option>
+										</select>
+									</div>
+								</div>
+								<div class="col-sm-6">
+									<label>Subject available in the college for Regular Course.</label>
+									<div class="form-group">
+										<select class="form-control js-example-basic-multiple" name="regular[]" multiple="multiple" required>
+											<option value="History">History</option>
+											<option value="Political Science">Political Science</option>
+											<option value="Economics">Economics</option>
+											<option value="Education">Education</option>
+											<option value="Philosophy">Philosophy</option>
+											<option value="Elective Assamese">Elective Assamese</option>
+											<option value="Elective Hindi">Elective Hindi</option>
+											<option value="Arabic">Arabic</option>
+											<option value="Mathematics">Mathematics</option>
+											<option value="Linguistics">Linguistics</option>
+										</select>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="card mt-5">
+						<div class="card-header bg-info text-white">
 							<h3 class="card-title">Miscellaneous Information</h3>
 						</div>
 						<div class="card-body">
@@ -401,16 +451,14 @@
 								<div class="col-sm-4">
 									<label>Where do you fall under?</label>
 									<div class="form-group">
-										<div class="custom-control custom-radio">
-											<input class="custom-control-input" type="radio" id="customRadio1"
-												name="apl_bpl" value="apl" required>
-											<label for="customRadio1" class="custom-control-label">APL</label>
-										</div>
-										<div class="custom-control custom-radio">
-											<input class="custom-control-input" type="radio" id="customRadio2"
-												name="apl_bpl" value="bpl">
-											<label for="customRadio2" class="custom-control-label">BPL</label>
-										</div>
+										<select class="form-control" name="apl_bpl" id="apl_bpl">
+											<option value="apl">APL</option>
+											<option value="bpl">BPL</option>
+										</select>
+									</div>
+									<div class="form-group" id="bpl_no_group" style="display:none;">
+										<label>BPL Card No.</label>
+										<input type="text" class="form-control" name="bpl_no" id="bpl_no">
 									</div>
 								</div>
 								<div class="col-sm-8">
@@ -466,13 +514,27 @@
 	</div>
 	<script type="text/javascript">
 		$(document).ready(function () {
+			$('.js-example-basic-multiple').select2({
+				placeholder: 'Select any two from the options',
+				maximumSelectionLength: 2,
+			});
 			$('input[name="study_break"]').click(function () {
 				if ($(this).attr('id') == 'cr1') {
 					$('#gap_reason').show();
-					$('#gap_reason_text').required = true;
+					$('#gap_reason_text').prop('required',true);
 				} else {
 					$('#gap_reason').hide();
-					$('#gap_reason_text').required = false;
+					$('#gap_reason_text').prop('required',false);
+				}
+			});
+			$('#apl_bpl').change(function(){
+				if($('#apl_bpl').val() == 'bpl'){
+					$('#bpl_no_group').show();
+					$('#bpl_no').prop('required',true);
+				}else{
+					$('#bpl_no_group').hide();
+					$('#bpl_no').prop('required',false);
+					$('#bpl_no').val('');
 				}
 			});
 		});

@@ -256,7 +256,7 @@ class Htmltopdfmodel extends CI_Model{
                         </td>
                     </tr>
                 </table>
-                <p><span class="bold">1.Name: </span><span class="underline">'.$sd->name.'</span></p>
+                <p><span class="bold">1.Name: </span><span class="underline">'.$sd->name.'</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="bold">Phone: </span><span class="underline">'.$sd->phone.'</span></p>
                 <p><span class="bold">2.Fathers Name: </span><span class="underline">'.$sd->father.'</span></p>
                 <p><span class="bold">3.Mothers Name: </span><span class="underline">'.$sd->mother.'</span></p>
                 <p><span class="bold">4.Guardians Name and Address:</span></p>
@@ -343,11 +343,9 @@ class Htmltopdfmodel extends CI_Model{
                 <p><span class="bold a">Reason:</span><span class="a underline">'.$sd->break_reason.'</span></p>
                 <hr>
                 <p class="bold">11. Name of Subject taken as Honours (Earlier known as Major) in the following subject -</p>
-                <p>(i) English (ii) MIL (Assamese) (iii) History (iv) Political Science (v) Economics (vi) Philosophy
-                    (vii) Arabic and (viii) Mathematics</p>
+                <p>'.$sd->major.'</p>
                 <p class="bold">12. Subject available in the college for Regular Course.</p>
-                <p>(i) History (ii) Political Science (iii) Economics (iv) Education (v) Philosophy (vi) Elective Assamese
-                    (vii) Elective Hindi (viii) Arabic (ix) Mathematics (x) Linguistics</p>
+                <p>'.$sd->regular.'</p>
                 <div class="parent" style="overflow:auto;">
                     <h3 class="underline">DECLARATION OF THE APPLICANT</h3>
                     <p class="text-center italic">I do hereby declare that the above information is correct and I agree to abide

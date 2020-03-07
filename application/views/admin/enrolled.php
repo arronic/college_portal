@@ -24,8 +24,8 @@
 						<tr>
 							<th>Sl no.</th>
 							<th>Name</th>
-							<th>Course</th>
-							<th>Student Code</th>
+							<th>Father's Name</th>
+							<th>Mother's Name</th>
 							<th>Admission Date</th>
 						</tr>
 					</thead>
@@ -48,7 +48,7 @@
 	base_url = '<?= base_url() ?>'
 	$(document).ready(function () {
 		var myTable = $('#my-table').DataTable({
-			"ajax": base_url + "Admin/admitted",
+			"ajax": base_url + "Admin/enrolled",
 			'order': [],
 			responsive : true,
 			dom: "<'row'<'col-md-2'l><'col-md-6'B><'col-md-4'f>><'row'<'col-md-12'rt>><'row'<'col-md-6'i><'col-md-6'p>>",

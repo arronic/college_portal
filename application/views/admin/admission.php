@@ -1,4 +1,5 @@
 <?php include('header.php');?>
+<link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
 <div class="content-wrapper">
 	<section class="content-header">
 		<div class="container-fluid">
@@ -112,7 +113,8 @@
 						</button>
 					</div>
 					<div class="modal-body">
-						<form action="<?= base_url('Admin') ?>" enctype="multipart/form-data" id="editForm" method="POST">
+						<form action="<?= base_url('Admin') ?>" enctype="multipart/form-data" id="editForm"
+							method="POST">
 							<div class="row">
 								<div class="col-sm-6">
 									<div class="form-group">
@@ -124,7 +126,8 @@
 								<div class="col-sm-6">
 									<div class="form-group">
 										<label>Course</label>
-										<input type="text" class="form-control" id="course" name="course" value="" disabled>
+										<input type="text" class="form-control" id="course" name="course" value=""
+											disabled>
 									</div>
 								</div>
 							</div>
@@ -240,7 +243,8 @@
 								<div class="col-sm-12">
 									<div class="form-group">
 										<label>Name of the institute last studied</label>
-										<input type="text" class="form-control" id="last_institute" name="last_institute">
+										<input type="text" class="form-control" id="last_institute"
+											name="last_institute">
 									</div>
 								</div>
 							</div>
@@ -256,7 +260,8 @@
 								<div class="col-sm-3">
 									<div class="form-group">
 										<label>Last examination roll</label>
-										<input type="text" class="form-control" id="last_exam_roll" name="last_exam_roll">
+										<input type="text" class="form-control" id="last_exam_roll"
+											name="last_exam_roll">
 									</div>
 								</div>
 								<div class="col-sm-3">
@@ -268,13 +273,15 @@
 								<div class="col-sm-3">
 									<div class="form-group">
 										<label>Last examination year</label>
-										<input type="text" class="form-control" id="last_exam_year" name="last_exam_year">
+										<input type="text" class="form-control" id="last_exam_year"
+											name="last_exam_year">
 									</div>
 								</div>
 								<div class="col-sm-3">
 									<div class="form-group">
 										<label>Last examination center</label>
-										<input type="text" class="form-control" id="last_exam_center" name="last_exam_center"> 
+										<input type="text" class="form-control" id="last_exam_center"
+											name="last_exam_center">
 									</div>
 								</div>
 							</div>
@@ -284,13 +291,13 @@
 								<div class="col-sm-4">
 									<div class="form-group">
 										<label for="">Subjects</label>
-										<input type="text" class="form-control" id="sub1"name="sub1">
+										<input type="text" class="form-control" id="sub1" name="sub1">
 									</div>
 								</div>
 								<div class="col-sm-4">
 									<div class="form-group">
 										<label for="">Max Marks</label>
-										<input type="text" class="form-control" id="sub1_max"name="sub1_max">
+										<input type="text" class="form-control" id="sub1_max" name="sub1_max">
 									</div>
 								</div>
 								<div class="col-sm-4">
@@ -409,13 +416,15 @@
 								<div class="col-sm-4">
 									<label>Last exam total marks</label>
 									<div class="form-group">
-										<input type="text" class="form-control" id="last_exam_total" name="last_exam_total">
+										<input type="text" class="form-control" id="last_exam_total"
+											name="last_exam_total">
 									</div>
 								</div>
 								<div class="col-sm-4">
 									<div class="form-group">
 										<label>Last exam marks obained</label>
-										<input type="text" class="form-control" id="last_exam_obtained" name="last_exam_obtained">
+										<input type="text" class="form-control" id="last_exam_obtained"
+											name="last_exam_obtained">
 									</div>
 								</div>
 							</div>
@@ -434,21 +443,66 @@
 									</div>
 								</div>
 							</div>
-							<hr>
+							<div class="row">
+								<div class="col-sm-6">
+									<label> Name of Subject taken as Honours (Earlier known as
+										Major) in the following subject -</label>
+									<div class="form-group">
+										<select class="form-control" name="major" id="major">
+											<option value="">Select one</option>
+											<option value="English">English</option>
+											<option value="MIL (Assamese)">MIL (Assamese)</option>
+											<option value="History">History</option>
+											<option value="Political Science">Political Science</option>
+											<option value="Economics">Economics</option>
+											<option value="Philosophy">Philosophy</option>
+											<option value="Arabic">Arabic</option>
+											<option value="Mathematics">Mathematics</option>
+										</select>
+									</div>
+								</div>
+								<div class="col-sm-6">
+									<label>Subject available in the college for Regular
+										Course.</label>
+									<div class="form-group">
+										<select class="form-control js-example-basic-multiple" name="regular[]"
+											id="regular" multiple="multiple" required>
+											<option value="History">History</option>
+											<option value="Political Science">Political Science
+											</option>
+											<option value="Economics">Economics</option>
+											<option value="Education">Education</option>
+											<option value="Philosophy">Philosophy</option>
+											<option value="Elective Assamese">Elective Assamese
+											</option>
+											<option value="Elective Hindi">Elective Hindi</option>
+											<option value="Arabic">Arabic</option>
+											<option value="Mathematics">Mathematics</option>
+											<option value="Linguistics">Linguistics</option>
+										</select>
+									</div>
+								</div>
+							</div>
 							<div class="row">
 								<div class="col-sm-4">
 									<label>Where do you fall under?</label>
 									<div class="form-group">
-										<select class="form-control select2" name="apl_bpl" id="apl_bpl" style="width: 100%;">
+										<select class="form-control select2" name="apl_bpl" id="apl_bpl"
+											style="width: 100%;">
 											<option value="apl">APL</option>
 											<option value="bpl">BPL</option>
 										</select>
+									</div>
+									<div class="form-group" id="bpl_no_group" style="display:none;">
+										<label>BPL Card No.</label>
+										<input type="text" class="form-control" name="bpl_no" id="bpl_no">
 									</div>
 								</div>
 								<div class="col-sm-8">
 									<label>Is there any break of your studies?</label>
 									<div class="form-group col-sm-4">
-										<select class="form-control select2" name="study_break" id="study_break" style="width: 100%;" onchange="valueChanged()">
+										<select class="form-control select2" name="study_break" id="study_break"
+											style="width: 100%;" onchange="valueChanged()">
 											<option value="yes">YES</option>
 											<option value="no">NO</option>
 										</select>
@@ -483,7 +537,7 @@
 									</div>
 								</div>
 							</div>
-						<hr>
+							<hr>
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
@@ -496,8 +550,10 @@
 	</section>
 </div>
 <?php include('script.php');?>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
 <script type="text/javascript">
 	base_url = '<?= base_url() ?>'
+
 	function valueChanged() {
 		if ($('#study_break').val() == "yes") {
 			$("#gap_reason").show();
@@ -506,6 +562,10 @@
 			$("#gap_reason").hide();
 	}
 	$(document).ready(function () {
+		$('#regular').select2({
+			placeholder: 'Select any two from the options',
+			maximumSelectionLength: 2,
+		});
 		var myTable = $('#my-table').DataTable({
 			"ajax": base_url + "Admin/admitted",
 		});
@@ -529,16 +589,28 @@
 					} else {
 						$("#gap_reason").hide();
 					}
-					for(x in data){
-						$('#'+x).val(data[x]);
+					for (x in data) {
+						$('#' + x).val(data[x]);
 					}
 					$('#image').attr('src', base_url + 'upload/' + data.image_path);
 					$('#signature').attr('src', base_url + 'upload/' + data.sign_path);
+					if ($('#apl_bpl').val() == "bpl") {
+						$('#bpl_no_group').show();
+					}
 				},
 				error: function (error) {
 					console.error(error);
 				}
 			});
+		});
+		$('#apl_bpl').change(function () {
+			if ($('#apl_bpl').val() == 'bpl') {
+				$('#bpl_no_group').show();
+				$('#bpl_no').prop('required', true);
+			} else {
+				$('#bpl_no_group').hide();
+				$('#bpl_no').prop('required', false);
+			}
 		});
 		$('#editForm').on('submit', function (e) {
 			e.preventDefault();
@@ -546,11 +618,11 @@
 			$.ajax({
 				url: base_url + "Admin/update_student",
 				type: "POST",
-				data:  new FormData(this),
+				data: new FormData(this),
 				dataType: 'json',
 				contentType: false,
 				cache: false,
-				processData:false,
+				processData: false,
 				processData: false,
 				contentType: false,
 				success: function (data) {

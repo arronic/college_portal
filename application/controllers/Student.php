@@ -33,15 +33,20 @@ class Student extends CI_Controller{
     public function thankyou($code){
         $this->load->view('student/thankyou',['code'=>$code]);
     }
-    public function fillform($key){
-        $key = base64_decode($key);
-        $sold_form = $this->db->where('unique_code',$key)->get('form_sold');
-        if($sold_form->row()){
-            $sold_form = $sold_form->row();
-            $this->load->view('student/form',['form_details'=>$sold_form]);
+    public function fillform($key = null){
+        if ($key) {
+            $key = base64_decode($key);
+            $sold_form = $this->db->where('unique_code',$key)->get('form_sold');
+            if($sold_form->row()){
+                $sold_form = $sold_form->row();
+                $this->load->view('student/form',['form_details'=>$sold_form]);
+            }else{
+                return redirect('/student');
+            }
         }else{
-            return redirect('/student');
+            $this->error_show('errors/html/error_404',"Something went wrong","Please fill all the fields again, and submit.");
         }
+        
     }
 
     // logic functions
@@ -63,41 +68,53 @@ class Student extends CI_Controller{
     }
 
     public function submit_form(){
-        $path = './upload/';
-        $type = 'jpg|png|jpeg';
-        for ($i=0; $i <= 1; $i++) { 
-            $_FILES['userfile']['name'] = $_FILES['file']['name'][$i];
-            $_FILES['userfile']['type'] = $_FILES['file']['type'][$i];
-            $_FILES['userfile']['tmp_name'] = $_FILES['file']['tmp_name'][$i];
-            $_FILES['userfile']['error'] = $_FILES['file']['error'][$i];
-            $_FILES['userfile']['size'] = $_FILES['file']['size'][$i];
-            if($i == 0){
-                $pic_name = $this->arronic->uniqName($_FILES['userfile']['name']);
-                $this->_file_upload($path,$pic_name,$type);
-                $this->_image_resize('./upload/'.$pic_name,143,143);
+        $data = $this->input->post();
+        if ($data && $data!=null) {
+            $path = './upload/';
+            $type = 'jpg|png|jpeg';
+            for ($i=0; $i <= 1; $i++) { 
+                $_FILES['userfile']['name'] = $_FILES['file']['name'][$i];
+                $_FILES['userfile']['type'] = $_FILES['file']['type'][$i];
+                $_FILES['userfile']['tmp_name'] = $_FILES['file']['tmp_name'][$i];
+                $_FILES['userfile']['error'] = $_FILES['file']['error'][$i];
+                $_FILES['userfile']['size'] = $_FILES['file']['size'][$i];
+                if($i == 0){
+                    $pic_name = $this->arronic->uniqName($_FILES['userfile']['name']);
+                    $this->_file_upload($path,$pic_name,$type);
+                    $this->_image_resize('./upload/'.$pic_name,143,143);
+                }else{
+                    $sign_name = $this->arronic->uniqName($_FILES['userfile']['name']);
+                    $this->_file_upload($path,$sign_name,$type);
+                    $this->_image_resize('./upload/'.$sign_name,50,180);
+                }
+            }
+            if ($data['major'] == null) {
+                array_push($data['regular'],'English');
+            }
+            array_push($data['regular'],'AECC');
+            $result = '';
+            foreach ($data['regular'] as $key => $value) {
+                $result .= "$value,";
+            }
+            rtrim($result, ",");
+            $data['regular'] = $result;
+            $data['image_path'] = $pic_name;
+            $data['sign_path']= $sign_name;
+            $data['date'] = date('Y-m-d');
+            $last_entry = $this->genModel->fetch_last_entry('form_submitted');
+            if ($last_entry) {
+                $data['sl_no'] = $last_entry->sl_no+1;
             }else{
-                $sign_name = $this->arronic->uniqName($_FILES['userfile']['name']);
-                $this->_file_upload($path,$sign_name,$type);
-                $this->_image_resize('./upload/'.$sign_name,50,180);
+                $data['sl_no'] = 1;
+            }
+            if($this->genModel->insert_data('form_submitted',$data)){
+                $this->genModel->update_by_where('form_sold', ['status'=>1], ['unique_code'=>$data['code']]);
+                redirect(base_url().'student/thankyou/'.$data['code']);
             }
         }
-        $data = $this->input->post();
-        $data['image_path'] = $pic_name;
-        $data['sign_path']= $sign_name;
-        $data['date'] = date('Y-m-d');
-        $last_entry = $this->genModel->fetch_last_entry('form_submitted');
-        if ($last_entry) {
-            $data['sl_no'] = $last_entry->sl_no+1;
-        }else{
-            $data['sl_no'] = 1;
+        else{
+            $this->error_show('errors/html/error_404',"Something went wrong","Please fill all the fields again, and submit.");
         }
-        if($this->genModel->insert_data('form_submitted',$data)){
-            $this->genModel->update_by_where('form_sold', ['status'=>1], ['unique_code'=>$data['code']]);
-            redirect(base_url().'student/thankyou/'.$data['code']);
-        }
-            
-        else
-            redirect(base_url());
     }
 
     // pdf generate
@@ -143,7 +160,9 @@ class Student extends CI_Controller{
             return TRUE;
         }
     }
-
+    public function error_show($page,$heading,$message){
+            $this->load->view($page,compact('heading','message'));
+    }
     public function __construct(){
         parent::__construct();
         $this->load->model('GeneralModel','genModel');
