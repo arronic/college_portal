@@ -6,18 +6,23 @@ class Student extends CI_Controller{
 // ajax function starts
     public function getform(){
         $code = $this->input->post('key');
-        $student = $this->genModel->fetch_by_where('form_sold',['unique_code'=>$code]);
-        if($student){
-            $student = $this->genModel->fetch_by_where('form_submitted',['code'=>$code]);
+        if ($code) {
+            $code = base64_decode($code);
+            $student = $this->genModel->fetch_by_where('form_sold',['unique_code'=>$code]);
             if($student){
-                echo "NONE";
+                $student = $this->genModel->fetch_by_where('form_submitted',['code'=>$code]);
+                if($student){
+                    echo "NONE";
+                }
+                else{
+                    echo "TRUE";
+                }
             }
             else{
-                echo "TRUE";
+                echo "FALSE";
             }
-        }
-        else{
-            echo "FALSE";
+        }else {
+            return redirect('PageNotFound');
         }
     }
     public function getdetails($key){

@@ -29,7 +29,7 @@
 						<form class="m-3" id="student">
 							<input type="text" id="unique" class="form-control mb-3 fadeIn second" name="uniq"
 								placeholder="Unique ID">
-							<button type="button" id="get_form" class="btn btn-primary float-right mr-3 mb-3"> Get
+							<button type="submit" class="btn btn-primary float-right mr-3 mb-3"> Get
 								Form</button>
 						</form>
 						<div id="print"></div>
@@ -41,8 +41,10 @@
 </body>
 <script>
 	var base_url = '<?= base_url();?>'
-	$('#get_form').click(function () {
-		unique_key = $('#unique').val();
+	$('#student').on('submit', function(e) {
+		e.preventDefault();
+		unique_key = btoa_return($('#unique').val());
+		
 		$.ajax({
 			type: "POST",
 			url: base_url + "Student/getform",
@@ -52,7 +54,7 @@
 			cache: false,
 			success: function (data, status) {
 				if (data == "TRUE") {
-					window.location = base_url + "student/fillform/" + window.btoa(unique_key);
+					window.location = base_url + "student/fillform/" + window.unique_key;
 				} else if (data == "NONE") {
 					$('#error-invalid').hide();
 					$('#error-submitted').show();
@@ -76,7 +78,6 @@
 		return window.btoa(string);
 	}
 	function print_pdf(code) {
-		code = btoa_return(code);
 		window.open(base_url + "student/myform/" + code, "_blank",
 			"directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,top=20,left=400,width=600,height=700"
 		);
