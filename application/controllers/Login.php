@@ -12,12 +12,12 @@ class Login extends CI_Controller{
 
     // logic function starts
     public function login_check(){
-        $this->load->model('loginmodel');
+        $this->load->model('LoginModel');
         $data = array(
             'username' => $this->input->post('username'),
             'password'=> $this->input->post('password')
             );
-        $user_id = $this->loginmodel->validate_user($data['username'],$data['password']);
+        $user_id = $this->LoginModel->validate_user($data['username'],$data['password']);
         if ($user_id) {
             $this->session->set_userdata('user_id',$user_id);
             echo "TRUE";

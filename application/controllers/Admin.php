@@ -584,7 +584,7 @@ class Admin extends CI_Controller{
     }
     public function __construct(){
         parent::__construct();
-        $this->load->model('soldformmodel');
+        $this->load->model('Soldformmodel');
         $this->load->model('Htmltopdfmodel');
         $this->load->model('GeneralModel','genModel');
         $this->load->library('arronic_lib1',null,'arronic');
