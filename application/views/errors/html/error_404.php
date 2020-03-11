@@ -57,8 +57,11 @@ p {
 </head>
 <body>
 	<div id="container">
-		<h1><?php echo $heading; ?></h1>
-		<?php echo $message; ?>
+		<?php if (isset($heading)): ?>
+			<h1><?= $heading; ?></h1>
+			<p><?= $message; ?></p>
+		<?php endif ?> 
+		
 	</div>
 </body>
 </html>

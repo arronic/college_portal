@@ -19,14 +19,23 @@
 	<section class="content">
 		<div class="container-fluid">
 			<div class="card p-3">
-				<table class="table table-hover" id="my-table" width="100%">
+				<table class="table table-hover table-responsive" id="my-table" width="100%">
 					<thead>
 						<tr>
 							<th>Sl no.</th>
 							<th>Name</th>
 							<th>Father's Name</th>
 							<th>Mother's Name</th>
-							<th>Admission Date</th>
+							<th>DOB</th>
+							<th>Gender <br> Cast</th>
+							<th>Stream</th>
+							<th>Course</th>
+							<th>Category</th>
+							<th>BPL document no.</th>
+							<th>Address</th>
+							<th>Mobile no.</th>
+							<th>Paper Details</th>
+							<th>Remarks</th>
 						</tr>
 					</thead>
 				</table>

@@ -1,8 +1,8 @@
 <?php
 class Htmltopdfmodel extends CI_Model{
-    public function gethtml($code){
-        $student_details = $this->db->where('unique_code',$code)->get('form_sold');
-        $student_details = $student_details->row();
+    public function gethtml($sd){
+        // $student_details = $this->db->where('unique_code',$code)->get('form_sold');
+        // $student_details = $student_details->row();
         $output = '<html>
         <head>
         <title>Donation Coupon</title>
@@ -85,7 +85,7 @@ class Htmltopdfmodel extends CI_Model{
         <body>
         <div class="text-center bold" style="background-color:grey; color:white;">DONATION COUPON</div>
             <div>
-            <span>Sl No.: '.$student_details->sl_no.'</span>
+            <span>Sl No.: '.$sd->sl_no.'</span>
                 <div class="custom-header text-center">
                     <div class="bold font-large">College Name, Address</div>
                     <div class="bold text-center">ESTD:1947</div>
@@ -96,8 +96,8 @@ class Htmltopdfmodel extends CI_Model{
             <hr>
             <div>
                 <div>
-                 <span><strong>Student Name:</strong>  '.ucwords($student_details->student_name).'</span>
-                 <span class="float-right"><strong>Code:</strong>  '.$student_details->unique_code.'</span>
+                 <span><strong>Student Name:</strong>  '.ucwords($sd->student_name).'</span>
+                 <span class="float-right"><strong>Code:</strong>  '.$sd->unique_code.'</span>
                 </div>
                 <br>
                 <div>
@@ -107,8 +107,8 @@ class Htmltopdfmodel extends CI_Model{
                             <th>Date</th>
                         </tr>
                         <tr>
-                            <td>'.$student_details->student_course.'</td>
-                            <td>'.$student_details->date.'</td>
+                            <td>'.$sd->student_course.'</td>
+                            <td>'.$sd->date.'</td>
                         </tr>
                     </table>
                     <br>

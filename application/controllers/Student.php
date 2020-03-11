@@ -2,9 +2,6 @@
 class Student extends CI_Controller{
     public function index(){
         $this->load->view('auth/student');
-        // $heading = "Requested Page is not Found!";
-        // $message = "The page you are requesting is not built for now!";
-        // $this->load->view('errors/html/error_404',compact('heading','message'));
     }
 // ajax function starts
     public function getform(){
@@ -48,25 +45,7 @@ class Student extends CI_Controller{
         }
         
     }
-
     // logic functions
-    public function _file_upload($path, $f_name ,$types=null, $max_size=null){
-
-        $config['upload_path'] = $path;
-        $config['allowed_types'] = ($types!=null ? $types : '*');
-        $config['max_size'] = ($max_size!=null ? $max_size : '100000'); // max_size in 100 kb
-        $config['file_name'] = $f_name;
-        // print_r($config); exit;
-        $this->upload->initialize($config);
-        
-        if($this->upload->do_upload()){
-            return TRUE;
-        }
-        else{
-            echo $this->upload->display_errors();
-        }
-    }
-
     public function submit_form(){
         $data = $this->input->post();
         if ($data && $data!=null) {
@@ -116,8 +95,6 @@ class Student extends CI_Controller{
             $this->error_show('errors/html/error_404',"Something went wrong","Please fill all the fields again, and submit.");
         }
     }
-
-    // pdf generate
     function myform($code = null){
         if($code){
             $code = base64_decode($code);
@@ -136,7 +113,8 @@ class Student extends CI_Controller{
         else
             redirect('PageNotFound');
     }
-    // image resize
+    // logic function ends
+    // helper function starts
     public function _image_resize($source, $height, $width, $copy=null, $destination=null){
 			
         $configi['image_library']  = 'gd2';
@@ -160,9 +138,24 @@ class Student extends CI_Controller{
             return TRUE;
         }
     }
+    public function _file_upload($path, $f_name ,$types=null, $max_size=null){
+
+        $config['upload_path'] = $path;
+        $config['allowed_types'] = ($types!=null ? $types : '*');
+        $config['max_size'] = ($max_size!=null ? $max_size : '100000');
+        $config['file_name'] = $f_name;
+        $this->upload->initialize($config);
+        if($this->upload->do_upload()){
+            return TRUE;
+        }
+        else{
+            echo $this->upload->display_errors();
+        }
+    }
     public function error_show($page,$heading,$message){
             $this->load->view($page,compact('heading','message'));
     }
+    // helper function ends
     public function __construct(){
         parent::__construct();
         $this->load->model('GeneralModel','genModel');

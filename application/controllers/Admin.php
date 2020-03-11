@@ -76,6 +76,7 @@ class Admin extends CI_Controller{
     }
     public function store_student(){
         $data = $this->input->post();
+        if ($data && $data!=null) {
             $path = './upload/';
             $type = 'jpg|png|jpeg';
             if($_FILES['file']['name'][0]){
@@ -106,6 +107,10 @@ class Admin extends CI_Controller{
             else{
                 echo "FALSE";
             }
+        }else {
+            $this->error_show('errors/html/error_404',"Something went wrong","Please fill all the fields again, and submit.");
+        }
+
     }
     public function getDetails($key){
         $sd = $this->genModel->fetch_by_col('form_submitted', ['code'=>$key]);
@@ -114,7 +119,6 @@ class Admin extends CI_Controller{
 
     public function notAdmitted(){
         $select = 'id, name, code, course, apl_bpl, paid, status';
-
         $all_student = $this->genModel->fetch_by_col_select($select, 'form_submitted', ['status'=>0]);
         // print_r($all_student[0]); exit;
         $response['data'] = array();
@@ -155,17 +159,38 @@ class Admin extends CI_Controller{
         echo json_encode($response);
     }
     public function enrolled(){
-        $select = 'id, name, faather, mother, dob, gender, cast, apl_bpl,g_village, g_po, g_district, g_pin, phone, bpl_no, major, regular';
+        $select = 'id, name, father, mother, dob, gender, cast, apl_bpl,g_village, g_po, g_district, g_pin, phone, bpl_no, major, regular, status';
         $all_student = $this->genModel->fetch_by_col_select($select, 'form_submitted', ['status'=>1]);
         $response['data'] = [];
         if(isset($all_student[0]->status) && $all_student[0]->status == 1){
             foreach ($all_student as $key => $value){
+                if ($value->major == NULL) {
+                    $course = "Regular";
+                }else {
+                    $course = "Major";
+                }
+                $address = "Vill-".$value->g_village.", P.O.-".$value->g_po.", Dist-".$value->g_district."(Assam), PIN-".$value->g_pin;
+                if ($value->major != null) {
+                    $paper = $value->major."(M), ".$value->regular;
+                }else {
+                    $paper = $value->regular;
+                }
+                $gender_cast = $value->gender." ".$value->cast;
                 $response['data'][$key] = array(
                     $key+1,
                     $value->name,
-                    $value->course,
-                    $value->code,
-                    $value->adm_date
+                    $value->father,
+                    $value->mother,
+                    $value->dob,
+                    $gender_cast,
+                    "Arts",
+                    $course,
+                    $value->apl_bpl,
+                    $value->bpl_no,
+                    $address,
+                    $value->phone,
+                    $paper,
+                    ""
                 );
             }
         }
@@ -196,27 +221,42 @@ class Admin extends CI_Controller{
     public function del_sold_form(){
         if($key = $this->input->post('key')){
             $this->arronic->perform_fed($this->genModel->delete_by_where('form_sold', ['unique_code'=>$key]), 'Form Has been Succesfully Deleted', 'Error. Please check again');
+        }else {
+            $this->error_show('errors/html/error_404',"Something went wrong","Cannot perform delete operation");
         }
     }
     public function store_enrollment(){
         $data = $this->input->post();
-        $last_entry = $this->genModel->fetch_last_entry('form_sold');
-        $data['date'] =  date('Y-m-d', strtotime($data['date']));
-        if ($last_entry) {
-            $data['sl_no'] = $last_entry->sl_no+1;
-        }else{
-            $data['sl_no'] = 1;
+        if ($data && $data != null) {
+            $last_entry = $this->genModel->fetch_last_entry('form_sold');
+            $data['date'] =  date('Y-m-d', strtotime($data['date']));
+            if ($last_entry) {
+                $data['sl_no'] = $last_entry->sl_no+1;
+            }else{
+                $data['sl_no'] = 1;
+            }
+            $this->arronic->perform_fed($this->genModel->insert_data('form_sold' , $data), 'Form Has been Succesfully Created', 'Error. Please check again');    
+        }else {
+            $this->error_show('errors/html/error_404',"Something went wrong","Could not store the enrollment details. Try again!");
         }
-        $this->arronic->perform_fed($this->genModel->insert_data('form_sold' , $data), 'Form Has been Succesfully Created', 'Error. Please check again');
-
+        
     }
-    public function print_pdf($code){
-        $code  = (base64_decode($code));
-        $this->load->library('pdf');
-        $view = $this->Htmltopdfmodel->gethtml($code);
-        $this->pdf->loadHtml($view);
-        $this->pdf->render();    
-        $this->pdf->stream("Enrollment.pdf",array("Attachment"=>0));
+    public function print_pdf($code = null){
+        if($code){
+            $code  = (base64_decode($code));
+            if($student_details = $this->genModel->fetch_by_col('form_sold',['unique_code'=>$code])){
+                $sd = $student_details[0];
+                $this->load->library('pdf');
+                $view = $this->Htmltopdfmodel->gethtml($sd);
+                $this->pdf->loadHtml($view);
+                $this->pdf->render();    
+                $this->pdf->stream("Enrollment.pdf",array("Attachment"=>0));
+            }else {
+                return redirect("Admin");
+            }
+        }else {
+            $this->error_show('errors/html/error_404',"Something went wrong","Could not genrate pdf. Try again!");
+        }
     }
     public function receiptPDF($code = null){
         if($code){
@@ -243,81 +283,87 @@ class Admin extends CI_Controller{
         else{
             return redirect('NotFound');
         }
-        // $code = base64_decode($code);
-        // $this->load->library('pdf');
-        // $view = $this->Htmltopdfmodel->getreceiptPDF($code);
-        // $this->pdf->loadHtml($view);
-        // $this->pdf->render();    
-        // $this->pdf->stream("Receipt.pdf",array("Attachment"=>0));
     }
     public function student_admit(){
-        $student_id = $this->input->post('student_id');
-        $post = array(
-            'status' => 1
-        );
-        $where = [ 'id' =>  $student_id];
-        $this->genModel->update_by_where('form_submitted',$post,$where);
-        echo "TRUE";
+        if($student_id = $this->input->post('student_id')){
+            $post = array(
+                'status' => 1
+            );
+            $where = [ 'id' =>  $student_id];
+            $this->genModel->update_by_where('form_submitted',$post,$where);
+            echo "TRUE";
+        }else {
+            $this->error_show('errors/html/error_404',"Something went wrong","Could not admit the student. Try again!");
+        }
     }
     public function update_student(){
         $data = $this->input->post();
-        $id = $data['id'];
-        $student_details = $this->genModel->fetch_by_col_select('image_path, sign_path', 'form_submitted', ['id'=>$id]);
-        $path = './upload/';
-        $type = 'jpg|png|jpeg';
-        unset($data['id']);
-        if($_FILES['file']['name'][0]){
-            $image = 'upload/'.$student_details[0]->image_path;
-            if($image){unlink($image);}
-            $_FILES['userfile']['name'] = $_FILES['file']['name'][0];
-            $_FILES['userfile']['type'] = $_FILES['file']['type'][0];
-            $_FILES['userfile']['tmp_name'] = $_FILES['file']['tmp_name'][0];
-            $_FILES['userfile']['error'] = $_FILES['file']['error'][0];
-            $_FILES['userfile']['size'] = $_FILES['file']['size'][0];
-            $pic_name = $this->arronic->uniqName($_FILES['userfile']['name']);
-            $this->_file_upload($path,$pic_name,$type);
-            $this->_image_resize('./upload/'.$pic_name,143,143);
-            $data['image_path'] = $pic_name;
-        };
-        if($_FILES['file']['name'][1]){
-            $sign = 'upload/'.$student_details[0]->sign_path;
-            if($sign){unlink($sign);}
-            $_FILES['userfile']['name'] = $_FILES['file']['name'][1];
-            $_FILES['userfile']['type'] = $_FILES['file']['type'][1];
-            $_FILES['userfile']['tmp_name'] = $_FILES['file']['tmp_name'][1];
-            $_FILES['userfile']['error'] = $_FILES['file']['error'][1];
-            $_FILES['userfile']['size'] = $_FILES['file']['size'][1];
-            $sign_name = $this->arronic->uniqName($_FILES['userfile']['name']);
-            $this->_file_upload($path,$sign_name,$type);
-            $this->_image_resize('./upload/'.$sign_name,80,200);
-            $data['sign_path'] = $sign_name;
-        };
-        if ($data['major'] == null) {
-            array_push($data['regular'],'English');
+        if ($data && $data != null) {
+            $id = $data['id'];
+            $student_details = $this->genModel->fetch_by_col_select('image_path, sign_path', 'form_submitted', ['id'=>$id]);
+            $path = './upload/';
+            $type = 'jpg|png|jpeg';
+            unset($data['id']);
+            if($_FILES['file']['name'][0]){
+                $image = 'upload/'.$student_details[0]->image_path;
+                if($image){unlink($image);}
+                $_FILES['userfile']['name'] = $_FILES['file']['name'][0];
+                $_FILES['userfile']['type'] = $_FILES['file']['type'][0];
+                $_FILES['userfile']['tmp_name'] = $_FILES['file']['tmp_name'][0];
+                $_FILES['userfile']['error'] = $_FILES['file']['error'][0];
+                $_FILES['userfile']['size'] = $_FILES['file']['size'][0];
+                $pic_name = $this->arronic->uniqName($_FILES['userfile']['name']);
+                $this->_file_upload($path,$pic_name,$type);
+                $this->_image_resize('./upload/'.$pic_name,143,143);
+                $data['image_path'] = $pic_name;
+            };
+            if($_FILES['file']['name'][1]){
+                $sign = 'upload/'.$student_details[0]->sign_path;
+                if($sign){unlink($sign);}
+                $_FILES['userfile']['name'] = $_FILES['file']['name'][1];
+                $_FILES['userfile']['type'] = $_FILES['file']['type'][1];
+                $_FILES['userfile']['tmp_name'] = $_FILES['file']['tmp_name'][1];
+                $_FILES['userfile']['error'] = $_FILES['file']['error'][1];
+                $_FILES['userfile']['size'] = $_FILES['file']['size'][1];
+                $sign_name = $this->arronic->uniqName($_FILES['userfile']['name']);
+                $this->_file_upload($path,$sign_name,$type);
+                $this->_image_resize('./upload/'.$sign_name,80,200);
+                $data['sign_path'] = $sign_name;
+            };
+            if ($data['major'] == null) {
+                array_push($data['regular'],'English');
+            }
+            array_push($data['regular'],'AECC');
+            $result = '';
+            foreach ($data['regular'] as $key => $value) {
+                $result .= "$value,";
+            }
+            rtrim($result, ",");
+            $data['regular'] = $result;
+            $data['status'] = 1;
+            $data['adm_date'] = date('Y-m-d');
+            $data['adm_year'] = date('Y');
+            $data['paid'] = 'paid';
+            $this->arronic->perform_fed($this->genModel->update_by_id('form_submitted',$data,$id), 'Form Has been Succesfully Updated', 'Error. Please check again');
+        }else {
+            $this->error_show('errors/html/error_404',"Something went wrong","Could not update student details. Try again!");
         }
-        array_push($data['regular'],'AECC');
-        $result = '';
-        foreach ($data['regular'] as $key => $value) {
-            $result .= "$value,";
-        }
-        rtrim($result, ",");
-        $data['regular'] = $result;
-        $data['status'] = 1;
-        $data['adm_date'] = date('Y-m-d');
-        $data['adm_year'] = date('Y');
-        $data['paid'] = 'paid';
-        $this->arronic->perform_fed($this->genModel->update_by_id('form_submitted',$data,$id), 'Form Has been Succesfully Updated', 'Error. Please check again');
     }
-    public function fee_paid($id){
-        $post = array(
-            'paid' => "paid"
-        );
-        $where = [ 'id' =>  $id];
-        if($this->genModel->update_by_where('form_submitted',$post,$where)){
-            echo "TRUE";
-        }else{
-            echo "FALSE";
+    public function fee_paid($id = null){
+        if ($id) {
+            $post = array(
+                'paid' => "paid"
+            );
+            $where = [ 'id' =>  $id];
+            if($this->genModel->update_by_where('form_submitted',$post,$where)){
+                echo "TRUE";
+            }else{
+                echo "FALSE";
+            }
+        }else {
+            $this->error_show('errors/html/error_404',"Something went wrong","Could not update fee payment details. Try again!");
         }
+        
     }
     public function fetch_paid_list($year){
         $sel = 'id, name, code, course, adm_date, paid_amt';
@@ -391,7 +437,11 @@ class Admin extends CI_Controller{
     }
     public function add_notice(){
         $data = $this->input->post();
-        $this->arronic->perform_fed($this->genModel->insert_data('notice',$data), 'Notice has been added successfully', 'Error. Please check again');
+        if ($data && $data != null) {
+            $this->arronic->perform_fed($this->genModel->insert_data('notice',$data), 'Notice has been added successfully', 'Error. Please check again');
+        }else {
+            $this->error_show('errors/html/error_404',"Something went wrong","Could not add the notice. Try again!");
+        }
     }
     public function get_notice_detail($id){
         $result = $this->genModel->fetch_by_id('notice',$id);
@@ -399,9 +449,13 @@ class Admin extends CI_Controller{
     }
     public function update_notice(){
         $data = $this->input->post();
-        $id = $data['id'];
-        unset($data['id']);
-        $this->arronic->perform_fed($this->genModel->update_by_id('notice', $data, $id),'Notice has been updated successfully', 'Error. Please check again');
+        if ($data && $data != null) {
+            $id = $data['id'];
+            unset($data['id']);
+            $this->arronic->perform_fed($this->genModel->update_by_id('notice', $data, $id),'Notice has been updated successfully', 'Error. Please check again');    
+        }else {
+            $this->error_show('errors/html/error_404',"Something went wrong","Could not update the notice. Try again!");
+        }
     }
     public function delete_notice(){
         if($id = $this->input->post('id')){
@@ -524,6 +578,9 @@ class Admin extends CI_Controller{
                 $words[$point = $point % 10] ." Paise": '';
 
         return ucwords($result . "Rupees  " . $points);
+    }
+    public function error_show($page,$heading,$message){
+        $this->load->view($page,compact('heading','message'));
     }
     public function __construct(){
         parent::__construct();

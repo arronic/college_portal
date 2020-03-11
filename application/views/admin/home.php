@@ -3,7 +3,6 @@
 
 
 <div class="content-wrapper">
-	<!-- Content Header (Page header) -->
 	<section class="content-header">
 		<div class="container-fluid">
 			<div class="row mb-2">
@@ -12,14 +11,11 @@
 				</div>
 				<div class="col-sm-6">
 					<ol class="breadcrumb float-sm-right">
-						<!-- <li class="breadcrumb-item"><a href="#">Home</a></li>
-						<li class="breadcrumb-item active">Enrollment Form</li> -->
-
                     <button class="btn btn-primary" onclick="enrol_new()"><i class="fas fa-pen">  Enroll New</i></button>
 					</ol>
 				</div>
 			</div>
-		</div><!-- /.container-fluid -->
+		</div>
 	</section>
     <div class="row">
         <div class="col-md-8 offset-md-2">
@@ -29,11 +25,7 @@
                         <div class="card card-primary" id="enrollment-form">
                             <div class="card-header">
                                 <h3 class="card-title float-left">New Enrollment Form</h3>
-
                             </div>
-                            <!-- /.card-header -->
-                            <!-- form start -->
-                            <!-- <form role="form"> -->
                             <?= form_open('Admin/store_enrollment', ['id'=>'genKey_form'] ) ?>
                                 <div class="card-body">
                                     <div class="form-group">
@@ -49,10 +41,6 @@
                                             <?php } ?>
                                         </select>
                                     </div>
-                                    <!-- <div class="form-group">
-                                        <label for="year">Year</label>
-                                        <input type="text" class="form-control" name="date" id="today" value="<?= date('Y/m/d') ?>" disabled>
-                                    </div> -->
                                     <div class="form-group">
                                         <label for="year">Year</label>
                                         <div class="input-append date" id="dp1" data-date="<?= date('d-m-Y') ?>" data-datepicker-format="dd-mm-yyyy">
@@ -62,8 +50,6 @@
                                     </div>
                                     
                                 </div>
-                                <!-- /.card-body -->
-
                                 <div class="card-footer">
                                     <button type="submit" id="generate_btn" class="btn btn-primary float-right">Generate Admission Form</button>
                                     <button type="reset" class="btn btn-warning float-right" style="margin-right: 10px">Reset</button>
@@ -75,7 +61,6 @@
                 </section> 
         </div>
     </div>
-    <!-- modal starts -->
     <style>
         .borderless td, .borderless th {
             border: none;
@@ -109,12 +94,8 @@
             <button type="button" class="btn btn-success" id="yes_submit">Yes</button>
           </div>
         </div>
-        <!-- /.modal-content -->
       </div>
-      <!-- /.modal-dialog -->
     </div>
-    <!-- /.modal -->
-	
 </div>
 
 
@@ -196,15 +177,14 @@ $(document).ready(function(){
             $('#yes_submit').unbind().click(function(){
                 // console.log('hello')
                 spinnerOn();
-                var uniquekey = makeid(student_name,8);
+                var uniquekey = makeid(6);
                 $.ajax({
                         type: "POST",
                         url: base_url + "Admin/store_enrollment", 
                         data: {student_name: student_name, student_course: student_course, unique_code: uniquekey, date: date},
                         dataType: 'json',
                         cache:false,
-                        success: function(data){ 
-                            // console.log(data); return false;                       
+                        success: function(data){                      
                                 if (data.class == "success") {
                                     spinnerOff();
                                     feedback_msg(data, 10000);
@@ -220,8 +200,6 @@ $(document).ready(function(){
                                             <button onclick="print_pdf(`+"'"+uniquekey+"'"+`)" class="btn btn-success float-right"><i class="fas fa-print">  Print Form</i></a>
                                         </div>
                                         </div>`).slideDown();
-                                // $('#generate_btn').preventDefaultop('disabled', true);
-                                
                                 }else{
                                 }
                             },
@@ -244,16 +222,18 @@ $(document).ready(function(){
 });
 </script>
 <script>
-function makeid(characters,length) {
+function makeid(length) {
    var result = '';
    var d = new Date();
-   characters=characters+"ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"+d.getTime();
+   var year = (d.getUTCFullYear()).toString().slice(-2);
+   var month = ("0" + (d.getMonth() + 1)).slice(-2); 
+   
+   characters="ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
    var charactersLength = characters.length;
    for ( var i = 0; i < length; i++ ) {
       result += characters.charAt(Math.floor(Math.random() * charactersLength));
    }
-   return result.replace(/ /g,'');
-   // return result;
+return (year+month+result.replace(/ /g,''));
 }
 </script>
 <script>
