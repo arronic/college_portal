@@ -89,6 +89,7 @@
 		$('#generate-form').show();
 		$('#form')[0].reset();
 		$('#print_card').hide();
+		$('#error-alert').hide();
 	});
 
 </script>
