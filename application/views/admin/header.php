@@ -118,7 +118,7 @@
 						</li>
 						<li class="nav-item">
 							<a href="<?= base_url().'Admin/enrolled_list'?>" class="nav-link">
-								<i class="nav-icon fab fa-wpforms"></i>
+								<i class="nav-icon far fa-list-alt"></i>
 								<p>
 									Enrolled List
 								</p>
@@ -126,7 +126,7 @@
 						</li>
 						<li class="nav-item">
 							<a href="<?= base_url().'Admin/paid_list'?>" class="nav-link">
-								<i class="nav-icon fas fa-list"></i>
+								<i class="nav-icon fas fa-check-circle"></i>
 								<p>
 									Paid List
 								</p>
@@ -134,7 +134,7 @@
 						</li>
 						<li class="nav-item">
 							<a href="<?= base_url().'Admin/fee_structure'?>" class="nav-link">
-								<i class="nav-icon fas fa-list"></i>
+								<i class="nav-icon fas fa-dollar-sign"></i>
 								<p>
 									Fee Structure
 								</p>
@@ -142,7 +142,7 @@
 						</li>
 						<li class="nav-item">
 							<a href="<?= base_url().'Admin/notice'?>" class="nav-link">
-								<i class="nav-icon fas fa-list"></i>
+								<i class="nav-icon far fa-flag"></i>
 								<p>
 									Notice
 								</p>
