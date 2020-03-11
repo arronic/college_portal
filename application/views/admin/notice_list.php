@@ -102,150 +102,152 @@
 			</div>
 		</div>
 	</div>
-	<?php include('script.php');?>
-	<?php include('footer.php');?>
-	<script src="https://cdn.datatables.net/buttons/1.6.1/js/dataTables.buttons.min.js"></script>
-	<script src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.bootstrap4.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
-	<script src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.html5.min.js"></script>
-	<script src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.print.min.js"></script>
-	<script src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.colVis.min.js"></script>
-	<script type="text/javascript">
-		base_url = '<?= base_url() ?>'
-		console.log(base_url);
-		$(document).ready(function () {
-			myTable = $("#my-table").DataTable({
-				"ajax": base_url + "Admin/get_notice_list",
-				'order': [],
-				responsive: true,
-				dom: "<'row'<'col-md-2'l><'col-md-6'B><'col-md-4'f>><'row'<'col-md-12'rt>><'row'<'col-md-6'i><'col-md-6'p>>",
-				buttons: ['copy', 'excel', 'pdf', 'colvis'],
-			});
-		});
-		$('#notice-form').on('submit', function (e) {
-			e.preventDefault();
-			notice = $('#notice').val();
-			spinnerOn();
-			$.ajax({
-				url: base_url + "Admin/add_notice",
-				type: "POST",
-				data: new FormData(this),
-				dataType: 'json',
-				contentType: false,
-				cache: false,
-				processData: false,
-				processData: false,
-				success: function (result) {
-					if (result.class == "success") {
-						$('#notice-modal').modal('toggle');
-						spinnerOff();
-                        feedback_msg(result, 5000);
-						myTable.ajax.reload();
-					}
-				},
-				error: function (error) {
-					console.log(error);
-				}
-			});
-		});
-		$('#edit-form').on('submit', function (e) {
-			e.preventDefault();
-			id = $('#id').val()
-			notice = $('#notice').val();
-			spinnerOn();
-			$.ajax({
-				url: base_url + "Admin/update_notice",
-				type: "POST",
-				data: new FormData(this),
-				dataType: 'json',
-				contentType: false,
-				cache: false,
-				processData: false,
-				processData: false,
-				success: function (result) {
-					if (result.class == "success") {
-						$('#edit-modal').modal('toggle');
-						spinnerOff();
-                        feedback_msg(result, 5000);
-						myTable.ajax.reload();
-					}
-				},
-				error: function (error) {
-					console.log(error);
-				}
-			});
-		});
+</div>
+<?php include('script.php');?>
 
-	</script>
-	<script>
-		function add_notice() {
-			$('#notice-modal').modal('toggle');
-			$('#notice').val('');
-		}
-
-		function edit_notice(id) {
-			$('#edit-modal').modal('toggle');
-			$.ajax({
-				type: "GET",
-				url: base_url + "Admin/get_notice_detail/" + id,
-				dataType: 'json',
-				cache: false,
-				success: function (data) {
-					$('#edit_notice').val(data.notice);
-					$('#id').val(id);
-				},
-				error: function (error) {
-					console.error(error);
+<script src="https://cdn.datatables.net/buttons/1.6.1/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.bootstrap4.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.print.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.colVis.min.js"></script>
+<script type="text/javascript">
+	base_url = '<?= base_url() ?>'
+	$(document).ready(function () {
+		myTable = $("#my-table").DataTable({
+			"ajax": base_url + "Admin/get_notice_list",
+			'order': [],
+			responsive: true,
+			dom: "<'row'<'col-md-2'l><'col-md-6'B><'col-md-4'f>><'row'<'col-md-12'rt>><'row'<'col-md-6'i><'col-md-6'p>>",
+			buttons: ['copy', 'excel', 'pdf', 'colvis'],
+		});
+	});
+	$('#notice-form').on('submit', function (e) {
+		e.preventDefault();
+		notice = $('#notice').val();
+		spinnerOn();
+		$.ajax({
+			url: base_url + "Admin/add_notice",
+			type: "POST",
+			data: new FormData(this),
+			dataType: 'json',
+			contentType: false,
+			cache: false,
+			processData: false,
+			processData: false,
+			success: function (result) {
+				if (result.class == "success") {
+					$('#notice-modal').modal('toggle');
+					spinnerOff();
+					feedback_msg(result, 5000);
+					myTable.ajax.reload();
 				}
-			});
-		}
-
-		function delete_notice(id) {
-			$('#modalConfirm').modal('toggle');
-			$('#yes_del').unbind().click(function () {
-				spinnerOn();
-				$.ajax({
-					type: "POST",
-					url: base_url + "Admin/delete_notice",
-					data: {
-						id: id
-					},
-					dataType: 'json',
-					success: function (data) {                     
-						if (data.class == "success") {
-							spinnerOff();
-							feedback_msg(data, 5000);
-							$('#modalConfirm').modal('toggle');
-							myTable.ajax.reload();
-						} else {}
-					},
-					error: function error(data) {
-						console.log(data);
-					}
-				});
-			});
-		}
-        function change_status(id){
-            $.ajax({
-					type: "POST",
-					url: base_url + "Admin/change_status",
-					data: {
-						id: id
-					},
-					dataType: 'json',
-					success: function (data) { 
-						if (data.class == "success") {
-							spinnerOff();
-							feedback_msg(data, 5000);
-							myTable.ajax.reload();
-						} else {}
-					},
-					error: function error(data) {
-						console.log(data);
-					}
-				});
+			},
+			error: function (error) {
+				console.log(error);
 			}
+		});
+	});
+	$('#edit-form').on('submit', function (e) {
+		e.preventDefault();
+		id = $('#id').val()
+		notice = $('#notice').val();
+		spinnerOn();
+		$.ajax({
+			url: base_url + "Admin/update_notice",
+			type: "POST",
+			data: new FormData(this),
+			dataType: 'json',
+			contentType: false,
+			cache: false,
+			processData: false,
+			processData: false,
+			success: function (result) {
+				if (result.class == "success") {
+					$('#edit-modal').modal('toggle');
+					spinnerOff();
+					feedback_msg(result, 5000);
+					myTable.ajax.reload();
+				}
+			},
+			error: function (error) {
+				console.log(error);
+			}
+		});
+	});
 
-	</script>
+</script>
+<script>
+	function add_notice() {
+		$('#notice-modal').modal('toggle');
+		$('#notice').val('');
+	}
+
+	function edit_notice(id) {
+		$('#edit-modal').modal('toggle');
+		$.ajax({
+			type: "GET",
+			url: base_url + "Admin/get_notice_detail/" + id,
+			dataType: 'json',
+			cache: false,
+			success: function (data) {
+				$('#edit_notice').val(data.notice);
+				$('#id').val(id);
+			},
+			error: function (error) {
+				console.error(error);
+			}
+		});
+	}
+
+	function delete_notice(id) {
+		$('#modalConfirm').modal('toggle');
+		$('#yes_del').unbind().click(function () {
+			spinnerOn();
+			$.ajax({
+				type: "POST",
+				url: base_url + "Admin/delete_notice",
+				data: {
+					id: id
+				},
+				dataType: 'json',
+				success: function (data) {
+					if (data.class == "success") {
+						spinnerOff();
+						feedback_msg(data, 5000);
+						$('#modalConfirm').modal('toggle');
+						myTable.ajax.reload();
+					} else {}
+				},
+				error: function error(data) {
+					console.log(data);
+				}
+			});
+		});
+	}
+
+	function change_status(id) {
+		$.ajax({
+			type: "POST",
+			url: base_url + "Admin/change_status",
+			data: {
+				id: id
+			},
+			dataType: 'json',
+			success: function (data) {
+				if (data.class == "success") {
+					spinnerOff();
+					feedback_msg(data, 5000);
+					myTable.ajax.reload();
+				} else {}
+			},
+			error: function error(data) {
+				console.log(data);
+			}
+		});
+	}
+
+</script>
+<?php include('footer.php');?>

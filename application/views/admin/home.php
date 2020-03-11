@@ -11,7 +11,7 @@
 				</div>
 				<div class="col-sm-6">
 					<ol class="breadcrumb float-sm-right">
-                    <button class="btn btn-primary" onclick="enrol_new()"><i class="fas fa-pen">  Enroll New</i></button>
+                    <button class="btn btn-primary" onclick="enrol_new()"><i class="fas fa-pen"></i> Enroll New</button>
 					</ol>
 				</div>
 			</div>
@@ -197,7 +197,7 @@ $(document).ready(function(){
                                         <div class="card-body">
                                             <p>Student form has been successfully created</P>
                                             <h4 class="text-center">Student Unique Id: `+uniquekey+`</h4>
-                                            <button onclick="print_pdf(`+"'"+uniquekey+"'"+`)" class="btn btn-success float-right"><i class="fas fa-print">  Print Form</i></a>
+                                            <button onclick="print_pdf(`+"'"+uniquekey+"'"+`)" class="btn btn-success float-right"><i class="fas fa-print"></i> Print Form</a>
                                         </div>
                                         </div>`).slideDown();
                                 }else{

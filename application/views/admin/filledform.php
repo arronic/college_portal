@@ -664,11 +664,10 @@
 			cache: false,
 			success: function (data) {
 				options = data.regular.split(",");
-				console.log(options[0]);
 				option = [options[0],options[1]];
-				$("#regular").val(option).trigger('change');
-				// $('#regular').select2().select2('data', {id: options[0], text: options[0]});
-				// $('#regular').trigger('change');
+				setTimeout(function() {
+					mySelect.val(option).trigger("change");
+				}, 1000);
 				var x;
 				$('#course').val(data.course);
 				if (data.study_break == "yes")
@@ -710,9 +709,9 @@
 <script type="text/javascript">
 	base_url = '<?= base_url() ?>'
 	$(document).ready(function () {
-		$('#regular').select2({
+		mySelect = $('#regular').select2({
 			placeholder: 'Select any two from the options',
-			maximumSelectionLength: 2,
+			maximumSelectionLength: 2
 		});
 		var myTable = $('#my-table').DataTable({
 			"ajax": base_url + "Admin/notAdmitted",

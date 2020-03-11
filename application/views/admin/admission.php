@@ -562,9 +562,9 @@
 			$("#gap_reason").hide();
 	}
 	$(document).ready(function () {
-		$('#regular').select2({
+		mySelect = $('#regular').select2({
 			placeholder: 'Select any two from the options',
-			maximumSelectionLength: 2,
+			maximumSelectionLength: 2
 		});
 		var myTable = $('#my-table').DataTable({
 			"ajax": base_url + "Admin/admitted",
@@ -582,6 +582,11 @@
 				success: function (data) {
 					spinnerOff();
 					$('#id').val(data.id);
+					options = data.regular.split(",");
+					option = [options[0],options[1]];
+					setTimeout(function() {
+						mySelect.val(option).trigger("change");
+					}, 1000);
 					var x;
 					if (data.study_break == "yes") {
 						$("#gap_reason").show();

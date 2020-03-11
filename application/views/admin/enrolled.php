@@ -58,10 +58,24 @@
 	$(document).ready(function () {
 		var myTable = $('#my-table').DataTable({
 			"ajax": base_url + "Admin/enrolled",
+			'columnDefs': [
+					{
+						'targets': 10,
+						'render': function(data, type, full, meta){
+							if(type === 'display'){
+								data = strtrunc(data, 20);
+							}
+							return data;
+						}
+					}
+				],
 			'order': [],
 			responsive : true,
 			dom: "<'row'<'col-md-2'l><'col-md-6'B><'col-md-4'f>><'row'<'col-md-12'rt>><'row'<'col-md-6'i><'col-md-6'p>>",
 		});
 	});
-
+	function strtrunc(str, max, add){
+		add = add || '...';
+		return (typeof str === 'string' && str.length > max ? str.substring(0, max) + add : str);
+	};
 </script>
