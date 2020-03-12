@@ -54,7 +54,7 @@
 			cache: false,
 			success: function (data, status) {
 				if (data == "TRUE") {
-					window.location = base_url + "student/fillform/" + window.unique_key;
+					window.location = base_url + "Student/fillform/" + window.unique_key;
 				} else if (data == "NONE") {
 					$('#error-invalid').hide();
 					$('#error-submitted').show();
@@ -78,7 +78,7 @@
 		return window.btoa(string);
 	}
 	function print_pdf(code) {
-		window.open(base_url + "student/myform/" + code, "_blank",
+		window.open(base_url + "Student/myform/" + code, "_blank",
 			"directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,top=20,left=400,width=600,height=700"
 		);
 	}

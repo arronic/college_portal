@@ -113,10 +113,19 @@ class Admin extends CI_Controller{
 
     }
     public function getDetails($key){
+        $key = base64_decode($key);
         $sd = $this->genModel->fetch_by_col('form_submitted', ['code'=>$key]);
+        $fee_structure = $this->genModel->fetch_by_col('fee_structure',['c_id'=>$sd[0]->course]);
+        $c_id = $fee_structure[0]->c_id; 
+        $sum = $this->AdminModel->total_fee($c_id);
+        $sd[0]->total = $sum[0]->tot;
         echo json_encode($sd[0]);
     }
 
+    public function get_course_total($course){
+        $sum = $this->AdminModel->total_fee($course);
+        echo $sum[0]->tot;
+    }
     public function notAdmitted(){
         $select = 'id, name, code, course, apl_bpl, paid, status';
         $all_student = $this->genModel->fetch_by_col_select($select, 'form_submitted', ['status'=>0]);
@@ -270,7 +279,7 @@ class Admin extends CI_Controller{
                 foreach ($fd as $value) {
                     $total += $value;
                 }
-                $total_in_words = $this->number2words($total);
+                $total_in_words = $this->number2words($sd->paid_amt);
                 $this->load->library('pdf');
                 $view = $this->Htmltopdfmodel->getreceiptPDF($sd,$fd,$total,$total_in_words);
                 $this->pdf->loadHtml($view);
@@ -538,52 +547,57 @@ class Admin extends CI_Controller{
     }
     // helper function
     public function number2words($number){
-        $no = round($number);
-        $point = round($number - $no, 2) * 100;
-        $hundred = null;
-        $digits_1 = strlen($no);
-        $i = 0;
-        $str = array();
-        $words = array('0' => '', '1' => 'one', '2' => 'two',
-        '3' => 'three', '4' => 'four', '5' => 'five', '6' => 'six',
-        '7' => 'seven', '8' => 'eight', '9' => 'nine',
-        '10' => 'ten', '11' => 'eleven', '12' => 'twelve',
-        '13' => 'thirteen', '14' => 'fourteen',
-        '15' => 'fifteen', '16' => 'sixteen', '17' => 'seventeen',
-        '18' => 'eighteen', '19' =>'nineteen', '20' => 'twenty',
-        '30' => 'thirty', '40' => 'forty', '50' => 'fifty',
-        '60' => 'sixty', '70' => 'seventy',
-        '80' => 'eighty', '90' => 'ninety');
-        $digits = array('', 'hundred', 'thousand', 'lakh', 'crore');
-        while ($i < $digits_1) {
-            $divider = ($i == 2) ? 10 : 100;
-            $number = floor($no % $divider);
-            $no = floor($no / $divider);
-            $i += ($divider == 10) ? 1 : 2;
-            if ($number) {
-            $plural = (($counter = count($str)) && $number > 9) ? 's' : null;
-            $hundred = ($counter == 1 && $str[0]) ? ' and ' : null;
-            $str [] = ($number < 21) ? $words[$number] .
-                " " . $digits[$counter] . $plural . " " . $hundred
-                :
-                $words[floor($number / 10) * 10]
-                . " " . $words[$number % 10] . " "
-                . $digits[$counter] . $plural . " " . $hundred;
-            } else $str[] = null;
-        }
-        $str = array_reverse($str);
-        $result = implode('', $str);
-        $points = ($point) ?
-        "." . $words[$point / 10] . " " . 
-                $words[$point = $point % 10] ." Paise": '';
+        if ($number != 0) {
+            $no = round($number);
+            $point = round($number - $no, 2) * 100;
+            $hundred = null;
+            $digits_1 = strlen($no);
+            $i = 0;
+            $str = array();
+            $words = array('0' => '', '1' => 'one', '2' => 'two',
+            '3' => 'three', '4' => 'four', '5' => 'five', '6' => 'six',
+            '7' => 'seven', '8' => 'eight', '9' => 'nine',
+            '10' => 'ten', '11' => 'eleven', '12' => 'twelve',
+            '13' => 'thirteen', '14' => 'fourteen',
+            '15' => 'fifteen', '16' => 'sixteen', '17' => 'seventeen',
+            '18' => 'eighteen', '19' =>'nineteen', '20' => 'twenty',
+            '30' => 'thirty', '40' => 'forty', '50' => 'fifty',
+            '60' => 'sixty', '70' => 'seventy',
+            '80' => 'eighty', '90' => 'ninety');
+            $digits = array('', 'hundred', 'thousand', 'lakh', 'crore');
+            while ($i < $digits_1) {
+                $divider = ($i == 2) ? 10 : 100;
+                $number = floor($no % $divider);
+                $no = floor($no / $divider);
+                $i += ($divider == 10) ? 1 : 2;
+                if ($number) {
+                $plural = (($counter = count($str)) && $number > 9) ? 's' : null;
+                $hundred = ($counter == 1 && $str[0]) ? ' and ' : null;
+                $str [] = ($number < 21) ? $words[$number] .
+                    " " . $digits[$counter] . $plural . " " . $hundred
+                    :
+                    $words[floor($number / 10) * 10]
+                    . " " . $words[$number % 10] . " "
+                    . $digits[$counter] . $plural . " " . $hundred;
+                } else $str[] = null;
+            }
+            $str = array_reverse($str);
+            $result = implode('', $str);
+            $points = ($point) ?
+            "." . $words[$point / 10] . " " . 
+                    $words[$point = $point % 10] ." Paise": '';
 
-        return ucwords($result . "Rupees  " . $points);
+            return ucwords($result . "Rupees  " . $points);
+        }else{
+            return "Not Required!";
+        }
     }
     public function error_show($page,$heading,$message){
         $this->load->view($page,compact('heading','message'));
     }
     public function __construct(){
         parent::__construct();
+        $this->load->model('AdminModel');
         $this->load->model('Soldformmodel');
         $this->load->model('Htmltopdfmodel');
         $this->load->model('GeneralModel','genModel');

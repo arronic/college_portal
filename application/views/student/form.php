@@ -30,7 +30,7 @@
 			<!-- /.card-header -->
 			<div class="card-body">
 			<!-- <div class="card-body" style="background-image: url('<?= base_url('assets/images/bg-image.jpg')?>'); background-size: cover; "> -->
-				<form role="form" method="POST" action="<?= base_url('Student/submit_form')?>"
+				<form role="form" id="admission_form" method="POST" action="<?= base_url('Student/submit_form')?>"
 					enctype="multipart/form-data">
 					<input type="hidden" name="code" value="<?= $form_details->unique_code ?>">
 					<div class="card">
@@ -425,7 +425,7 @@
 								<div class="col-sm-6">
 									<label>Subject available in the college for Regular Course.</label>
 									<div class="form-group">
-										<select class="form-control js-example-basic-multiple" name="regular[]" multiple="multiple" required>
+										<select class="form-control js-example-basic-multiple select2" name="regular[]" multiple="multiple" required>
 											<option value="History">History</option>
 											<option value="Political Science">Political Science</option>
 											<option value="Economics">Economics</option>
@@ -524,6 +524,7 @@
 					$('#gap_reason_text').prop('required',true);
 				} else {
 					$('#gap_reason').hide();
+					$('#gap_reason_text').val('');
 					$('#gap_reason_text').prop('required',false);
 				}
 			});
@@ -538,7 +539,6 @@
 				}
 			});
 		});
-
 	</script>
 </body>
 

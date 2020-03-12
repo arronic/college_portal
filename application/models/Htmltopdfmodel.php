@@ -134,14 +134,17 @@ class Htmltopdfmodel extends CI_Model{
         return $output;
     }
     public function getformpdf($sd){
-        // $student_details = $this->db->where('code',$code)->get('form_submitted');
-        // $sd = $student_details->row();
         if($sd->apl_bpl =="apl"){
             $bpl = "No";
             $bpl_enlosed = "";
         }else{
             $bpl ="Yes";
             $bpl_enlosed = "<p>(ix) A copy of BPL card</p>";
+        }
+        if ($sd->study_break == "yes") {
+            $study_break_reason = '<p><span class="bold a">Reason:</span><span class="a underline">'.$sd->break_reason.'</span></p>';
+        }else {
+            $study_break_reason = '';
         }
         $photo_url = base_url().'upload/'.$sd->image_path;
         $photo = file_get_contents($photo_url);
@@ -167,7 +170,6 @@ class Htmltopdfmodel extends CI_Model{
         
                 table {
                     font-family: arial, sans-serif;
-                    border-collapse: collapse;
                     width: 100%;
                 }
         
@@ -345,9 +347,8 @@ class Htmltopdfmodel extends CI_Model{
                     <span class="bold a">Year: </span><span class="a underline">'.$sd->gu_year.'</span>
                 </p>
                 <p><span class="bold a">10.Is there any break of your studies?:</span><span
-                        class="a underline">'.$sd->study_break.'</span></p>
-                <p><span class="bold a">Reason:</span><span class="a underline">'.$sd->break_reason.'</span></p>
-                <hr>
+                        class="a underline">'.ucwords($sd->study_break).'</span></p>
+                '.$study_break_reason.'
                 <p class="bold">11. Name of Subject taken as Honours (Earlier known as Major) in the following subject -</p>
                 <p>'.$sd->major.'</p>
                 <p class="bold">12. Subject available in the college for Regular Course.</p>
@@ -400,13 +401,10 @@ class Htmltopdfmodel extends CI_Model{
                 </div>
                 <div class="parent">
                     <div class="wide">
-                        <h5>ADMITTED</h5>
-                        <p></p>
                         <p class="italic text-center">Principal</p>
                         <p class="italic text-center">College Name, Address</p>
                     </div>
                     <div class="narrow">
-                        <h5>Documents Verified</h5>
                         <p class="italic text-center">Prof. In- Charge / Office Asstt.</p>
                         <p class="italic text-center">Date.........................................</p>
                     </div>
@@ -419,9 +417,6 @@ class Htmltopdfmodel extends CI_Model{
         return $output;
     }
     public function getreceiptPDF($sd,$fd,$total,$total_in_words){
-        // $code = base64_decode($code);
-        // $student_details = $this->db->where('code',$code)->get('form_submitted');
-        // $sd = $student_details->row();
         $output = '<html>
 
         <head>
@@ -647,7 +642,7 @@ class Htmltopdfmodel extends CI_Model{
                 </tr>
             </table>
             <div>
-                <strong>Amount paid:  </strong>  '.$total_in_words.'
+                <strong>Amount paid in words:  </strong>  '.$total_in_words.'
             </div>
             <hr>
             </div>
@@ -783,7 +778,7 @@ class Htmltopdfmodel extends CI_Model{
                 </tr>
             </table>
             <div>
-                <strong>Amount paid:  </strong>  '.$total_in_words.'
+                <strong>Amount paid in words:  </strong>  '.$total_in_words.'
             </div>
             <hr>
             </div>

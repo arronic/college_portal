@@ -81,14 +81,14 @@
 											<div class="col-sm-6">
 												<div class="form-group">
 													<label>Course</label>
-													<select class="form-control select2" style="width: 100%;"
+													<select class="form-control select2" style="width: 100%;" onChange="adm_fee()"
 														id="course">
 														<?php
-																	foreach ($courses as $course) {?>
+														foreach ($courses as $course) {?>
 														<option value="<?=$course->course_name?>">
 															<?=$course->course_name?></option>
 														<?php }
-																?>
+														?>
 													</select>
 													<!-- <input type="text" class="form-control" name="course" id="course" value=""> -->
 												</div>
@@ -479,7 +479,7 @@
 											<div class="col-sm-4">
 												<div class="form-group">
 													<label>Where do you fall under?</label>
-													<select class="form-control" id="apl_bpl">
+													<select class="form-control" id="apl_bpl" onChange="adm_fee()">
 														<option>Select</option>
 														<option value="apl">APL</option>
 														<option value="bpl">BPL</option>
@@ -547,7 +547,7 @@
 
 									<div id="form-step-1" role="form" data-toggle="validator">
 										<div class="form-group">
-											<label>Total Admission Fee: Rs. 3750</label>
+											<label>Total Admission Fee: <span id="total_amt"></span> </label>
 											<input type="text" class="form-control" name="paid_amt" id="paid_amt"
 												required="">
 
@@ -657,6 +657,7 @@
 <script>
 	function admit(key) {
 		$('#admit-modal').modal('toggle');
+		key = btoa_return(key);
 		$.ajax({
 			type: "GET",
 			url: base_url + "Admin/getDetails/" + key,
@@ -664,8 +665,8 @@
 			cache: false,
 			success: function (data) {
 				options = data.regular.split(",");
-				option = [options[0],options[1]];
-				setTimeout(function() {
+				option = [options[0], options[1]];
+				setTimeout(function () {
 					mySelect.val(option).trigger("change");
 				}, 1000);
 				var x;
@@ -678,6 +679,7 @@
 				if ($('#apl_bpl').val() == "bpl") {
 					$('#bpl_no_group').show();
 				}
+					$('#total_amt').text(data.total);
 				$('#image').attr('src', base_url + 'upload/' + data.image_path);
 				$('#signature').attr('src', base_url + 'upload/' + data.sign_path);
 				$('#u_code').text(data.code);
@@ -689,7 +691,6 @@
 				console.error(error);
 			}
 		});
-
 	}
 
 	function valueChanged() {
@@ -698,6 +699,7 @@
 			$('#gap_reason_text').required = true;
 		} else
 			$("#gap_reason").hide();
+			$('#gap_reason_text').text('');
 	}
 
 </script>
@@ -718,14 +720,10 @@
 			"table": "#my-table",
 
 		});
-
-
 		$('#delete-modal').on('show.bs.modal', function (e) {
 			var studentID = $(e.relatedTarget).data('student-id');
 			$(e.currentTarget).find('#delete_student_id').val(studentID);
 		});
-
-
 		$('#updateForm').on('submit', function (e) {
 			e.preventDefault();
 			id = $('#id').val();
@@ -733,7 +731,6 @@
 			course = $('#course').val();
 			paid_amt = $('#paid_amt').val();
 			code = btoa_return($('#u_code').text());
-
 			spinnerOn();
 			$.ajax({
 				url: base_url + "Admin/update_student",
@@ -746,7 +743,6 @@
 				processData: false,
 				contentType: false,
 				success: function (result) {
-					console.log(result);
 					if (result.class == "success") {
 						spinnerOff();
 						// feedback_msg(result, 1500);
@@ -772,11 +768,37 @@
 				$('#bpl_no').prop('required', true);
 			} else {
 				$('#bpl_no_group').hide();
+				$('#bpl_no').val('');
 				$('#bpl_no').prop('required', false);
 			}
 		});
 	});
-
+</script>
+<script>
+	function adm_fee(){
+		// funtion for checking course
+		course = $('#course').val();
+		apl_bpl = $('#apl_bpl').val();
+		console.log(apl_bpl);
+		
+		$.ajax({
+			url: base_url + "Admin/get_course_total/"+course,
+			success: function(result){
+				if (apl_bpl == "bpl") {
+					$('#total_amt').text("Free");
+					$('#paid_amt').hide();
+					$('#paid_amt').val(0);
+				}else{
+					$('#total_amt').text(result);
+					$('#paid_amt').show();
+				}
+			},
+			error: function (error) {
+				console.log(error);
+			}
+		});
+		
+	}
 </script>
 <?php include('footer.php');?>
 
