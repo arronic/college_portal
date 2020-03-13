@@ -5,8 +5,7 @@ class Student extends CI_Controller{
     }
 // ajax function starts
     public function getform(){
-        $code = $this->input->post('key');
-        if ($code) {
+        if ($code = $this->input->post('key')) {
             $code = base64_decode($code);
             $student = $this->genModel->fetch_by_where('form_sold',['unique_code'=>$code]);
             if($student){
@@ -25,9 +24,13 @@ class Student extends CI_Controller{
             return redirect('PageNotFound');
         }
     }
-    public function getdetails($key){
-        $sd = $this->genModel->fetch_by_col('form_submitted', ['id'=>$key]);
-        echo json_encode($sd[0]);
+    public function getdetails($key = null){
+        if ($key) {
+            $sd = $this->genModel->fetch_by_col('form_submitted', ['id'=>$key]);
+            echo json_encode($sd[0]);
+        }else {
+            return redirect('PageNotFound');
+        }
     }
 // ajax function ends
 
@@ -43,7 +46,7 @@ class Student extends CI_Controller{
                 $sold_form = $sold_form->row();
                 $this->load->view('student/form',['form_details'=>$sold_form]);
             }else{
-                return redirect('/student');
+                return redirect('/Student');
             }
         }else{
             $this->error_show('errors/html/error_404',"Something went wrong","Please fill all the fields again, and submit.");
@@ -52,8 +55,8 @@ class Student extends CI_Controller{
     }
     // logic functions
     public function submit_form(){
-        $data = $this->input->post();
-        if ($data && $data!=null) {
+        
+        if ($data = $this->input->post() && $data!=null) {
             $path = './upload/';
             $type = 'jpg|png|jpeg';
             for ($i=0; $i <= 1; $i++) { 

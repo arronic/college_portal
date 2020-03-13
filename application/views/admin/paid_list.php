@@ -51,6 +51,8 @@
 			          <th>Name of Student</th>
 			          <th>Student Code</th>
 			          <th>Course</th>
+					  <th>Course Details</th>
+					  <th>Category</th>
 			          <th>Admission Date</th>
 			          <th>Paid</th>
 			          <th>Action</th>

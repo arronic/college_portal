@@ -41,10 +41,10 @@
 			$('#admin_form').on('submit', function (e) {
 				e.preventDefault();
 				username = $('#username').val();
-				password = $('#password').val();
+				password = window.btoa($('#password').val());
 				$.ajax({
 					type: "POST",
-					url: base_url + "login/login_check",
+					url: base_url + "Login/login_check",
 					data: {
 						username: username,
 						password: password

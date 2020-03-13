@@ -112,19 +112,28 @@ class Admin extends CI_Controller{
         }
 
     }
-    public function getDetails($key){
-        $key = base64_decode($key);
-        $sd = $this->genModel->fetch_by_col('form_submitted', ['code'=>$key]);
-        $fee_structure = $this->genModel->fetch_by_col('fee_structure',['c_id'=>$sd[0]->course]);
-        $c_id = $fee_structure[0]->c_id; 
-        $sum = $this->AdminModel->total_fee($c_id);
-        $sd[0]->total = $sum[0]->tot;
-        echo json_encode($sd[0]);
+    public function getDetails($key = null){
+        if ($key) {
+            $key = base64_decode($key);
+            $sd = $this->genModel->fetch_by_col('form_submitted', ['code'=>$key]);
+            $fee_structure = $this->genModel->fetch_by_col('fee_structure',['c_id'=>$sd[0]->course]);
+            $c_id = $fee_structure[0]->c_id; 
+            $sum = $this->AdminModel->total_fee($c_id);
+            $sd[0]->total = $sum[0]->tot;
+            echo json_encode($sd[0]);
+        }else{
+            return redirect('PageNotFound');
+        }
+        
     }
 
-    public function get_course_total($course){
-        $sum = $this->AdminModel->total_fee($course);
-        echo $sum[0]->tot;
+    public function get_course_total($course = null){
+        if ($course) {
+            $sum = $this->AdminModel->total_fee($course);
+            echo $sum[0]->tot;
+        }else{
+            return redirect('PageNotFound');
+        }
     }
     public function notAdmitted(){
         $select = 'id, name, code, course, apl_bpl, paid, status';
@@ -375,11 +384,16 @@ class Admin extends CI_Controller{
         
     }
     public function fetch_paid_list($year){
-        $sel = 'id, name, code, course, adm_date, paid_amt';
+        $sel = 'id, name, code, course, adm_date, paid_amt, major,apl_bpl';
         $pay_data = $this->genModel->fetch_by_col_select($sel,'form_submitted', ['adm_year'=>$year]);
         $result['data'] = [];
         if($pay_data){
             foreach ($pay_data as $key => $value) {
+                if ($value->major == null) {
+                    $course_d = "Regular";
+                }else {
+                    $course_d = $value->major."(M)";
+                }
                 $uniq = "'".$value->code."'";
                 $btn = '<button class="btn btn-success" onclick="print_pdf('.$uniq.')"><i class="fas fa-print"></i> Print</button>';
                 $result['data'][$key]=array(
@@ -387,6 +401,8 @@ class Admin extends CI_Controller{
                     $value->name,
                     $value->code,
                     $value->course,
+                    $course_d,
+                    strtoupper($value->apl_bpl),
                     date('d-m-Y', strtotime($value->adm_date)),
                     $value->paid_amt,
                     $btn

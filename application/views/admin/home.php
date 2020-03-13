@@ -228,7 +228,7 @@ function makeid(length) {
    var year = (d.getUTCFullYear()).toString().slice(-2);
    var month = ("0" + (d.getMonth() + 1)).slice(-2); 
    
-   characters="ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+   characters="ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"+d.getTime();
    var charactersLength = characters.length;
    for ( var i = 0; i < length; i++ ) {
       result += characters.charAt(Math.floor(Math.random() * charactersLength));
