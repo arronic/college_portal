@@ -696,10 +696,10 @@
 	function valueChanged() {
 		if ($('#study_break').val() == "yes") {
 			$("#gap_reason").show();
-			$('#gap_reason_text').required = true;
+			$('#break_reason').required = true;
 		} else
 			$("#gap_reason").hide();
-			$('#gap_reason_text').text('');
+			$('#break_reason').val('');
 	}
 
 </script>
@@ -779,8 +779,6 @@
 		// funtion for checking course
 		course = $('#course').val();
 		apl_bpl = $('#apl_bpl').val();
-		console.log(apl_bpl);
-		
 		$.ajax({
 			url: base_url + "Admin/get_course_total/"+course,
 			success: function(result){
