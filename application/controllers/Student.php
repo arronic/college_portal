@@ -1,7 +1,8 @@
 <?php
 class Student extends CI_Controller{
     public function index(){
-        $this->load->view('auth/student');
+        $notice = $this->genModel->fetch_by_col('notice',['status'=>1]); 
+        $this->load->view('auth/student',compact('notice'));
     }
 // ajax function starts
     public function getform(){

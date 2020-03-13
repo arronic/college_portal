@@ -1,10 +1,12 @@
 
-/* BASIC */
-
-  
+/* BASIC */  
   body {
     font-family: "Poppins", sans-serif;
     height: 100vh;
+    background-image: url('../images/bg-image.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+
   }
   
   a {
@@ -23,8 +25,12 @@
     margin: 40px 8px 10px 8px; 
     color: #cccccc;
   }
-  
-  
+  .marquee-text:hover{
+    color: red;
+  }
+  .student-card{
+    opacity: 0.85;
+  }
   
   /* STRUCTURE */
   
@@ -47,8 +53,7 @@
     max-width: 450px;
     position: relative;
     padding: 0px;
-    -webkit-box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
-    box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
+    box-shadow: 0 12px 30px 0 rgba(0,0,0,0.3);
     text-align: center;
   }
   

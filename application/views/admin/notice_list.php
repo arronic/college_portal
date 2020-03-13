@@ -10,8 +10,7 @@
 				</div>
 				<div class="col-sm-6">
 					<ol class="breadcrumb float-sm-right">
-						<button class="btn btn-primary" onclick="add_notice()"><i class="fas fa-pen"> New
-								Notice</i></button>
+						<button class="btn btn-primary" onclick="add_notice()"><i class="fas fa-pen"></i>New Notice</button>
 					</ol>
 				</div>
 			</div>
@@ -119,11 +118,26 @@
 		myTable = $("#my-table").DataTable({
 			"ajax": base_url + "Admin/get_notice_list",
 			'order': [],
+			'columnDefs': [
+					{
+						'targets': 1,
+						'render': function(data, type, full, meta){
+							if(type === 'display'){
+								data = strtrunc(data, 20);
+							}
+							return data;
+						}
+					}
+				],
 			responsive: true,
 			dom: "<'row'<'col-md-2'l><'col-md-6'B><'col-md-4'f>><'row'<'col-md-12'rt>><'row'<'col-md-6'i><'col-md-6'p>>",
 			buttons: ['copy', 'excel', 'pdf', 'colvis'],
 		});
 	});
+	function strtrunc(str, max, add){
+		add = add || '...';
+		return (typeof str === 'string' && str.length > max ? str.substring(0, max) + add : str);
+	};
 	$('#notice-form').on('submit', function (e) {
 		e.preventDefault();
 		notice = $('#notice').val();

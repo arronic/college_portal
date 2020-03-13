@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,9 +10,10 @@
 	<?= link_tag('/assets/css/style.css') ?>
 	<title>College Portal</title>
 </head>
+
 <body>
 	<div class="container">
-		<div class="card mt-3">
+		<div class="card mt-3 student-card">
 			<div class="row">
 				<div class="col-md-3">
 					<img class="m-3" src="<?= base_url('assets/images/logo.png')?>" alt="LOGO" width="100px">
@@ -48,7 +50,27 @@
 							<div id="print"></div>
 						</div>
 					</div>
-					<hr>
+				</div>
+				<div class="col-md-6 pr-5">
+					<div style="max">
+						<h5>Notice:</h5>
+						<marquee behavior="scroll" direction="up" scrollamount="3" onmouseover="this.stop();"
+							onmouseout="this.start();" style="max-height: 280px;min-height: 280px;">
+							<ul>
+								<?php
+									foreach ($notice as $key => $value) {?>
+								<li class="marquee-text"><?= $value->notice ?></li>
+								<?php }
+								?>
+							</ul>
+
+						</marquee>
+					</div>
+				</div>
+			</div>
+			<hr>
+			<div class="row pl-5 pr-5">
+				<div class="col-md-6">
 					<h5>Important note before filling up the form:</h5>
 					<div>
 						<ol>
@@ -60,14 +82,15 @@
 						</ol>
 					</div>
 				</div>
-				<div class="col-md-6 p-5">
+				<div class="col-md-6">
 					<h5>Notice:</h5>
 					<div>
-					<ol>
-						<li>Enroll in the college administration office before 10-June-2020</li>
-						<li>The admission is open till 30-June-2020</li>
-						<li>Submit all the required documents in the administration office during the time of admission</li>
-					</ol>
+						<ol>
+							<li>Enroll in the college administration office before 10-June-2020</li>
+							<li>The admission is open till 30-June-2020</li>
+							<li>Submit all the required documents in the administration office during the time of
+								admission</li>
+						</ol>
 					</div>
 				</div>
 			</div>
