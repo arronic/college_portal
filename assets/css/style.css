@@ -6,11 +6,12 @@
     background-image: url('../images/bg-image.jpg');
     background-repeat: no-repeat;
     background-size: cover;
+    background-attachment: fixed;
 
   }
   
   a {
-    color: #92badd;
+    color: #0064bb;
     display:inline-block;
     text-decoration: none;
     font-weight: 400;

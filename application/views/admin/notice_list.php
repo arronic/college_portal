@@ -26,6 +26,7 @@
 							<th>Notice</th>
 							<th>Date Time</th>
 							<th>Status</th>
+							<th>Tag</th>
 							<th>Action</th>
 						</tr>
 					</thead>
@@ -246,6 +247,26 @@
 		$.ajax({
 			type: "POST",
 			url: base_url + "Admin/change_status",
+			data: {
+				id: id
+			},
+			dataType: 'json',
+			success: function (data) {
+				if (data.class == "success") {
+					spinnerOff();
+					feedback_msg(data, 5000);
+					myTable.ajax.reload();
+				} else {}
+			},
+			error: function error(data) {
+				console.log(data);
+			}
+		});
+	}
+	function change_tag(id) {
+		$.ajax({
+			type: "POST",
+			url: base_url + "Admin/change_tag",
 			data: {
 				id: id
 			},

@@ -453,6 +453,7 @@ class Admin extends CI_Controller{
                     $value->notice,
                     $value->date_time,
                     ($value->status) ? '<button class="btn btn-success mr-3" onclick="change_status('.$id.')">Active</button>' : '<button class="btn btn-warning mr-3" onclick="change_status('.$id.')">Inactive</button>',
+                    ($value->tag) ? '<button class="btn btn-success mr-3" onclick="change_tag('.$id.')">New</button>' : '<button class="btn btn-warning mr-3" onclick="change_tag('.$id.')">Old</button>',
                     $btn
 
                 );
@@ -501,6 +502,21 @@ class Admin extends CI_Controller{
             );
         }
         $this->arronic->perform_fed($this->genModel->update_by_id('notice', $data, $id),'Notice status has been updated successfully', 'Error. Please check again');
+    }
+    public function change_tag(){
+        $id = $this->input->post('id');
+        $select = 'tag';
+        $notice = $this->genModel->fetch_by_id('notice',$id);
+        if($notice->tag == 1){
+            $data = array(
+                'tag' => 0
+            );
+        }else{
+            $data = array(
+                'tag' => 1
+            );
+        }
+        $this->arronic->perform_fed($this->genModel->update_by_id('notice', $data, $id),'Notice tag has been updated successfully', 'Error. Please check again');
     }
 
     // logic function ends
