@@ -886,10 +886,58 @@ class Htmltopdfmodel extends CI_Model{
                 .right {
                   right: 0;
                 }
+                .page-break{
+                    page-break-before: always;
+                }
             </style>
         </head>
         
         <body>
+        <div class="text-center bold" style="background-color:grey; color:white;">DONATION COUPON</div>
+            <div>
+            <span>Sl No.: '.$sd->sl_no.'</span>
+                <div class="custom-header text-center">
+                    <div class="bold font-large">College Name, Address</div>
+                    <div class="bold text-center">ESTD:1947</div>
+                    <div class="bold text-center">P.O.: Post Office, DIST: District</div>
+                    <div class="bold text-center">PIN: 123456</div>
+                </div>
+            </div>
+            <hr>
+            <div>
+                <div>
+                 <span><strong>Student Name:</strong>  '.ucwords($sd->name).'</span>
+                 <span class="float-right"><strong>Code:</strong>  '.$sd->code.'</span>
+                </div>
+                <br>
+                <div>
+                    <table>
+                        <tr>
+                            <th>Opted Course</th>
+                            <th>Date</th>
+                            <th>Donation Amount</th>
+                        </tr>
+                        <tr>
+                            <td>'.$sd->course.'</td>
+                            <td>'.$sd->date.'</td>
+                            <td>'.$d_amount.'</td>
+                        </tr>
+                    </table>
+                    <br>
+                    <div>
+                        <strong>Donation paid:  </strong>  '.$d_amount_words.'
+                    </div>
+                    <div>
+                        <div style="margin-top:10px;">
+                            <hr>
+                            <div><span style="font-weight:bold;">Date</span><span
+                                    style="float:right; font-weight:bold;">Collector\'s Sign</span></div>
+                            <div><span>...............................</span> <span
+                                    style="margin-left:550px;">.............................................</span></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="page-break"></div>
         <div class="split left">
         <span>Sl No.: '.$sd->sl_no.'</span>
             <div class="text-center">
@@ -902,7 +950,8 @@ class Htmltopdfmodel extends CI_Model{
             <br>
             <div class="">
                 <span><strong>Name:</strong>'.$sd->name.'</span>
-                <span class="float-right"><strong>Course:</strong>'.$sd->course.'</span>
+                <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>
+                <span class=""><strong>Course:</strong>'.$sd->course.'</span>
                 <hr>
                 <table style="width:100%; font-size: 10px; margin: 15px 0px 25px 0px;">
                 <tr>
