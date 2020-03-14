@@ -32,7 +32,7 @@
 <script>
 base_url = '<?= base_url() ?>';
 function print_pdf(key){
-    window.open(base_url+"student/myform/"+btoa_return(key), "_blank", "directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,top=20,left=400,width=600,height=700");
+    window.open(base_url+"Student/myform/"+btoa_return(key), "_blank", "directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,top=20,left=400,width=600,height=700");
 }
 function btoa_return(string){
 	return window.btoa(string);

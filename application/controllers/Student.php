@@ -56,8 +56,8 @@ class Student extends CI_Controller{
     }
     // logic functions
     public function submit_form(){
-        
-        if ($data = $this->input->post() && $data!=null) {
+        $data = $this->input->post();
+        if ($data && $data!=null) {
             $path = './upload/';
             $type = 'jpg|png|jpeg';
             for ($i=0; $i <= 1; $i++) { 

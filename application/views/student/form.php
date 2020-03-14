@@ -29,7 +29,6 @@
 			</div>
 			<!-- /.card-header -->
 			<div class="card-body">
-			<!-- <div class="card-body" style="background-image: url('<?= base_url('assets/images/bg-image.jpg')?>'); background-size: cover; "> -->
 				<form role="form" id="admission_form" method="POST" action="<?= base_url('Student/submit_form')?>"
 					enctype="multipart/form-data">
 					<input type="hidden" name="code" value="<?= $form_details->unique_code ?>">
