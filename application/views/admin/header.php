@@ -92,14 +92,6 @@
 								</p>
 							</a>
                         </li>
-						<!-- <li class="nav-item">
-							<a href="<?= base_url().'Admin/fill_form'?>" class="nav-link">
-								<i class="nav-icon fas fa-list"></i>
-								<p>
-									Fill Form
-								</p>
-							</a>
-						</li> -->
 						<li class="nav-item">
 							<a href="<?= base_url().'Admin/generate_form'?>" class="nav-link">
 								<i class="nav-icon fas fa-key"></i>
@@ -129,6 +121,14 @@
 								<i class="nav-icon fas fa-check-circle"></i>
 								<p>
 									Paid List
+								</p>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a href="<?= base_url().'Admin/promote'?>" class="nav-link">
+								<i class="nav-icon fas fa-arrow-alt-circle-up"></i>
+								<p>
+									Promotion
 								</p>
 							</a>
 						</li>

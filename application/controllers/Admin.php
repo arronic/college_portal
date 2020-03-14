@@ -38,6 +38,9 @@ class Admin extends CI_Controller{
     public function notice(){
         $this->load->view('admin/notice_list');
     }
+    public function promote(){
+        $this->load->view('admin/promote');
+    }
     // view function ends
 
     // logic function starts
@@ -46,6 +49,19 @@ class Admin extends CI_Controller{
             $student =  $this->genModel->fetch_by_col('form_submitted', ['code'=>$code]);
             if($student[0]->name != null){
                 echo "TRUE";
+            }
+            else{
+                echo "FALSE";
+            }
+        }
+        else
+            redirect('pageNotFound');
+    }
+    public function get_student(){
+        if($code = $this->input->post('key')){
+            $student =  $this->genModel->fetch_by_col('form_submitted', ['code'=>$code]);
+            if($student[0]->name != null){
+                echo json_encode($student[0]);
             }
             else{
                 echo "FALSE";
@@ -518,6 +534,17 @@ class Admin extends CI_Controller{
         }
         $this->arronic->perform_fed($this->genModel->update_by_id('notice', $data, $id),'Notice tag has been updated successfully', 'Error. Please check again');
     }
+    public function promote_student(){
+        $data = $this->input->post();
+        if($data && $data!=null){
+            $key = $data['key'];
+            unset($data['key']);
+            $this->arronic->perform_fed($this->genModel->update_by_where('form_submitted', $data, ['code'=> $key]),'Student hass been promoted successfully', 'Error. Please try again');    
+        }
+        else{
+            return redirect('/');
+        }
+    }
 
     // logic function ends
 // helper function starts
@@ -572,6 +599,36 @@ class Admin extends CI_Controller{
             }
             else{
                 redirect('Admin/generate_form');
+            }
+        }
+        else
+            redirect('PageNotFound');
+    }
+    function promotion_pdf($code = null){
+        if($code){
+            $code = base64_decode($code);
+            if($student_details = $this->genModel->fetch_by_col('form_submitted',['code'=>$code])){
+                $total = 0;
+                $sd = $student_details[0];
+                $fee_details = $this->genModel->fetch_by_col('fee_structure',['c_id'=>$sd->course]);
+                $fd = $fee_details[0];
+                unset($fd->id, $fd->c_id);
+                foreach ($fd as $value) {
+                    $total += $value;
+                }
+                $total_in_words = $this->number2words($sd->paid_amt);
+                $donation = $this->db->get('donation');
+                $d_amount = $donation->row('0');
+                $d_amount = $d_amount->amount;
+                $d_amount_words = $this->number2words($d_amount);
+                $this->load->library('pdf');
+                $view = $this->Htmltopdfmodel->getPromotionPDF($sd,$fd,$total,$total_in_words,$d_amount,$d_amount_words);
+                $this->pdf->loadHtml($view);
+                $this->pdf->render();    
+                $this->pdf->stream("Form.pdf",array("Attachment"=>0));
+            }
+            else{
+                redirect('Admin/promote');
             }
         }
         else
