@@ -89,6 +89,8 @@ class Student extends CI_Controller{
             $data['image_path'] = $pic_name;
             $data['sign_path']= $sign_name;
             $data['date'] = date('Y-m-d');
+            $year = date("Y");
+            $data['sess']= $year."-".($year+1);
             $last_entry = $this->genModel->fetch_last_entry('form_submitted');
             if ($last_entry) {
                 $data['sl_no'] = $last_entry->sl_no+1;

@@ -64,6 +64,7 @@ class Admin extends CI_Controller{
         if($code = $this->input->post('key')){
             $student =  $this->genModel->fetch_by_col('form_submitted', ['code'=>$code]);
             if($student){
+                $payable = $this->get_course_total($student[0]->course);
                 $semester = $student[0]->semester;
                 switch ($semester) {
                     case '1st':
@@ -86,6 +87,7 @@ class Admin extends CI_Controller{
                         break;
                 }
                 $student[0]->upgrade_to = $semester;
+                $student[0]->payable = $payable;
                 echo json_encode($student[0]);
             }
             else{
@@ -158,7 +160,7 @@ class Admin extends CI_Controller{
             $key = base64_decode($key);
             $sd = $this->genModel->fetch_by_col('form_submitted', ['code'=>$key]);
             $fee_structure = $this->genModel->fetch_by_col('fee_structure',['c_id'=>$sd[0]->course]);
-            $c_id = $fee_structure[0]->c_id; 
+            $c_id = $fee_structure[0]->c_id;
             $sum = $this->AdminModel->total_fee($c_id);
             $sd[0]->total = $sum[0]->tot;
             echo json_encode($sd[0]);
@@ -171,7 +173,7 @@ class Admin extends CI_Controller{
     public function get_course_total($course = null){
         if ($course) {
             $sum = $this->AdminModel->total_fee($course);
-            echo $sum[0]->tot;
+            return $sum[0]->tot;
         }else{
             return redirect('PageNotFound');
         }
@@ -294,6 +296,14 @@ class Admin extends CI_Controller{
             }else{
                 $data['sl_no'] = 1;
             }
+            $date = date("Y");
+            $data['sess'] = $date."-".($date+1);
+            $paid_list = array(
+                'u_id' => $data['unique_code'],
+                'sess' => $data['sess'],
+                'donation_amt' => 500
+            );
+            $this->genModel->insert_data('paid_list',$paid_list);
             $this->arronic->perform_fed($this->genModel->insert_data('form_sold' , $data), 'Form Has been Succesfully Created', 'Error. Please check again');    
         }else {
             $this->error_show('errors/html/error_404',"Something went wrong","Could not store the enrollment details. Try again!");
@@ -317,26 +327,32 @@ class Admin extends CI_Controller{
             $this->error_show('errors/html/error_404',"Something went wrong","Could not genrate pdf. Try again!");
         }
     }
-    public function receiptPDF($code = null){
-        if($code){
-            $code = base64_decode($code);
-            if($student_details = $this->genModel->fetch_by_col('form_submitted',['code'=>$code])){
-                $total = 0;
-                $sd = $student_details[0];
-                $fee_details = $this->genModel->fetch_by_col('fee_structure',['c_id'=>$sd->course]);
-                $fd = $fee_details[0];
-                unset($fd->id, $fd->c_id);
-                foreach ($fd as $value) {
-                    $total += $value;
+    public function receiptPDF($id = null){
+        // $code = $this->genModel->fetch_by_id('paid_list',$id);
+        //     print_r($code->u_id); exit;
+        if($id){
+            $id = base64_decode($id);
+            if ($id) {
+                $paid_list = $this->genModel->fetch_by_id('paid_list',$id);
+                if($student_details = $this->genModel->fetch_by_col('form_submitted',['code'=>$paid_list->u_id])){
+                    $total = 0;
+                    $sd = $student_details[0];
+                    $sd->paid_amt = $paid_list->paid_amt;
+                    $fee_details = $this->genModel->fetch_by_col('fee_structure',['c_id'=>$sd->course]);
+                    $fd = $fee_details[0];
+                    unset($fd->id, $fd->c_id);
+                    foreach ($fd as $value) {
+                        $total += $value;
+                    }
+                    $total_in_words = $this->number2words($sd->paid_amt);
+                    $this->load->library('pdf');
+                    $view = $this->Htmltopdfmodel->getreceiptPDF($sd,$fd,$total,$total_in_words);
+                    $this->pdf->loadHtml($view);
+                    $this->pdf->render();    
+                    $this->pdf->stream("Receipt.pdf",array("Attachment"=>0));
+                }else {
+                    return redirect('Admin/paid_list');
                 }
-                $total_in_words = $this->number2words($sd->paid_amt);
-                $this->load->library('pdf');
-                $view = $this->Htmltopdfmodel->getreceiptPDF($sd,$fd,$total,$total_in_words);
-                $this->pdf->loadHtml($view);
-                $this->pdf->render();    
-                $this->pdf->stream("Receipt.pdf",array("Attachment"=>0));
-            }else {
-                return redirect('Admin/paid_list');
             }
         }
         else{
@@ -359,7 +375,7 @@ class Admin extends CI_Controller{
         $data = $this->input->post();
         if ($data && $data != null) {
             $id = $data['id'];
-            $student_details = $this->genModel->fetch_by_col_select('image_path, sign_path', 'form_submitted', ['id'=>$id]);
+            $student_details = $this->genModel->fetch_by_col_select('code, image_path, sign_path', 'form_submitted', ['id'=>$id]);
             $path = './upload/';
             $type = 'jpg|png|jpeg';
             unset($data['id']);
@@ -403,6 +419,7 @@ class Admin extends CI_Controller{
             $data['adm_date'] = date('Y-m-d');
             $data['adm_year'] = date('Y');
             $data['paid'] = 'paid';
+            $this->genModel->update_by_where('paid_list',['semester'=>'1st','paid_amt'=>$data['paid_amt']],['u_id'=>$student_details[0]->code]);
             $this->arronic->perform_fed($this->genModel->update_by_id('form_submitted',$data,$id), 'Form Has been Succesfully Updated', 'Error. Please check again');
         }else {
             $this->error_show('errors/html/error_404',"Something went wrong","Could not update student details. Try again!");
@@ -424,9 +441,13 @@ class Admin extends CI_Controller{
         }
         
     }
-    public function fetch_paid_list($year){
-        $sel = 'id, name, code, course, adm_date, paid_amt, major,apl_bpl';
-        $pay_data = $this->genModel->fetch_by_col_select($sel,'form_submitted', ['adm_year'=>$year]);
+    public function fetch_paid_list($session){
+        $pay_data = $this->db->select('fs.name,fs.code,fs.course,fs.adm_date,fs.major,fs.apl_bpl,pl.id,pl.semester,pl.paid_amt,pl.donation_amt')
+            ->where('pl.sess',$session)
+            ->from('form_submitted as fs')
+            ->join('paid_list as pl', 'fs.code = pl.u_id')
+            ->get();
+        $pay_data = $pay_data->result();
         $result['data'] = [];
         if($pay_data){
             foreach ($pay_data as $key => $value) {
@@ -436,7 +457,7 @@ class Admin extends CI_Controller{
                     $course_d = $value->major."(M)";
                 }
                 $uniq = "'".$value->code."'";
-                $btn = '<button class="btn btn-success" onclick="print_pdf('.$uniq.')"><i class="fas fa-print"></i> Print</button>';
+                $btn = '<button class="btn btn-success" onclick="print_pdf('.$value->id.')"><i class="fas fa-print"></i> Print</button>';
                 $result['data'][$key]=array(
                     $key+1,
                     $value->name,
@@ -446,11 +467,11 @@ class Admin extends CI_Controller{
                     strtoupper($value->apl_bpl),
                     date('d-m-Y', strtotime($value->adm_date)),
                     $value->paid_amt,
+                    $value->donation_amt,
                     $btn
 
                 );
             }  
-            // $result['data']=$json;
         }
         echo json_encode($result);
 
@@ -562,7 +583,26 @@ class Admin extends CI_Controller{
     public function promote_student(){
         $data = $this->input->post();
         if($data && $data!=null){
+            $semester = $data['semester'];
+            $sd = $this->genModel->fetch_by_col_select('sess,course','form_submitted',['code'=>$data['key']]);
+            if ($semester == "3rd" || $semester == "5th") {
+                $u_session = substr($sd[0]->sess,5);
+                $u_session = $u_session."-".($u_session+1);
+            }else {
+                $u_session = $sd[0]->sess;
+            }
+            $data['sess']=$u_session;
             $key = $data['key'];
+            $paid_list = array(
+                'u_id' => $key,
+                'sess'=> $u_session,
+                'semester'=>$semester,
+                'paid_amt'=> $data['paid_amt'],
+                'donation_amt'=>250
+            );
+            $this->genModel->insert_data('paid_list',$paid_list);
+            $paid_data = $this->genModel->fetch_last_entry('paid_list');
+            // print_r($paid_list); exit;
             unset($data['key']);
             $this->arronic->perform_fed($this->genModel->update_by_where('form_submitted', $data, ['code'=> $key]),'Student hass been promoted successfully', 'Error. Please try again');    
         }
