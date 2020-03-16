@@ -100,7 +100,7 @@
 	</div>
 </div>
 <div class="modal fade" id="confirm-modal">
-	<div class="modal-dialog modal-sm">
+	<div class="modal-dialog modal-md">
 		<div class="modal-content">
 			<div class="modal-header">
 				<h4 class="modal-title">Confirm Promotion</h4>
@@ -131,9 +131,12 @@
 			dataType: 'json',
 			cache: false,
 			success: function (data, status) {
+				console.log(data);
+				
 				if (data == "FALSE") {
 					$('#error-alert').show();
 				} else {
+					$('#error-alert').hide();
 					$('#promotion-modal').modal('toggle');
 					$('#s_name').text(data.name);
 					$('#s_course').text(data.course);
