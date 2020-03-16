@@ -90,6 +90,15 @@
 								</div>
 							</div>
 						</div>
+						<div class="row">
+							<div class="col-sm-6">
+								<strong>Total Fee Payable:</strong> <span id="payable"></span>
+							</div>
+							<div class="col-sm-6">
+							<label for="">Amount Paid</label>
+								<input class="form-control" type="text" name="paid_amt" id="paid_amt" required>
+							</div>
+						</div>
 					</div>
 				</form>
 				<div class="modal-footer">
@@ -132,6 +141,8 @@
 			dataType: 'json',
 			cache: false,
 			success: function (data, status) {
+				console.log(data);
+				
 				if (data == "FALSE") {
 					$('#error-alert').show();
 				} else {
@@ -141,6 +152,7 @@
 					$('#s_course').text(data.course);
 					$('#s_sem').text(data.semester);
 					$('#key').val(data.code);
+					$('#payable').text(data.payable);
 					$('#semester').val(data.upgrade_to);
 					if (data.semester == "6th") {
 						$('#semester-div').hide();
@@ -161,12 +173,14 @@
 		spinnerOn();
 		semester = $('#semester').val();
 		key = $('#key').val();
+		paid_amt = $('#paid_amt').val();
 		$.ajax({
 			type: "POST",
 			url: base_url + "Admin/promote_student",
 			data: {
 				key: key,
-				semester: semester
+				semester: semester,
+				paid_amt: paid_amt
 			},
 			dataType: 'json',
 			cache: false,
@@ -201,9 +215,6 @@
 	function print_pdf(key) {
 		key = btoa_return(key);
 		window.open(base_url + "Admin/promotion_pdf/" + key, "_blank",
-			"directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,top=20,left=400,width=600,height=700"
-		);
-		window.open(base_url + "Admin/print_pdf/" + key, "_blank",
 			"directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,top=20,left=400,width=600,height=700"
 		);
 	}

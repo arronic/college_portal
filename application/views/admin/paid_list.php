@@ -28,16 +28,16 @@
 		            <div class="form-group">
 		                <label>Select Year</label>
 		                <select class="form-control" id="sel_year">
-		                  <option value=''>Select Year</option>
-		                      <option value="2020">2020</option>
-		                      <option value="2021">2021</option>
-		                      <option value="2022">2022</option>
-		                      <option value="2023">2023</option>
-		                      <option value="2024">2024</option>
-		                      <option value="2025">2025</option>
-		                      <option value="2026">2026</option>
-		                      <option value="2027">2027</option>
-		                      <option value="2028">2028</option>
+		                  <option value=''>Select Session</option>
+		                      <option value="2020-2021">2020-21</option>
+		                      <option value="2021-2022">2021-22</option>
+		                      <option value="2022-2023">2022-23</option>
+		                      <option value="2023-2024">2023-24</option>
+		                      <option value="2024-2025">2024-25</option>
+		                      <option value="2025-2026">2025-26</option>
+		                      <option value="2026-2027">2026-27</option>
+		                      <option value="2027-2028">2027-28</option>
+		                      <option value="2028-2029">2028-29</option>
 		                </select>
 		            </div>
 		        </div>
@@ -54,7 +54,8 @@
 					  <th>Course Details</th>
 					  <th>Category</th>
 			          <th>Admission Date</th>
-			          <th>Paid</th>
+			          <th>Amount Paid</th>
+					  <th>Donation Paid</th>
 			          <th>Action</th>
 			        </tr>
 			      </thead>
@@ -79,12 +80,12 @@
 <script>
   base_url = '<?= base_url() ?>';
   $('#sel_year').change(function(){
-    year = $('#sel_year').val();
-    if(year != ''){
+    session = $('#sel_year').val();
+    if(session != ''){
 		if(typeof table_paid === 'undefined'){
 			$('#payment_table').show(1000);
 			table_paid = $('#example').DataTable({
-				'ajax' : base_url + 'Admin/fetch_paid_list/'+year,
+				'ajax' : base_url + 'Admin/fetch_paid_list/'+session,
 				'responsive' : true,
 				dom: "<'row'<'col-md-2'l><'col-md-6'B><'col-md-4'f>><'row'<'col-md-12'rt>><'row'<'col-md-6'i><'col-md-6'p>>",
           		buttons: [
@@ -100,7 +101,7 @@
 			});
 		}
 		else{
-			table_paid.ajax.url(base_url + 'Admin/fetch_paid_list/'+year).load();
+			table_paid.ajax.url(base_url + 'Admin/fetch_paid_list/'+session).load();
 		}
     }
   });
