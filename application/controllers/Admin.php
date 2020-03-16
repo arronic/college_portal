@@ -41,6 +41,9 @@ class Admin extends CI_Controller{
     public function promote(){
         $this->load->view('admin/promote');
     }
+    public function promote_receipt(){
+        $this->load->view('admin/promote_receipt');
+    }
     // view function ends
 
     // logic function starts
@@ -60,11 +63,11 @@ class Admin extends CI_Controller{
     public function get_student(){
         if($code = $this->input->post('key')){
             $student =  $this->genModel->fetch_by_col('form_submitted', ['code'=>$code]);
-            if($student[0]->name != null){
+            if($student){
                 echo json_encode($student[0]);
             }
             else{
-                echo "FALSE";
+                echo json_encode("FALSE");
             }
         }
         else
@@ -545,7 +548,9 @@ class Admin extends CI_Controller{
             return redirect('/');
         }
     }
-
+    public function promoted(){
+        
+    }
     // logic function ends
 // helper function starts
     public function _file_upload($path, $f_name ,$types=null, $max_size=null){
