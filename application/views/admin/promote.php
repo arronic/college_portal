@@ -75,17 +75,18 @@
 							<div class="col-sm-6">
 								<strong>Current Semester:</strong> <span id="s_sem"></span>
 							</div>
-							<div class="col-sm-6">
+							<div class="col-sm-6" id="">
 								<input type="hidden" name="key" id="key">
 								<div class="form-group">
-									<label>Promte to: </label>
-									<select class="form-control select2" style="width: 100%;" id="semester">
-										<option value="2nd">2nd Semester</option>
-										<option value="3rd">3rd Semester</option>
-										<option value="4th">4th Semester</option>
-										<option value="5th">5th Semester</option>
-										<option value="6th">6th Semester</option>
-									</select>
+									<label>The student will be promoted to: </label>
+									<span id="not-appl"></span>
+									<div class="row" id="semester-div">
+										<div class="col-sm-6">
+											<input class="form-control text-center" type="text" name="semester"
+												id="semester" readonly>
+										</div>
+										<div class="col-sm-6">Semester</div>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -131,8 +132,6 @@
 			dataType: 'json',
 			cache: false,
 			success: function (data, status) {
-				console.log(data);
-				
 				if (data == "FALSE") {
 					$('#error-alert').show();
 				} else {
@@ -142,6 +141,12 @@
 					$('#s_course').text(data.course);
 					$('#s_sem').text(data.semester);
 					$('#key').val(data.code);
+					$('#semester').val(data.upgrade_to);
+					if (data.semester == "6th") {
+						$('#semester-div').hide();
+						$('#not-appl').text('Not Applicable! Already in the final semester')
+						$('#promote-btn').prop('disabled',true);
+					}
 				}
 			},
 			error: function error(data) {

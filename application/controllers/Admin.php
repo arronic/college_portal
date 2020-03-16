@@ -64,6 +64,28 @@ class Admin extends CI_Controller{
         if($code = $this->input->post('key')){
             $student =  $this->genModel->fetch_by_col('form_submitted', ['code'=>$code]);
             if($student){
+                $semester = $student[0]->semester;
+                switch ($semester) {
+                    case '1st':
+                        $semester = "2nd";
+                        break;
+                    case '2nd':
+                        $semester = "3rd";
+                        break;
+                    case '3rd':
+                        $semester = "4th";
+                        break;
+                    case '4th':
+                        $semester = "5th";
+                        break;
+                    case '5th':
+                        $semester = "6th";
+                        break;
+                    default:
+                        $semester = "6th";
+                        break;
+                }
+                $student[0]->upgrade_to = $semester;
                 echo json_encode($student[0]);
             }
             else{

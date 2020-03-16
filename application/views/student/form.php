@@ -49,7 +49,7 @@
 								<div class="col-sm-6">
 									<div class="form-group">
 										<label>Course</label>
-										<input type="text" class="form-control" name="course"
+										<input type="text" class="form-control" name="course" id="course"
 											value="<?= $form_details->student_course ?>" readonly=""
 											style="cursor:not-allowed;">
 									</div>
@@ -537,6 +537,9 @@
 					$('#bpl_no').val('');
 				}
 			});
+			if($('#course').val() == "BA(General)"){
+				$('#major').prop('disabled',true);
+			}
 		});
 	</script>
 </body>
