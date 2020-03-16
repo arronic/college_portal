@@ -661,7 +661,7 @@ class Htmltopdfmodel extends CI_Model{
             </div>
             <br>
                 <span><strong>Name:</strong>'.$sd->name.'</span>
-                <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>
+                <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>
                 <span><strong>Course:</strong>'.$sd->course.'</span>
                 <div class="">
                 <hr>
