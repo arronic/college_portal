@@ -80,14 +80,24 @@
 		
 		myTable = $("#my-table").DataTable({
 		      "ajax": base_url + "Admin/getSoldForms",
-		      
-		      
 		      'order': [],
 		      responsive : true,
 		      dom: "<'row'<'col-md-2'l><'col-md-6'B><'col-md-4'f>><'row'<'col-md-12'rt>><'row'<'col-md-6'i><'col-md-6'p>>",
-		      
-		      buttons: ['copy', 'excel', 'pdf','colvis'],
-		      
+		      buttons: [
+					{
+						extend: 'excel',
+						title: table_title('Sold Form List'),
+						exportOptions: {columns: [ 0,1,2,3,4]},
+						footer: true,
+
+					},
+					{
+						extend: 'pdf',
+						title: table_title('Sold Form List'),
+						exportOptions: {columns: [ 0,1,2,3,4]}
+					},
+					'copy','colvis'
+				],
 		    });
     });
 </script>
@@ -106,15 +116,12 @@
 			        url: base_url + "Admin/del_sold_form", 
 			        data: {key: key},
 			        dataType: 'json',
-			        // cache:false,
-			        success: function(data){ 
-			            // console.log(data); return false;                       
+			        success: function(data){                   
 			                if (data.class == "success") {
 			                    spinnerOff();
 			                    feedback_msg(data, 5000);
 			                    $('#modalConfirm').modal('toggle');
 			                    myTable.ajax.reload();
-			                // $('#generate_btn').preventDefaultop('disabled', true);
 			                }else{
 			                }
 			            },
@@ -124,6 +131,5 @@
 			            }
 			        });
 		});
-		// return false;
 	}
 </script>

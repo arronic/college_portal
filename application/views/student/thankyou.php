@@ -22,7 +22,7 @@
 					Your form is submitted successfully. Kindly print out a copy for future reference.
 					Thank you.
 				</p>
-				<a href="<?= base_url()?>" class="btn btn-primary float-left">Home</a>
+				<a href="<?= base_url()."Student"?>" class="btn btn-primary float-left">Home</a>
 				<button onclick="print_pdf('<?= $code ?>')" class="btn btn-primary float-right"> print pdf</a>
 
 			</div>

@@ -1,5 +1,13 @@
 <?php include('header.php');?>
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.6.1/css/buttons.bootstrap4.min.css">
+<style>
+span.no-show{
+    display: none;
+}
+span.show-ellipsis:after{
+    content: "...";
+}
+</style>
 <div class="content-wrapper">
 	<section class="content-header">
 		<div class="container-fluid">
@@ -61,21 +69,37 @@
 			'columnDefs': [
 					{
 						'targets': 10,
-						'render': function(data, type, full, meta){
-							if(type === 'display'){
-								data = strtrunc(data, 20);
-							}
-							return data;
-						}
+						'render': function(data, type, row){
+							if (type === 'display' && data != null) {
+								data = data.replace(/<(?:.|\\n)*?>/gm, '');
+									if(data.length > 20) {
+											return '<span class=\"show-ellipsis\">' + data.substr(0, 20) + '</span><span class=\"no-show\">' + data.substr(20) + '</span>';
+									}else{
+										return data;
+									}
+							}else{
+								return data;
+								}
+							},
 					}
 				],
 			'order': [],
-			responsive : true,
 			dom: "<'row'<'col-md-2'l><'col-md-6'B><'col-md-4'f>><'row'<'col-md-12'rt>><'row'<'col-md-6'i><'col-md-6'p>>",
+			buttons: [
+				{
+					extend: 'excel',
+					title: table_title('Enrolled List'),
+					exportOptions: {columns: [0,1,2,3,4,5,6,7,8,9,10,11,12,13]},
+					footer: true,
+				},
+				{
+					extend: 'pdf',
+					title: table_title('Enrolled List'),
+					exportOptions: {columns: [0,1,2,3,4,5,6,7,8,9,10,11,12,13]}
+				},
+				'copy','colvis'
+			],
+			responsive : true,
 		});
 	});
-	function strtrunc(str, max, add){
-		add = add || '...';
-		return (typeof str === 'string' && str.length > max ? str.substring(0, max) + add : str);
-	};
 </script>

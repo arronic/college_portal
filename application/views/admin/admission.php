@@ -1,5 +1,6 @@
 <?php include('header.php');?>
 <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.6.1/css/buttons.bootstrap4.min.css">
 <div class="content-wrapper">
 	<section class="content-header">
 		<div class="container-fluid">
@@ -551,6 +552,14 @@
 </div>
 <?php include('script.php');?>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.6.1/js/dataTables.buttons.min.js"></script> 
+<script src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.bootstrap4.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.print.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.colVis.min.js"></script>
 <script type="text/javascript">
 	base_url = '<?= base_url() ?>'
 
@@ -568,6 +577,21 @@
 		});
 		var myTable = $('#my-table').DataTable({
 			"ajax": base_url + "Admin/admitted",
+			dom: "<'row'<'col-md-2'l><'col-md-6'B><'col-md-4'f>><'row'<'col-md-12'rt>><'row'<'col-md-6'i><'col-md-6'p>>",
+			buttons: [
+				{
+					extend: 'excel',
+					title: table_title('Admission List'),
+					exportOptions: {columns: [ 0,1,2,3,4]},
+					footer: true,
+				},
+				{
+					extend: 'pdf',
+					title: table_title('Admission List'),
+					exportOptions: {columns: [ 0,1,2,3,4]}
+				},
+				'copy','colvis'
+			],
 		});
 		$('#edit-modal').on('show.bs.modal', function (e) {
 			$('#image_file').val('');

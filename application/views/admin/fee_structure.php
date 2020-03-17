@@ -58,7 +58,20 @@
           'ajax' : base_url + 'Admin/fetch_fee_structure/',
           'order': [],
           responsive : true,
-
           dom: "<'row'<'col-md-2'l><'col-md-6'B><'col-md-4'f>><'row'<'col-md-12'rt>><'row'<'col-md-6'i><'col-md-6'p>>",
+		      buttons: [
+					  {
+              extend: 'excel',
+              title: table_title('Fee Structure'),
+              exportOptions: {columns: [ 0,1,2]},
+              footer: true,
+					  },
+            {
+              extend: 'pdf',
+              title: table_title('Fee Structure'),
+              exportOptions: {columns: [ 0,1,2]}
+            },
+            'copy','colvis'
+          ],
         });
 </script>

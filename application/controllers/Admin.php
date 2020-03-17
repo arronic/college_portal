@@ -178,6 +178,14 @@ class Admin extends CI_Controller{
             return redirect('PageNotFound');
         }
     }
+    public function get_total_fee($course = null){
+        if ($course) {
+            $sum = $this->AdminModel->total_fee($course);
+            echo $sum[0]->tot;
+        }else{
+            return redirect('PageNotFound');
+        }
+    }
     public function notAdmitted(){
         $select = 'id, name, code, course, apl_bpl, paid, status';
         $all_student = $this->genModel->fetch_by_col_select($select, 'form_submitted', ['status'=>0]);
@@ -246,7 +254,7 @@ class Admin extends CI_Controller{
                     $gender_cast,
                     "Arts",
                     $course,
-                    $value->apl_bpl,
+                    strtoupper($value->apl_bpl),
                     $value->bpl_no,
                     $address,
                     $value->phone,
@@ -328,8 +336,6 @@ class Admin extends CI_Controller{
         }
     }
     public function receiptPDF($id = null){
-        // $code = $this->genModel->fetch_by_id('paid_list',$id);
-        //     print_r($code->u_id); exit;
         if($id){
             $id = base64_decode($id);
             if ($id) {
@@ -420,7 +426,12 @@ class Admin extends CI_Controller{
             $data['adm_year'] = date('Y');
             $data['paid'] = 'paid';
             $this->genModel->update_by_where('paid_list',['semester'=>'1st','paid_amt'=>$data['paid_amt']],['u_id'=>$student_details[0]->code]);
-            $this->arronic->perform_fed($this->genModel->update_by_id('form_submitted',$data,$id), 'Form Has been Succesfully Updated', 'Error. Please check again');
+            if($this->genModel->update_by_id('form_submitted',$data,$id)){
+                $id = $this->genModel->fetch_by_col_select('id','paid_list',['u_id'=>$student_details[0]->code]);
+                $data['id'] = $id[0]->id;
+                $data['class']= 'success';
+                echo json_encode($data);
+            }            
         }else {
             $this->error_show('errors/html/error_404',"Something went wrong","Could not update student details. Try again!");
         }

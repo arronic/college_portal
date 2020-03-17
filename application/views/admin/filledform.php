@@ -1,7 +1,7 @@
 <?php include('header.php');?>
 <!-- Include SmartWizard CSS -->
 <link href="<?= base_url() ?>assets/wizerd/css/smart_wizard.css" rel="stylesheet" type="text/css" />
-
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.6.1/css/buttons.bootstrap4.min.css">
 <!-- Optional SmartWizard theme -->
 <link href="<?= base_url() ?>assets/wizerd/css/smart_wizard_theme_arrows.css" rel="stylesheet" type="text/css" />
 <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
@@ -535,25 +535,17 @@
 												</div>
 											</div>
 										</div>
-
 									</div>
-
 								</div>
-
-
-
 								<div id="step-2" class="">
 									<h3 class="border-bottom border-gray pb-2">Pay Admission Fee</h3>
-
 									<div id="form-step-1" role="form" data-toggle="validator">
 										<div class="form-group">
 											<label>Total Admission Fee: <span id="total_amt"></span> </label>
 											<input type="text" class="form-control" name="paid_amt" id="paid_amt"
 												required="">
-
 										</div>
 									</div>
-
 								</div>
 								<div id="step-3" class="">
 									<h3 class="border-bottom border-gray pb-2">Admit The Student</h3>
@@ -573,9 +565,7 @@
 											</div>
 										</div>
 										<div class="col"></div>
-
 									</div>
-
 								</div>
 								<div id="step-4" class="">
 									<div class="row" style="margin-top: 20px; display: none;" id="adm_succ">
@@ -603,20 +593,12 @@
 							<?= form_close() ?>
 						</div>
 					</div>
-
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-
 					</div>
-					<!-- </form> -->
 				</div>
 			</div>
 		</div>
-
-		<!-- test mode ends-->
-
-
-		<!-- DeleteModel Start -->
 		<div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
 			aria-hidden="true">
 			<div class="modal-dialog" role="document">
@@ -640,20 +622,18 @@
 				</div>
 			</div>
 		</div>
-		<!-- Delete Model Ends -->
-
-
-
-
-
-
-
 	</section>
 </div>
-
 <?php include('script.php');?>
+<script src="https://cdn.datatables.net/buttons/1.6.1/js/dataTables.buttons.min.js"></script> 
+<script src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.bootstrap4.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.print.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.colVis.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
-
 <script>
 	function admit(key) {
 		$('#admit-modal').modal('toggle');
@@ -678,21 +658,21 @@
 				}
 				if ($('#apl_bpl').val() == "bpl") {
 					$('#bpl_no_group').show();
-				}
+					$('#total_amt').text("Free");
+					$('#paid_amt').hide();
+					$('#paid_amt').val(0);
+				}else{
 					$('#total_amt').text(data.total);
+				}
 				$('#image').attr('src', base_url + 'upload/' + data.image_path);
 				$('#signature').attr('src', base_url + 'upload/' + data.sign_path);
 				$('#u_code').text(data.code);
-
-				// return false;
-
 			},
 			error: function (error) {
 				console.error(error);
 			}
 		});
 	}
-
 	function valueChanged() {
 		if ($('#study_break').val() == "yes") {
 			$("#gap_reason").show();
@@ -701,13 +681,7 @@
 			$("#gap_reason").hide();
 			$('#break_reason').val('');
 	}
-
 </script>
-
-
-
-
-
 <script type="text/javascript">
 	base_url = '<?= base_url() ?>'
 	$(document).ready(function () {
@@ -717,8 +691,24 @@
 		});
 		var myTable = $('#my-table').DataTable({
 			"ajax": base_url + "Admin/notAdmitted",
-			"table": "#my-table",
+			'order': [],
+		      responsive : true,
+		      dom: "<'row'<'col-md-2'l><'col-md-6'B><'col-md-4'f>><'row'<'col-md-12'rt>><'row'<'col-md-6'i><'col-md-6'p>>",
+		      buttons: [
+					{
+						extend: 'excel',
+						title: table_title('Filled Form List'),
+						exportOptions: {columns: [ 0,1,2,3,4,5]},
+						footer: true,
 
+					},
+					{
+						extend: 'pdf',
+						title: table_title('Filled Form List'),
+						exportOptions: {columns: [ 0,1,2,3,4,5]}
+					},
+					'copy','colvis'
+				],
 		});
 		$('#delete-modal').on('show.bs.modal', function (e) {
 			var studentID = $(e.relatedTarget).data('student-id');
@@ -745,22 +735,19 @@
 				success: function (result) {
 					if (result.class == "success") {
 						spinnerOff();
-						// feedback_msg(result, 1500);
 						$('#smartwizard').smartWizard("next");
 						$('#adm_succ').show();
 						$('#s_name').text(name);
 						$('#s_course').text(course);
 						$('#pay_amt').text(paid_amt);
-						$('#pay_receipt').attr('href', base_url + 'Admin/receiptPDF/' + code);
+						$('#pay_receipt').attr('href', base_url + 'Admin/receiptPDF/' + btoa_return(result.id));
 						myTable.ajax.reload();
-
 					}
 				},
 				error: function (error) {
 					console.log(error);
 				}
 			});
-
 		});
 		$('#apl_bpl').change(function () {
 			if ($('#apl_bpl').val() == 'bpl') {
@@ -776,11 +763,10 @@
 </script>
 <script>
 	function adm_fee(){
-		// funtion for checking course
 		course = $('#course').val();
 		apl_bpl = $('#apl_bpl').val();
 		$.ajax({
-			url: base_url + "Admin/get_course_total/"+course,
+			url: base_url + "Admin/get_total_fee/"+course,
 			success: function(result){
 				if (apl_bpl == "bpl") {
 					$('#total_amt').text("Free");
@@ -795,18 +781,14 @@
 				console.log(error);
 			}
 		});
-		
 	}
 </script>
 <?php include('footer.php');?>
-
-<!-- Include SmartWizard JavaScript source -->
 <script type="text/javascript" src="<?= base_url() ?>assets/wizerd/js/jquery.smartWizard.min.js"></script>
 <script src=" <?= base_url('assets/plugins/jquery-validation/jquery.validate.min.js'); ?>"></script>
 
 <script type="text/javascript">
 	$(document).ready(function () {
-		// Toolbar extra buttons
 		var btnFinish = $('<button></button>').text('Finish')
 			.addClass('btn btn-info')
 			.on('click', function () {
@@ -817,32 +799,19 @@
 			.on('click', function () {
 				$('#smartwizard').smartWizard("reset");
 			});
-
-		// Step show event
 		$("#smartwizard").on("showStep", function (e, anchorObject, stepNumber, stepDirection, stepPosition) {
-			//alert("You are on step "+stepNumber+" now");
 			if (stepPosition === 'first') {
 				$("#prev-btn").addClass('disabled');
 			} else if (stepPosition === 'final') {
-				// $("#prev-btn").addClass('disabled');	
 				$("#next-btn").addClass('disabled');
 			} else {
 				$("#prev-btn").removeClass('disabled');
 				$("#next-btn").removeClass('disabled');
 			}
-
-
 		});
-
-
 		$("#smartwizard").on("endReset", function () {
 			$("#next-btn").removeClass('disabled');
 		});
-
-
-
-
-		// Smart Wizard
 		setting = $('#smartwizard').smartWizard({
 			selected: 0,
 			theme: 'arrows',
@@ -851,31 +820,22 @@
 			toolbarSettings: {
 				toolbarPosition: 'bottom',
 				toolbarButtonPosition: 'end',
-				// toolbarExtraButtons: [btnFinish, btnCancel]
 			},
-
 		});
-
-		// External Button Events
 		$("#reset-btn").on("click", function () {
-			// Reset wizard
 			$('#smartwizard').smartWizard("reset");
 			$("#next-btn").removeClass('disabled');
 			return true;
 		});
 
 		$("#prev-btn").on("click", function () {
-			// Navigate previous
 			$('#smartwizard').smartWizard("prev");
 			return true;
 		});
 
 		$("#next-btn").on("click", function () {
-			// Navigate next
 			$('#smartwizard').smartWizard("next");
 			return true;
 		});
-
 	});
-
 </script>

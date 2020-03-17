@@ -1,7 +1,14 @@
 <?php include('header.php');?>
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.6.1/css/buttons.bootstrap4.min.css">
+<style>
+span.no-show{
+    display: none;
+}
+span.show-ellipsis:after{
+    content: "...";
+}
+</style>
 <div class="content-wrapper">
-	<!-- Content Header (Page header) -->
 	<section class="content-header">
 		<div class="container-fluid">
 			<div class="row mb-2">
@@ -104,7 +111,6 @@
 	</div>
 </div>
 <?php include('script.php');?>
-
 <script src="https://cdn.datatables.net/buttons/1.6.1/js/dataTables.buttons.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.bootstrap4.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
@@ -120,25 +126,39 @@
 			"ajax": base_url + "Admin/get_notice_list",
 			'order': [],
 			'columnDefs': [
-					{
-						'targets': 1,
-						'render': function(data, type, full, meta){
-							if(type === 'display'){
-								data = strtrunc(data, 20);
-							}
+				{
+					'targets': 1,
+					'render': function(data, type, row){
+						if (type === 'display' && data != null) {
+							data = data.replace(/<(?:.|\\n)*?>/gm, '');
+								if(data.length > 20) {
+										return '<span class=\"show-ellipsis\">' + data.substr(0, 20) + '</span><span class=\"no-show\">' + data.substr(20) + '</span>';
+								}else{
+									return data;
+								}
+						}else{
 							return data;
-						}
-					}
-				],
+							}
+						},
+				}
+			],
 			responsive: true,
 			dom: "<'row'<'col-md-2'l><'col-md-6'B><'col-md-4'f>><'row'<'col-md-12'rt>><'row'<'col-md-6'i><'col-md-6'p>>",
-			buttons: ['copy', 'excel', 'pdf', 'colvis'],
+			buttons: [
+				{extend: 'excel',
+					title: table_title('Notice List'),
+					exportOptions: {columns: [ 0,1,2]},
+					footer: true,
+
+				},
+				{extend: 'pdf',
+					title: table_title('Notice List'),
+					exportOptions: {columns: [ 0,1,2]}
+				},
+				'copy','colvis'
+			],
 		});
 	});
-	function strtrunc(str, max, add){
-		add = add || '...';
-		return (typeof str === 'string' && str.length > max ? str.substring(0, max) + add : str);
-	};
 	$('#notice-form').on('submit', function (e) {
 		e.preventDefault();
 		notice = $('#notice').val();
