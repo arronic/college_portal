@@ -101,7 +101,7 @@
         <body>
         <div class="split left">
             <div class="custom-header text-center">
-                <div class="bold font-large">College Name, Address</div>
+                <div class="bold font-large">Jaleswar College, Address</div>
                 <div class="bold text-center">ESTD:1947</div>
                 <div class="bold text-center">P.O.: Post Office, DIST: District</div>
                 <div class="bold text-center">PIN: 123456</div>
@@ -232,7 +232,7 @@
             </div>
             <div class="split right">
             <div class="custom-header text-center">
-                <div class="bold font-large">College Name, Address</div>
+                <div class="bold font-large">Jaleswar College, Address</div>
                 <div class="bold text-center">ESTD:1947</div>
                 <div class="bold text-center">P.O.: Post Office, DIST: District</div>
                 <div class="bold text-center">PIN: 123456</div>

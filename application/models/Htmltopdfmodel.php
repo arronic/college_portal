@@ -88,7 +88,7 @@ class Htmltopdfmodel extends CI_Model{
             <div>
             <span>Sl No.: '.$sd->sl_no.'</span>
                 <div class="custom-header text-center">
-                    <div class="bold font-large">College Name, Address</div>
+                    <div class="bold font-large">Jaleswar College, Address</div>
                     <div class="bold text-center">ESTD:1947</div>
                     <div class="bold text-center">P.O.: Post Office, DIST: District</div>
                     <div class="bold text-center">PIN: 123456</div>
@@ -239,7 +239,7 @@ class Htmltopdfmodel extends CI_Model{
             <div class="container">
             <span>Sl No.: '.$sd->sl_no.'</span>
             <div class="text-center">
-                <div class="bold font-large">College Name, Address</div>
+                <div class="bold font-large">Jaleswar College, Address</div>
                 <div class="bold text-center">ESTD:1947</div>
                 <div class="bold text-center">P.O.: Post Office, DIST: District</div>
                 <div class="bold text-center">PIN: 123456</div>
@@ -375,7 +375,7 @@ class Htmltopdfmodel extends CI_Model{
                         <p class="text-center italic">I, Mr./
                             Mrs.............................................................................do hereby declare
                             that
-                            in the event of his/her being admitted to College Name,Address I shall be responsible
+                            in the event of his/her being admitted to Jaleswar College,Address I shall be responsible
                             for his/her conduct and regular payment of the college fees and attendance of classes.</p>
                         <div class="wide">
                             <p class="italic text-center">Place: ............................</p>
@@ -402,7 +402,7 @@ class Htmltopdfmodel extends CI_Model{
                 <div class="parent">
                     <div class="wide">
                         <p class="italic text-center">Principal</p>
-                        <p class="italic text-center">College Name, Address</p>
+                        <p class="italic text-center">Jaleswar College, Address</p>
                     </div>
                     <div class="narrow">
                         <p class="italic text-center">Prof. In- Charge / Office Asstt.</p>
@@ -518,7 +518,7 @@ class Htmltopdfmodel extends CI_Model{
         <div class="split left">
         <span>Sl No.: '.$sd->sl_no.'</span>
             <div class="text-center">
-                <div class="bold">College Name, Address</div>
+                <div class="bold">Jaleswar College, Address</div>
                 <div class="bold text-center">ESTD:1947</div>
                 <div class="bold text-center">P.O.: Post Office, DIST: District</div>
                 <div class="bold text-center">PIN: 123456</div>
@@ -653,7 +653,7 @@ class Htmltopdfmodel extends CI_Model{
             <div class="split right">
             <span>Sl No.: '.$sd->sl_no.'</span>
             <div class="text-center">
-                <div class="bold">College Name, Address</div>
+                <div class="bold">Jaleswar College, Address</div>
                 <div class="bold text-center">ESTD:1947</div>
                 <div class="bold text-center">P.O.: Post Office, DIST: District</div>
                 <div class="bold text-center">PIN: 123456</div>
@@ -897,7 +897,7 @@ class Htmltopdfmodel extends CI_Model{
             <div>
             <span>Sl No.: '.$sd->sl_no.'</span>
                 <div class="custom-header text-center">
-                    <div class="bold font-large">College Name, Address</div>
+                    <div class="bold font-large">Jaleswar College, Address</div>
                     <div class="bold text-center">ESTD:1947</div>
                     <div class="bold text-center">P.O.: Post Office, DIST: District</div>
                     <div class="bold text-center">PIN: 123456</div>
@@ -941,7 +941,7 @@ class Htmltopdfmodel extends CI_Model{
         <div class="split left">
         <span>Sl No.: '.$sd->sl_no.'</span>
             <div class="text-center">
-                <div class="bold">College Name, Address</div>
+                <div class="bold">Jaleswar College, Address</div>
                 <div class="bold text-center">ESTD:1947</div>
                 <div class="bold text-center">P.O.: Post Office, DIST: District</div>
                 <div class="bold text-center">PIN: 123456</div>
@@ -1077,7 +1077,7 @@ class Htmltopdfmodel extends CI_Model{
             <div class="split right">
             <span>Sl No.: '.$sd->sl_no.'</span>
             <div class="text-center">
-                <div class="bold">College Name, Address</div>
+                <div class="bold">Jaleswar College, Address</div>
                 <div class="bold text-center">ESTD:1947</div>
                 <div class="bold text-center">P.O.: Post Office, DIST: District</div>
                 <div class="bold text-center">PIN: 123456</div>
