@@ -379,6 +379,7 @@ class Admin extends CI_Controller{
     }
     public function update_student(){
         $data = $this->input->post();
+        // echo "<pre>"; print_r($data);exit;
         if ($data && $data != null) {
             $id = $data['id'];
             $student_details = $this->genModel->fetch_by_col_select('code, image_path, sign_path', 'form_submitted', ['id'=>$id]);

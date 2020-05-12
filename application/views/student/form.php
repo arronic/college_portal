@@ -5,18 +5,21 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<?= link_tag('/assets/css/bootstrap.css') ?>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 	<script src="https://code.jquery.com/jquery-3.4.1.min.js"
 		integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 	<script src="<?= base_url('assets/js/bootstrap.min.js'); ?>"></script>
 	<link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
 	<script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 	<title>College Portal</title>
 	<style>
-		body{
+		body {
 			background-image: url('<?= base_url('assets/images/bg-image.jpg')?>');
 			background-size: cover;
 			background-repeat: no-repeat;
 		}
+
 	</style>
 </head>
 
@@ -406,7 +409,8 @@
 						<div class="card-body">
 							<div class="row">
 								<div class="col-sm-6">
-									<label> Name of Subject taken as Honours (Earlier known as Major) in the following subject -</label>
+									<label> Name of Subject taken as Honours (Earlier known as Major) in the following
+										subject -</label>
 									<div class="form-group">
 										<select class="form-control" name="major" id="major">
 											<option value="">Select one</option>
@@ -422,20 +426,64 @@
 									</div>
 								</div>
 								<div class="col-sm-6">
-									<label>Subject available in the college for Regular Course.</label>
+									<label>Subject available in the college for Regular Course. (Any Two)</label>
 									<div class="form-group">
-										<select class="form-control js-example-basic-multiple select2" name="regular[]" multiple="multiple" required>
-											<option value="History">History</option>
-											<option value="Political Science">Political Science</option>
-											<option value="Economics">Economics</option>
-											<option value="Education">Education</option>
-											<option value="Philosophy">Philosophy</option>
-											<option value="Elective Assamese">Elective Assamese</option>
-											<option value="Elective Hindi">Elective Hindi</option>
-											<option value="Arabic">Arabic</option>
-											<option value="Mathematics">Mathematics</option>
-											<option value="Linguistics">Linguistics</option>
-										</select>
+										<div class="row">
+											<div class="col-sm-6">
+												<div class="custom-control custom-checkbox">
+													<input class="custom-control-input" type="checkbox"
+														id="customCheckbox1" name="regular[]" value="History">
+													<label for="customCheckbox1" class="custom-control-label">History</label>
+												</div>
+												<div class="custom-control custom-checkbox">
+													<input class="custom-control-input" type="checkbox"
+														id="customCheckbox2" name="regular[]" value="Political Science">
+													<label for="customCheckbox2" class="custom-control-label">Political Science</label>
+												</div>
+												<div class="custom-control custom-checkbox">
+													<input class="custom-control-input" type="checkbox"
+														id="customCheckbox3" name="regular[]" value="Economics">
+													<label for="customCheckbox3" class="custom-control-label">Economics</label>
+												</div>
+												<div class="custom-control custom-checkbox">
+													<input class="custom-control-input" type="checkbox"
+														id="customCheckbox4" name="regular[]" value="Education">
+													<label for="customCheckbox4" class="custom-control-label">Education</label>
+												</div>
+												<div class="custom-control custom-checkbox">
+													<input class="custom-control-input" type="checkbox"
+														id="customCheckbox5" name="regular[]" value="Philosophy">
+													<label for="customCheckbox5" class="custom-control-label">Philosophy</label>
+												</div>
+											</div>
+											<div class="col-sm-6">
+											<div class="custom-control custom-checkbox">
+													<input class="custom-control-input" type="checkbox"
+														id="customCheckbox6" name="regular[]" value="Elective Assamese">
+													<label for="customCheckbox6" class="custom-control-label">Elective Assamese</label>
+												</div>
+												<div class="custom-control custom-checkbox">
+													<input class="custom-control-input" type="checkbox"
+														id="customCheckbox7" name="regular[]" value="Elective Hindi">
+													<label for="customCheckbox7" class="custom-control-label">Elective Hindi</label>
+												</div>
+												<div class="custom-control custom-checkbox">
+													<input class="custom-control-input" type="checkbox"
+														id="customCheckbox8" name="regular[]" value="Arabic">
+													<label for="customCheckbox8" class="custom-control-label">Arabic</label>
+												</div>
+												<div class="custom-control custom-checkbox">
+													<input class="custom-control-input" type="checkbox"
+														id="customCheckbox9" name="regular[]" value="Mathematics">
+													<label for="customCheckbox9" class="custom-control-label">Mathematics</label>
+												</div>
+												<div class="custom-control custom-checkbox">
+													<input class="custom-control-input" type="checkbox"
+														id="customCheckbox10" name="regular[]" value="Linguistics">
+													<label for="customCheckbox10" class="custom-control-label">Linguistics</label>
+												</div>
+											</div>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -520,27 +568,41 @@
 			$('input[name="study_break"]').click(function () {
 				if ($(this).attr('id') == 'cr1') {
 					$('#gap_reason').show();
-					$('#gap_reason_text').prop('required',true);
+					$('#gap_reason_text').prop('required', true);
 				} else {
 					$('#gap_reason').hide();
 					$('#gap_reason_text').val('');
-					$('#gap_reason_text').prop('required',false);
+					$('#gap_reason_text').prop('required', false);
 				}
 			});
-			$('#apl_bpl').change(function(){
-				if($('#apl_bpl').val() == 'bpl'){
+			$('#apl_bpl').change(function () {
+				if ($('#apl_bpl').val() == 'bpl') {
 					$('#bpl_no_group').show();
-					$('#bpl_no').prop('required',true);
-				}else{
+					$('#bpl_no').prop('required', true);
+				} else {
 					$('#bpl_no_group').hide();
-					$('#bpl_no').prop('required',false);
+					$('#bpl_no').prop('required', false);
 					$('#bpl_no').val('');
 				}
 			});
-			if($('#course').val() == "BA(General)"){
-				$('#major').prop('disabled',true);
+			if ($('#course').val() == "BA(General)") {
+				$('#major').prop('disabled', true);
 			}
+			var limit = 2;
+			$('input.custom-control-input').on('change', function(evt) {
+			if($("input[name='regular[]']:checked").length > limit) {
+				this.checked = false;
+			}
+			});
+			$('#admission_form').on('submit',function(e){
+				if ($("input[name='regular[]']:checked").length != limit) {
+					e.preventDefault();
+					$("input[name='regular[]']").focus();
+					toastr.warning('Select two subjects from regular course');
+				}
+			});
 		});
+
 	</script>
 </body>
 

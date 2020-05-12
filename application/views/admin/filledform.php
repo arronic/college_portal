@@ -41,7 +41,7 @@
 		</div>
 
 		<!-- test Model starts -->
-		<div div class="modal fade" id="admit-modal" data-keyboard="false" data-backdrop="static">
+		<div class="modal fade" id="admit-modal" data-keyboard="false" data-backdrop="static">
 			<div class="modal-dialog modal-xl" role="document">
 				<div class="modal-content">
 
@@ -81,8 +81,8 @@
 											<div class="col-sm-6">
 												<div class="form-group">
 													<label>Course</label>
-													<select class="form-control select2" style="width: 100%;" onChange="adm_fee()"
-														id="course">
+													<select class="form-control select2" style="width: 100%;"
+														onChange="adm_fee()" id="course">
 														<?php
 														foreach ($courses as $course) {?>
 														<option value="<?=$course->course_name?>">
@@ -457,21 +457,84 @@
 												<label>Subject available in the college for Regular
 													Course.</label>
 												<div class="form-group">
-													<select class="form-control js-example-basic-multiple"
-														name="regular[]" id="regular" multiple="multiple" required>
-														<option value="History">History</option>
-														<option value="Political Science">Political Science
-														</option>
-														<option value="Economics">Economics</option>
-														<option value="Education">Education</option>
-														<option value="Philosophy">Philosophy</option>
-														<option value="Elective Assamese">Elective Assamese
-														</option>
-														<option value="Elective Hindi">Elective Hindi</option>
-														<option value="Arabic">Arabic</option>
-														<option value="Mathematics">Mathematics</option>
-														<option value="Linguistics">Linguistics</option>
-													</select>
+													<div class="row">
+														<div class="col-sm-6">
+															<div class="custom-control custom-checkbox">
+																<input class="custom-control-input" type="checkbox"
+																	id="customCheckbox1" name="regular[]"
+																	value="History">
+																<label for="customCheckbox1"
+																	class="custom-control-label">History</label>
+															</div>
+															<div class="custom-control custom-checkbox">
+																<input class="custom-control-input" type="checkbox"
+																	id="customCheckbox2" name="regular[]"
+																	value="Political Science">
+																<label for="customCheckbox2"
+																	class="custom-control-label">Political
+																	Science</label>
+															</div>
+															<div class="custom-control custom-checkbox">
+																<input class="custom-control-input" type="checkbox"
+																	id="customCheckbox3" name="regular[]"
+																	value="Economics">
+																<label for="customCheckbox3"
+																	class="custom-control-label">Economics</label>
+															</div>
+															<div class="custom-control custom-checkbox">
+																<input class="custom-control-input" type="checkbox"
+																	id="customCheckbox4" name="regular[]"
+																	value="Education">
+																<label for="customCheckbox4"
+																	class="custom-control-label">Education</label>
+															</div>
+															<div class="custom-control custom-checkbox">
+																<input class="custom-control-input" type="checkbox"
+																	id="customCheckbox5" name="regular[]"
+																	value="Philosophy">
+																<label for="customCheckbox5"
+																	class="custom-control-label">Philosophy</label>
+															</div>
+														</div>
+														<div class="col-sm-6">
+															<div class="custom-control custom-checkbox">
+																<input class="custom-control-input" type="checkbox"
+																	id="customCheckbox6" name="regular[]"
+																	value="Elective Assamese">
+																<label for="customCheckbox6"
+																	class="custom-control-label">Elective
+																	Assamese</label>
+															</div>
+															<div class="custom-control custom-checkbox">
+																<input class="custom-control-input" type="checkbox"
+																	id="customCheckbox7" name="regular[]"
+																	value="Elective Hindi">
+																<label for="customCheckbox7"
+																	class="custom-control-label">Elective Hindi</label>
+															</div>
+															<div class="custom-control custom-checkbox">
+																<input class="custom-control-input" type="checkbox"
+																	id="customCheckbox8" name="regular[]"
+																	value="Arabic">
+																<label for="customCheckbox8"
+																	class="custom-control-label">Arabic</label>
+															</div>
+															<div class="custom-control custom-checkbox">
+																<input class="custom-control-input" type="checkbox"
+																	id="customCheckbox9" name="regular[]"
+																	value="Mathematics">
+																<label for="customCheckbox9"
+																	class="custom-control-label">Mathematics</label>
+															</div>
+															<div class="custom-control custom-checkbox">
+																<input class="custom-control-input" type="checkbox"
+																	id="customCheckbox10" name="regular[]"
+																	value="Linguistics">
+																<label for="customCheckbox10"
+																	class="custom-control-label">Linguistics</label>
+															</div>
+														</div>
+													</div>
 												</div>
 											</div>
 										</div>
@@ -625,7 +688,7 @@
 	</section>
 </div>
 <?php include('script.php');?>
-<script src="https://cdn.datatables.net/buttons/1.6.1/js/dataTables.buttons.min.js"></script> 
+<script src="https://cdn.datatables.net/buttons/1.6.1/js/dataTables.buttons.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.bootstrap4.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
@@ -661,26 +724,31 @@
 					$('#total_amt').text("Free");
 					$('#paid_amt').hide();
 					$('#paid_amt').val(0);
-				}else{
+				} else {
 					$('#total_amt').text(data.total);
 				}
 				$('#image').attr('src', base_url + 'upload/' + data.image_path);
 				$('#signature').attr('src', base_url + 'upload/' + data.sign_path);
 				$('#u_code').text(data.code);
+				data.regular.split(",", 2).forEach(element => {
+					$('input[name="regular[]"][value="' + element + '"]').prop('checked', true);
+				});
 			},
 			error: function (error) {
 				console.error(error);
 			}
 		});
 	}
+
 	function valueChanged() {
 		if ($('#study_break').val() == "yes") {
 			$("#gap_reason").show();
 			$('#break_reason').required = true;
 		} else
 			$("#gap_reason").hide();
-			$('#break_reason').val('');
+		$('#break_reason').val('');
 	}
+
 </script>
 <script type="text/javascript">
 	base_url = '<?= base_url() ?>'
@@ -692,23 +760,26 @@
 		var myTable = $('#my-table').DataTable({
 			"ajax": base_url + "Admin/notAdmitted",
 			'order': [],
-		      responsive : true,
-		      dom: "<'row'<'col-md-2'l><'col-md-6'B><'col-md-4'f>><'row'<'col-md-12'rt>><'row'<'col-md-6'i><'col-md-6'p>>",
-		      buttons: [
-					{
-						extend: 'excel',
-						title: table_title('Filled Form List'),
-						exportOptions: {columns: [ 0,1,2,3,4,5]},
-						footer: true,
+			responsive: true,
+			dom: "<'row'<'col-md-2'l><'col-md-6'B><'col-md-4'f>><'row'<'col-md-12'rt>><'row'<'col-md-6'i><'col-md-6'p>>",
+			buttons: [{
+					extend: 'excel',
+					title: table_title('Filled Form List'),
+					exportOptions: {
+						columns: [0, 1, 2, 3, 4, 5]
+					},
+					footer: true,
 
-					},
-					{
-						extend: 'pdf',
-						title: table_title('Filled Form List'),
-						exportOptions: {columns: [ 0,1,2,3,4,5]}
-					},
-					'copy','colvis'
-				],
+				},
+				{
+					extend: 'pdf',
+					title: table_title('Filled Form List'),
+					exportOptions: {
+						columns: [0, 1, 2, 3, 4, 5]
+					}
+				},
+				'copy', 'colvis'
+			],
 		});
 		$('#delete-modal').on('show.bs.modal', function (e) {
 			var studentID = $(e.relatedTarget).data('student-id');
@@ -740,7 +811,8 @@
 						$('#s_name').text(name);
 						$('#s_course').text(course);
 						$('#pay_amt').text(paid_amt);
-						$('#pay_receipt').attr('href', base_url + 'Admin/receiptPDF/' + btoa_return(result.id));
+						$('#pay_receipt').attr('href', base_url + 'Admin/receiptPDF/' +
+							btoa_return(result.id));
 						myTable.ajax.reload();
 					}
 				},
@@ -760,19 +832,20 @@
 			}
 		});
 	});
+
 </script>
 <script>
-	function adm_fee(){
+	function adm_fee() {
 		course = $('#course').val();
 		apl_bpl = $('#apl_bpl').val();
 		$.ajax({
-			url: base_url + "Admin/get_total_fee/"+course,
-			success: function(result){
+			url: base_url + "Admin/get_total_fee/" + course,
+			success: function (result) {
 				if (apl_bpl == "bpl") {
 					$('#total_amt').text("Free");
 					$('#paid_amt').hide();
 					$('#paid_amt').val(0);
-				}else{
+				} else {
 					$('#total_amt').text(result);
 					$('#paid_amt').show();
 				}
@@ -782,6 +855,13 @@
 			}
 		});
 	}
+	var limit = 2;
+	$('input.custom-control-input').on('change', function (evt) {
+		if ($("input[name='regular[]']:checked").length > limit) {
+			this.checked = false;
+		}
+	});
+
 </script>
 <?php include('footer.php');?>
 <script type="text/javascript" src="<?= base_url() ?>assets/wizerd/js/jquery.smartWizard.min.js"></script>
@@ -822,6 +902,18 @@
 				toolbarButtonPosition: 'end',
 			},
 		});
+		$("#smartwizard").on("leaveStep", function(e, anchorObject, stepNumber, stepDirection) {
+			check = true;
+			if (stepNumber == 0) {
+				if ($("input[name='regular[]']:checked").length != limit) {
+					e.preventDefault();
+					$("input[name='regular[]']").focus();
+					toastr.warning('Select two subjects from regular course');
+					check = false;
+				}
+			}
+			return check;
+		});
 		$("#reset-btn").on("click", function () {
 			$('#smartwizard').smartWizard("reset");
 			$("#next-btn").removeClass('disabled');
@@ -838,4 +930,5 @@
 			return true;
 		});
 	});
+
 </script>

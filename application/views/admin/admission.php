@@ -466,21 +466,72 @@
 									<label>Subject available in the college for Regular
 										Course.</label>
 									<div class="form-group">
-										<select class="form-control js-example-basic-multiple" name="regular[]"
-											id="regular" multiple="multiple" required>
-											<option value="History">History</option>
-											<option value="Political Science">Political Science
-											</option>
-											<option value="Economics">Economics</option>
-											<option value="Education">Education</option>
-											<option value="Philosophy">Philosophy</option>
-											<option value="Elective Assamese">Elective Assamese
-											</option>
-											<option value="Elective Hindi">Elective Hindi</option>
-											<option value="Arabic">Arabic</option>
-											<option value="Mathematics">Mathematics</option>
-											<option value="Linguistics">Linguistics</option>
-										</select>
+										<div class="row">
+											<div class="col-sm-6">
+												<div class="custom-control custom-checkbox">
+													<input class="custom-control-input" type="checkbox"
+														id="customCheckbox1" name="regular[]" value="History">
+													<label for="customCheckbox1"
+														class="custom-control-label">History</label>
+												</div>
+												<div class="custom-control custom-checkbox">
+													<input class="custom-control-input" type="checkbox"
+														id="customCheckbox2" name="regular[]" value="Political Science">
+													<label for="customCheckbox2" class="custom-control-label">Political
+														Science</label>
+												</div>
+												<div class="custom-control custom-checkbox">
+													<input class="custom-control-input" type="checkbox"
+														id="customCheckbox3" name="regular[]" value="Economics">
+													<label for="customCheckbox3"
+														class="custom-control-label">Economics</label>
+												</div>
+												<div class="custom-control custom-checkbox">
+													<input class="custom-control-input" type="checkbox"
+														id="customCheckbox4" name="regular[]" value="Education">
+													<label for="customCheckbox4"
+														class="custom-control-label">Education</label>
+												</div>
+												<div class="custom-control custom-checkbox">
+													<input class="custom-control-input" type="checkbox"
+														id="customCheckbox5" name="regular[]" value="Philosophy">
+													<label for="customCheckbox5"
+														class="custom-control-label">Philosophy</label>
+												</div>
+											</div>
+											<div class="col-sm-6">
+												<div class="custom-control custom-checkbox">
+													<input class="custom-control-input" type="checkbox"
+														id="customCheckbox6" name="regular[]" value="Elective Assamese">
+													<label for="customCheckbox6" class="custom-control-label">Elective
+														Assamese</label>
+												</div>
+												<div class="custom-control custom-checkbox">
+													<input class="custom-control-input" type="checkbox"
+														id="customCheckbox7" name="regular[]" value="Elective Hindi">
+													<label for="customCheckbox7" class="custom-control-label">Elective
+														Hindi</label>
+												</div>
+												<div class="custom-control custom-checkbox">
+													<input class="custom-control-input" type="checkbox"
+														id="customCheckbox8" name="regular[]" value="Arabic">
+													<label for="customCheckbox8"
+														class="custom-control-label">Arabic</label>
+												</div>
+												<div class="custom-control custom-checkbox">
+													<input class="custom-control-input" type="checkbox"
+														id="customCheckbox9" name="regular[]" value="Mathematics">
+													<label for="customCheckbox9"
+														class="custom-control-label">Mathematics</label>
+												</div>
+												<div class="custom-control custom-checkbox">
+													<input class="custom-control-input" type="checkbox"
+														id="customCheckbox10" name="regular[]" value="Linguistics">
+													<label for="customCheckbox10"
+														class="custom-control-label">Linguistics</label>
+												</div>
+											</div>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -540,6 +591,7 @@
 							</div>
 							<hr>
 					</div>
+					<input type="hidden" name="paid_amt" id="paid_amt">
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
 						<button type="submit" id="update-btn" class="btn btn-primary">Update</button>
@@ -552,7 +604,7 @@
 </div>
 <?php include('script.php');?>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/1.6.1/js/dataTables.buttons.min.js"></script> 
+<script src="https://cdn.datatables.net/buttons/1.6.1/js/dataTables.buttons.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.bootstrap4.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
@@ -562,6 +614,7 @@
 <script src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.colVis.min.js"></script>
 <script type="text/javascript">
 	base_url = '<?= base_url() ?>'
+	var limit = 2;
 
 	function valueChanged() {
 		if ($('#study_break').val() == "yes") {
@@ -578,19 +631,22 @@
 		var myTable = $('#my-table').DataTable({
 			"ajax": base_url + "Admin/admitted",
 			dom: "<'row'<'col-md-2'l><'col-md-6'B><'col-md-4'f>><'row'<'col-md-12'rt>><'row'<'col-md-6'i><'col-md-6'p>>",
-			buttons: [
-				{
+			buttons: [{
 					extend: 'excel',
 					title: table_title('Admission List'),
-					exportOptions: {columns: [ 0,1,2,3,4]},
+					exportOptions: {
+						columns: [0, 1, 2, 3, 4]
+					},
 					footer: true,
 				},
 				{
 					extend: 'pdf',
 					title: table_title('Admission List'),
-					exportOptions: {columns: [ 0,1,2,3,4]}
+					exportOptions: {
+						columns: [0, 1, 2, 3, 4]
+					}
 				},
-				'copy','colvis'
+				'copy', 'colvis'
 			],
 		});
 		$('#edit-modal').on('show.bs.modal', function (e) {
@@ -606,11 +662,10 @@
 				success: function (data) {
 					spinnerOff();
 					$('#id').val(data.id);
-					options = data.regular.split(",");
-					option = [options[0],options[1]];
-					setTimeout(function() {
-						mySelect.val(option).trigger("change");
-					}, 1000);
+					data.regular.split(",", 2).forEach(element => {
+						$('input[name="regular[]"][value="' + element + '"]').prop(
+							'checked', true);
+					});
 					var x;
 					if (data.study_break == "yes") {
 						$("#gap_reason").show();
@@ -626,6 +681,7 @@
 					if ($('#apl_bpl').val() == "bpl") {
 						$('#bpl_no_group').show();
 					}
+					$('#paid_amt').val(data.paid_amt);
 				},
 				error: function (error) {
 					console.error(error);
@@ -643,37 +699,42 @@
 		});
 		$('#editForm').on('submit', function (e) {
 			e.preventDefault();
-			spinnerOn();
-			$.ajax({
-				url: base_url + "Admin/update_student",
-				type: "POST",
-				data: new FormData(this),
-				dataType: 'json',
-				contentType: false,
-				cache: false,
-				processData: false,
-				processData: false,
-				contentType: false,
-				success: function (data) {
-					spinnerOff();
-					if (data.class == "success") {
-						$('#edit-modal').modal('hide');
-						feedback_msg(data, 10000);
-						myTable.ajax.reload();
-					} else {
-						$('.container').before(
-							`<div class="col-md-6 offset-md-3">
-									<div class="alert alert-danger">
-										Could Not Update!!!
-									</div>
-								</div>`
-						)
+			if ($("input[name='regular[]']:checked").length != limit) {
+				e.preventDefault();
+				$("input[name='regular[]']").focus();
+				toastr.warning('Select two subjects from regular course');
+			} else {
+				spinnerOn();
+				$.ajax({
+					url: base_url + "Admin/update_student",
+					type: "POST",
+					data: new FormData(this),
+					dataType: 'json',
+					contentType: false,
+					cache: false,
+					processData: false,
+					processData: false,
+					contentType: false,
+					success: function (data) {
+						spinnerOff();
+						if (data.class == "success") {
+							$('#edit-modal').modal('hide');
+							feedback_msg(data, 10000);
+							myTable.ajax.reload();
+						} else {
+							toastr.error('Could not update');
+						}
+					},
+					error: function (error) {
+						console.log(error);
 					}
-				},
-				error: function (error) {
-					console.log(error);
-				}
-			});
+				});
+			}
+		});
+		$('input.custom-control-input').on('change', function (evt) {
+			if ($("input[name='regular[]']:checked").length > limit) {
+				this.checked = false;
+			}
 		});
 	});
 

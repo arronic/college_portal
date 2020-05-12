@@ -41,7 +41,7 @@ span.show-ellipsis:after{
 			</div>
 		</div>
 	</section>
-	<div div class="modal fade" id="notice-modal" data-keyboard="false" data-backdrop="static">
+	<div class="modal fade" id="notice-modal" data-keyboard="false" data-backdrop="static">
 		<div class="modal-dialog modal-xl" role="document">
 			<div class="modal-content">
 				<div class="modal-header">

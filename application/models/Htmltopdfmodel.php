@@ -88,10 +88,10 @@ class Htmltopdfmodel extends CI_Model{
             <div>
             <span>Sl No.: '.$sd->sl_no.'</span>
                 <div class="custom-header text-center">
-                    <div class="bold font-large">Jaleswar College, Address</div>
-                    <div class="bold text-center">ESTD:1947</div>
-                    <div class="bold text-center">P.O.: Post Office, DIST: District</div>
-                    <div class="bold text-center">PIN: 123456</div>
+                    <div class="bold font-large">Jaleswar College, Tapoban</div>
+                    <div class="bold text-center">ESTD:1981</div>
+                    <div class="bold text-center">P.O.-Katarihara , DIST- Goalpara (Assam)</div>
+                    <div class="bold text-center">PIN: 783132</div>
                 </div>
             </div>
             <hr>
@@ -207,6 +207,9 @@ class Htmltopdfmodel extends CI_Model{
                 .float-right {
                     float: right;
                 }
+                .float-left {
+                    float: left;
+                }
         
                 .italic {
                     font-style: italic;
@@ -239,10 +242,10 @@ class Htmltopdfmodel extends CI_Model{
             <div class="container">
             <span>Sl No.: '.$sd->sl_no.'</span>
             <div class="text-center">
-                <div class="bold font-large">Jaleswar College, Address</div>
-                <div class="bold text-center">ESTD:1947</div>
-                <div class="bold text-center">P.O.: Post Office, DIST: District</div>
-                <div class="bold text-center">PIN: 123456</div>
+                <div class="bold font-large">Jaleswar College, Tapoban</div>
+                <div class="bold text-center">ESTD:1981</div>
+                <div class="bold text-center">P.O.-Katarihara , DIST- Goalpara (Assam)</div>
+                <div class="bold text-center">PIN: 783132</div>
             </div>
             <div class="a float-left"><span class="bold">Admission Form for </span>'.$sd->course.'</div>
             <div class="a float-right"><span class="a bold">Student Code</span><span class="a">'.$sd->code.'</span></div>
@@ -402,7 +405,7 @@ class Htmltopdfmodel extends CI_Model{
                 <div class="parent">
                     <div class="wide">
                         <p class="italic text-center">Principal</p>
-                        <p class="italic text-center">Jaleswar College, Address</p>
+                        <p class="italic text-center">Jaleswar College, Tapoban</p>
                     </div>
                     <div class="narrow">
                         <p class="italic text-center">Prof. In- Charge / Office Asstt.</p>
@@ -518,10 +521,10 @@ class Htmltopdfmodel extends CI_Model{
         <div class="split left">
         <span>Sl No.: '.$sd->sl_no.'</span>
             <div class="text-center">
-                <div class="bold">Jaleswar College, Address</div>
-                <div class="bold text-center">ESTD:1947</div>
-                <div class="bold text-center">P.O.: Post Office, DIST: District</div>
-                <div class="bold text-center">PIN: 123456</div>
+                <div class="bold">Jaleswar College, Tapoban</div>
+                <div class="bold text-center">ESTD:1981</div>
+                <div class="bold text-center">P.O.-Katarihara , DIST- Goalpara (Assam)</div>
+                <div class="bold text-center">PIN: 783132</div>
             </div>
             <div class="text-center">Payment Receipt &nbsp;(Office copy)</div>
             <br>
@@ -653,10 +656,10 @@ class Htmltopdfmodel extends CI_Model{
             <div class="split right">
             <span>Sl No.: '.$sd->sl_no.'</span>
             <div class="text-center">
-                <div class="bold">Jaleswar College, Address</div>
-                <div class="bold text-center">ESTD:1947</div>
-                <div class="bold text-center">P.O.: Post Office, DIST: District</div>
-                <div class="bold text-center">PIN: 123456</div>
+                <div class="bold">Jaleswar College, Tapoban</div>
+                <div class="bold text-center">ESTD:1981</div>
+                <div class="bold text-center">P.O.-Katarihara , DIST- Goalpara (Assam)</div>
+                <div class="bold text-center">PIN: 783132</div>
                 <div class="text-center">Payment Receipt &nbsp;(Student Copy)</div>
             </div>
             <br>
@@ -897,10 +900,10 @@ class Htmltopdfmodel extends CI_Model{
             <div>
             <span>Sl No.: '.$sd->sl_no.'</span>
                 <div class="custom-header text-center">
-                    <div class="bold font-large">Jaleswar College, Address</div>
-                    <div class="bold text-center">ESTD:1947</div>
-                    <div class="bold text-center">P.O.: Post Office, DIST: District</div>
-                    <div class="bold text-center">PIN: 123456</div>
+                    <div class="bold font-large">Jaleswar College, Tapoban</div>
+                    <div class="bold text-center">ESTD:1981</div>
+                    <div class="bold text-center">P.O.-Katarihara , DIST- Goalpara (Assam)</div>
+                    <div class="bold text-center">PIN: 783132</div>
                 </div>
             </div>
             <hr>
@@ -941,10 +944,10 @@ class Htmltopdfmodel extends CI_Model{
         <div class="split left">
         <span>Sl No.: '.$sd->sl_no.'</span>
             <div class="text-center">
-                <div class="bold">Jaleswar College, Address</div>
-                <div class="bold text-center">ESTD:1947</div>
-                <div class="bold text-center">P.O.: Post Office, DIST: District</div>
-                <div class="bold text-center">PIN: 123456</div>
+                <div class="bold">Jaleswar College, Tapoban</div>
+                <div class="bold text-center">ESTD:1981</div>
+                <div class="bold text-center">P.O.-Katarihara , DIST- Goalpara (Assam)</div>
+                <div class="bold text-center">PIN: 783132</div>
             </div>
             <div class="text-center">Payment Receipt &nbsp;(Office copy)</div>
             <br>
@@ -1077,10 +1080,10 @@ class Htmltopdfmodel extends CI_Model{
             <div class="split right">
             <span>Sl No.: '.$sd->sl_no.'</span>
             <div class="text-center">
-                <div class="bold">Jaleswar College, Address</div>
-                <div class="bold text-center">ESTD:1947</div>
-                <div class="bold text-center">P.O.: Post Office, DIST: District</div>
-                <div class="bold text-center">PIN: 123456</div>
+                <div class="bold">Jaleswar College, Tapoban</div>
+                <div class="bold text-center">ESTD:1981</div>
+                <div class="bold text-center">P.O.-Katarihara , DIST- Goalpara (Assam)</div>
+                <div class="bold text-center">PIN: 783132</div>
                 <div class="text-center">Payment Receipt &nbsp;(Student Copy)</div>
             </div>
             <br>
