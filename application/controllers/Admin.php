@@ -17,6 +17,7 @@ class Admin extends CI_Controller{
     }
     public function filled_form(){
         $courses = $this->genModel->fetch_by_all('course');
+        
         $this->load->view('admin/filledform',compact('courses'));
     }
     public function admission_list(){
